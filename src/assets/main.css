@@ -1,25 +1,47 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0;
+  padding: 0;
+  display: grid;
+
+  /* Let the grid system fill the entire screen */
+  flex-grow: 10; 
+
+  grid-template-columns: 1fr 6fr 1fr;
+  grid-template-rows: 1fr 3fr 3fr 0.5fr;
 
   font-weight: normal;
+
+  width: 100%;
+
+  grid-template-areas: 
+    "header header header"
+    "preview-sidebar main-editor toolbar-sidebar"
+    "preview-sidebar main-editor toolbar-sidebar"
+    "footer footer footer";
+}
+#header {
+  grid-area: 1 / 1 / 2 / 4;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+#footer {
+  grid-area: 4 / 1 / 5 / 4;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+#preview-sidebar {
+  grid-area: 2 / 1 / 4 / 2;
 }
+
+#toolbar-sidebar {
+  grid-area: 2 / 3 / 4 / 4;
+}
+
+#main-editor {
+  grid-area: 2 / 2 / 4 / 3;
+}
+
+
 
 @media (min-width: 1024px) {
   body {
@@ -27,9 +49,5 @@ a,
     place-items: center;
   }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+
 }
