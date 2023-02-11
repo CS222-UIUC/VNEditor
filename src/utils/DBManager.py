@@ -3,7 +3,7 @@ import sqlite3
 from src.utils import MsgColor
 
 
-class DbManager:
+class Service:
     def __init__(self, db_dir):
         self._cursor = None
         self.DB = None
@@ -33,6 +33,7 @@ class DbManager:
 
     def drop_table(self, table_name: str):
         self._cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+        print(MsgColor.MsgColor.OK, "(-) drop table: %s" % table_name, MsgColor.MsgColor.END)
 
     def select(self, table_name: str, is_desc: bool = False, amount: int = -1) -> dict:
         arg_LIMIT = "LIMIT " + str(amount) if amount != -1 else ""
@@ -51,7 +52,7 @@ class DbManager:
 
     def connect(self, db_dir):
         if not os.path.exists(db_dir):
-            print("create new db in: ", db_dir)
+            print("(+) create new db: %s in: " % db_dir, db_dir)
         self.DB = sqlite3.connect(db_dir)
-        print(MsgColor.MsgColor.OK, "find db, connected", MsgColor.MsgColor.END)
+        print(MsgColor.MsgColor.OK, "(v) find db: %s, connected" % db_dir, MsgColor.MsgColor.END)
         self._cursor = self.DB.cursor()
