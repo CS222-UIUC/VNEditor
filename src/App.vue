@@ -20,6 +20,7 @@ import Toolbar from "./components/Toolbar.vue";
 
 .grid-item {
   text-align: center;
+
 }
 
 
