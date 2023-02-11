@@ -6,7 +6,7 @@ import Toolbar from "./components/Toolbar.vue";
 <template>
   <header id="header" class="grid-item">this is header</header>
   <main id="main-editor" class="grid-item">
-    Some Text
+    This is main editor
   </main>
   <div id="preview-sidebar" class="grid-item">this is sidebar 1</div>
   <div id="toolbar-sidebar" class="grid-item">this is sidebar 2</div>
@@ -20,8 +20,27 @@ import Toolbar from "./components/Toolbar.vue";
 
 .grid-item {
   text-align: center;
-
 }
 
+#main-editor {
+  background: azure;
+}
+
+#preview-sidebar {
+  background-color: cadetblue;
+}
+
+#toolbar-sidebar {
+  background-color: cadetblue;
+}
+
+#header {
+  background-color: darkblue;
+  color: white;
+}
+
+#footer {
+  background-color: brown;
+}
 
 </style>
