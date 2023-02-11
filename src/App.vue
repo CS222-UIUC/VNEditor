@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import Toolbar from "./components/Toolbar.vue";
+import Navbar from "./components/Navbar.vue"
 </script>
 
 
 <template>
-  <header id="header" class="grid-item">this is header</header>
+  <Navbar >
+
+  </Navbar>
   <main id="main-editor" class="grid-item">
     This is main editor
   </main>
@@ -20,6 +23,7 @@ import Toolbar from "./components/Toolbar.vue";
 
 .grid-item {
   text-align: center;
+  
 }
 
 #main-editor {
