@@ -18,9 +18,6 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
-        
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.6.0
 
       - name: Run ESLint
         run: eslint . --ext .js
