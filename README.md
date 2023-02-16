@@ -13,9 +13,3 @@ An online-driven visual novel editor
 ### Prototype🧈
 
 ![demo](doc/demo.png)
-
-### Team🀄
-
-![group_banner](doc/group_banner.png)
-
-[Group 114514](https://github.com/Group-114514)
