@@ -10,7 +10,7 @@ import Editor from "./components/Editor.vue"
 export default {
   data() {
     return {
-
+      fileUploadAreaDisplay: false
     }
   },
   components: {
@@ -28,8 +28,8 @@ export default {
   <Navbar >
 
   </Navbar>
-  <main id="main-editor" class="grid-item">
-    <FileUploadArea />
+  <main id="main-editor" class="grid-item" @clcik="fileUploadAreaDisplay = true" @dragenter="fileUploadAreaDisplay = true" @dragexit="fileUploadAreaDisplay = false">
+    <FileUploadArea :fileUploadAreaDisplay="true" />
   </main>
   <div id="preview-sidebar" class="grid-item">this is sidebar 1</div>
   <div id="toolbar-sidebar" class="grid-item">
