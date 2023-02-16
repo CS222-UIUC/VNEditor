@@ -2,16 +2,20 @@
 
 An online-driven visual novel editor 
 
-### Proposal
+### Proposal🎇
 
 [proposal for VNeditor](doc/proposal.md)
 
-### Develop
+### Develop🏗️
 
 [API Reference](src/service/README.md)
 
-### Team
+### Demo🧈
 
-[Group-114514](https://github.com/Group-114514)
+![demo](C:\Users\Twisl\Desktop\VNEditor\doc\demo.png)
 
-![](doc/demo.png)
+### Team⛩️
+
+![group_banner](C:\Users\Twisl\Desktop\VNEditor\doc\group_banner.png)
+
+[Group 114514](https://github.com/Group-114514)
