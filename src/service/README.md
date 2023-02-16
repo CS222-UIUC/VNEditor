@@ -2,7 +2,7 @@
 
 > last update in 2023/2/10 by Tianyi Huang
 
-### Game Memory API
+### Game Memory
 
 service to provide control on player's game memory
 
@@ -87,5 +87,86 @@ service to provide control on player's game memory
 
 ```json
 1
+```
+
+### Resources Management 
+
+service to provide control on resources
+
+**upload resources:** 
+
++ `description`: upload resources in specific category 
+
++ `api`: /upload_res
++ `method`: POST
++ `request format`: JSON
+
+```json
+[
+"file_content": 000,
+"type": "bg/character/music/vocal",
+]
+```
+
++ `return format`: json
++ `return description`: status code
+
+> status code -- TBD
+
+```json
+[
+    "status": 1
+]
+```
+
+**upload resources:** 
+
++ `description`: remove resources 
+
++ `api`: /remove_res
++ `method`: POST
++ `request format`: JSON
+
+```json
+[
+"file_name": "test.png",
+]
+```
+
++ `return format`: json
++ `return description`: status code
+
+> status code -- TBD
+
+```json
+[
+    "status": 1
+]
+```
+
+**rename resources:** 
+
++ `description`: rename resources 
+
++ `api`: /rename_res
++ `method`: POST
++ `request format`: JSON
+
+```json
+[
+"file_name": "test.png",
+"file_name_new": "test2.png",
+]
+```
+
++ `return format`: json
++ `return description`: status code
+
+> status code -- TBD
+
+```json
+[
+    "status": 1
+]
 ```
 
