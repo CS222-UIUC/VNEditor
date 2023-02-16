@@ -46,20 +46,22 @@ Most of our frontend is based on `Vue.js`, and luckily, this framework has it [o
 
 In order to interact the frontend and backend code, we make a `API Reference Template` in our repo as a backend API developing standard, and everyone who engage in backend developing will need to follow and fulfill it. For the specific interaction of our backend and frontend, please refer to the diagram below.
 
-![interact](interact.png)
+![interact](C:\MyDesktop\School\CS222\interact.png)
 
 #### Workflow
 
-For the work flow, The main branch should only be modified weekly, that is merging with the developing branch.
+For the work flow, we will have a dedicated time slot to review and push the new code to the main branch at the end of the week.
 
-Every one should be responsible for the file they created, if a file will only be modified by a 
+Every one should be responsible for the file they created, if a file will only be modified by 1 
 person, this file can go under the the developing branch(as branch 1) that is modified by all the people.
 
-If the file is developed with 2 or more people at the same time, there should be a sub branch under the 
-developing branch created(as branch 1-x), and after finished, this branch should be merged with branch 1
+If the file is developed with 2 or more people at the same time(frontend and backend communication), there should be a sub branch under the 
+developing branch created(as branch 1-x), and after finished, this branch should be merged with branch 1. 
 
-before the development, all the people should request a pull from branch 1 to make sure everything is up to date
-before changing anything, the rest of the procedure refer to the part mentioned above.
+Before we start coding, we will make a pull request to make sure that their version of code is up to date. 
+
+Furthermore, we will set up the gitaction for code format check, and run test cases on each commit to prevent code format issue, and 
+potential bug that might ruin the future add-on features. 
 
 ### Weekly Planning
 
@@ -87,10 +89,14 @@ Since all of our group members have taken CS225, so we will be use CS225's envir
 
 Our group has 4 people, we distribute the workload based on indivuduals capability. 
 
-TianYi, who is good at both frontend and backend, will be the manager. He is able to foreseen the current process, and supervised people working on both front and back end. 
+`TianYi`, who is good at both frontend and backend, will be the manager. He is able to foreseen the current process, and supervised people working on both front and back end. 
 
-JinHeng, who wants work for backend, will focus on editor functions, and potential migration process if occured. 
+`JinHeng`, who wants work for backend, will focus on editor functions, and potential migration process if occurred. 
 
-Yiwei, who is good at backend will also work on the functionality development, and performace enhancement. 
+`Yiwei`, who is good at backend will also work on the functionality development, and performance enhancement. 
 
-ZiHao has a deep understanding, and knowledge on the music and art area, so he will resposible for the coding on art and design.
+`ZiHao` has a deep understanding, and knowledge on the music and art area, so he will responsible for the coding on art and design.
+
+### Conflict
+
+Conflicts are inevitable when it comes to group project, so we have reach an agreement before the start of the project that everyone has the same decision weight when coming to the conflict. we will ,first, acknowledge the conflicts. The first solution to resolve the conflicts is to have a conversation between both side, and try to resolve the issue(either by persuading another side, or making concessions to reach a common ground). If the conversation failed to resolve the conflicts, we will move on to second solution: voting. By arrange a voting session, we will let the number of votes to decide which idea/way that we will follow. If there is a draw condition on the voting, we will bring the issue to the mentor, and make final decision based on mentor's feedback. 
