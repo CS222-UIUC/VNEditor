@@ -4,13 +4,13 @@ An online-driven visual novel editor
 
 ### Proposal🎇
 
-[proposal for VNeditor](doc/proposal.md)
+[Proposal for VNeditor](doc/proposal.md)
 
 ### Develop🏗️
 
 [API Reference](src/service/README.md)
 
-### Demo🧈
+### Prototype🧈
 
 ![demo](doc/demo.png)
 
