@@ -12,10 +12,10 @@ An online-driven visual novel editor
 
 ### Demo🧈
 
-![demo](C:\Users\Twisl\Desktop\VNEditor\doc\demo.png)
+![demo](doc\demo.png)
 
 ### Team⛩️
 
-![group_banner](C:\Users\Twisl\Desktop\VNEditor\doc\group_banner.png)
+![group_banner](doc\group_banner.png)
 
 [Group 114514](https://github.com/Group-114514)
