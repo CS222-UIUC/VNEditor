@@ -14,7 +14,7 @@ An online-driven visual novel editor
 
 ![demo](doc/demo.png)
 
-### Team⛩️
+### Team🀄
 
 ![group_banner](doc/group_banner.png)
 
