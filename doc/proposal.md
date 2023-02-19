@@ -46,7 +46,7 @@ Most of our frontend is based on `Vue.js`, and luckily, this framework has it [o
 
 In order to interact the frontend and backend code, we make a `API Reference Template` in our repo as a backend API developing standard, and everyone who engage in backend developing will need to follow and fulfill it. For the specific interaction of our backend and frontend, please refer to the diagram below.
 
-![interact](C:\MyDesktop\School\CS222\interact.png)
+![interact](interact.png)
 
 #### Workflow
 
