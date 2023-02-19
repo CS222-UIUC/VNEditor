@@ -8,7 +8,7 @@ An online-driven visual novel editor
 
 ### Develop🏗️
 
-[API Reference](src/service/README.md)
+[API Reference](service/README.md)
 
 ### Prototype🧈
 

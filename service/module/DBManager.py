@@ -1,6 +1,11 @@
+"""
+A general database key-value PDO
+"""
+
 import os
 import sqlite3
-from src.utils import MsgColor
+import MsgColor
+from Exception import *
 
 
 class Service:
@@ -19,26 +24,37 @@ class Service:
         try:
             self._cursor.execute("INSERT INTO {} (Key,Value) Values (\"{}\", \"{}\")".format(table_name, key, value))
         except sqlite3.Error:
-            raise KeyError("key '{}' already exist in table '{}'".format(key, table_name))
+            raise DBManagerError("key '{}' already exist in table '{}'".format(key, table_name))
 
     def push_dict(self, data: dict, table_name: str):
         for key in data.keys():
             self.push(key, data[key], table_name)
 
     def update(self, key: str, value: str, table_name: str):
-        self._cursor.execute("UPDATE {} SET Value=\"{}\" WHERE Key=\"{}\"".format(table_name, value, key))
+        try:
+            self._cursor.execute("UPDATE {} SET Value=\"{}\" WHERE Key=\"{}\"".format(table_name, value, key))
+        except sqlite3.Error as e:
+            raise DBManagerError(str(e))
 
     def remove(self, key: str, table_name: str):
-        self._cursor.execute("DELETE from {} where key=\"{}\"".format(table_name, key))
+        try:
+            self._cursor.execute("DELETE from {} where key=\"{}\"".format(table_name, key))
+        except sqlite3.Error as e:
+            raise DBManagerError(str(e))
 
     def drop_table(self, table_name: str):
-        self._cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-        print(MsgColor.MsgColor.OK, "(-) drop table: %s" % table_name, MsgColor.MsgColor.END)
+        try:
+            self._cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+        except sqlite3.Error:
+            raise DBManagerError("drop table {} fail".format(table_name))
 
     def select(self, table_name: str, is_desc: bool = False, amount: int = -1) -> dict:
         arg_LIMIT = "LIMIT " + str(amount) if amount != -1 else ""
         arg_DESC = "ORDERED BY Value DESC" if is_desc else ""
-        data = self._cursor.execute("SELECT id, key, value  from {} {} {}".format(table_name, arg_LIMIT, arg_DESC))
+        try:
+            data = self._cursor.execute("SELECT id, key, value  from {} {} {}".format(table_name, arg_LIMIT, arg_DESC))
+        except Exception:
+            raise DBManagerError("error occur when select from table: {}".format(table_name))
         out = {}
         for row in data:
             out[row[1]] = row[2]
@@ -54,5 +70,8 @@ class Service:
         if not os.path.exists(db_dir):
             print("(+) create new db: %s in: " % db_dir, db_dir)
         self.DB = sqlite3.connect(db_dir)
-        print(MsgColor.MsgColor.OK, "(v) find db: %s, connected" % db_dir, MsgColor.MsgColor.END)
         self._cursor = self.DB.cursor()
+
+
+if __name__ == "__main__":
+    print(MsgColor.MsgColor.OK, "Load DBManager Class", MsgColor.MsgColor.END)

@@ -1,7 +1,8 @@
-# API for game memory control
+"""
+API module for game memory control
+"""
 
-from src.utils import DBManager
-from src.utils import MsgColor
+import MsgColor, DBManager
 import time
 
 
@@ -14,20 +15,21 @@ def parse_data(data: dict):
 
 
 class Service:
-    def __init__(self, db_dict: str, slot_name: str):
-        self._dbman = DBManager.Service(db_dict)
+    def __init__(self, db_dir: str, slot_name: str):
+        self._dbman = DBManager.Service(db_dir)
         self._slot_name = slot_name
 
     def reset(self):
+        """
+        reset the game slot
+        """
         self._dbman.drop_table(self._slot_name)
         self._dbman.create_table_if_not_exist(self._slot_name)
         self._dbman.commit()
-        print(MsgColor.MsgColor.OK, "(+) successfully reset slot: %s" % self._slot_name, MsgColor.MsgColor.END)
 
     def drop(self):
         self._dbman.drop_table(self._slot_name)
         self._dbman.commit()
-        print(MsgColor.MsgColor.OK, "(-) successfully drop slot: %s" % self._slot_name, MsgColor.MsgColor.END)
 
     def get_slot_name(self) -> str:
         return self._slot_name
@@ -59,3 +61,7 @@ class Service:
         for i in self.get_all_memory():
             print(i["time"] + " " * 10 + i["frame"])
         print("-" * 40)
+
+
+if __name__ == "__main__":
+    print(MsgColor.MsgColor.OK, "Load GameSlot Class", MsgColor.MsgColor.END)
