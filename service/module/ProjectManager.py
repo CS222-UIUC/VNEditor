@@ -1,9 +1,22 @@
+import os.path
+
 from service.utils import file_utils
 from .ConfigManager import *
 
 BACKGROUND_CAT = 'background_dir'
 CHARACTER_CAT = 'character_dir'
 MUSIC_CAT = 'music_dir'
+
+
+def delete_project(folder_dir: str) -> bool:
+    """
+    :param folder_dir: project direction to be delete
+    :return: status of delete action
+    """
+    if not file_utils.check_folder_valid(folder_dir):
+        return False
+
+    return file_utils.delete_folder(folder_dir=folder_dir)
 
 
 class projectManager:
@@ -13,16 +26,17 @@ class projectManager:
         :param base: the base direction of the project
         """
         if not file_utils.check_folder_valid(base):
-            os.mkdir(base)
+            os.makedirs(base)
 
-        self.base = base
+        self.__base = base
         config = Loader(Loader.DEFAULT_CONFIG_DIR)
-        self.config_res = config.resources()
+        self.__config_res = config.resources()
 
         for i in config.resources().keys():
             res_path_abs = os.path.join(base, config.resources()[i])
-            os.mkdir(res_path_abs)
-            self.config_res[i] = res_path_abs
+            if not file_utils.check_folder_valid(res_path_abs):
+                os.makedirs(res_path_abs)
+            self.__config_res[i] = res_path_abs
 
     def __get_general_res(self, cat: str, filter_by: str = '') -> list:
         """
@@ -31,7 +45,8 @@ class projectManager:
         :param cat: specified category
         :return: get all resources in specified category
         """
-        res = file_utils.get_all_in_folder(self.config_res[cat])
+        file_dir_abs = os.path.join(self.__base, self.__config_res[cat])
+        res = file_utils.get_all_in_folder(file_dir_abs)
         if not len(filter_by):
             return res
 
@@ -42,7 +57,7 @@ class projectManager:
         :param file_dir: which file to delete, relative path
         :return: ok or not
         """
-        file_dir_abs = os.path.join(self.base, os.path.join(cat, file_dir))
+        file_dir_abs = os.path.join(self.__base, os.path.join(cat, file_dir))
         if not file_utils.check_file_valid(file_dir_abs):
             return False
 
@@ -69,23 +84,30 @@ class projectManager:
         """
         return self.__get_general_res(CHARACTER_CAT, filter_by)
 
-    def delete_backgrounds_res(self, file_dir: str) -> bool:
+    def delete_backgrounds_res(self, filer_dir: str) -> bool:
         """
-        :param file_dir: fetch resources which contain filter string
+        :param filer_dir: fetch resources which contain filter string
         :return: get all background resources
         """
-        return self.__delete_general_res(BACKGROUND_CAT, file_dir)
+        return self.__delete_general_res(BACKGROUND_CAT, filer_dir)
 
-    def delete_music_res(self, file_dir: str) -> bool:
+    def delete_music_res(self, filer_dir: str) -> bool:
         """
-        :param file_dir: fetch resources which contain filter string
+        :param filer_dir: fetch resources which contain filter string
         :return: get all background resources
         """
-        return self.__delete_general_res(MUSIC_CAT, file_dir)
+        return self.__delete_general_res(MUSIC_CAT, filer_dir)
 
-    def delete_character_res(self, file_dir: str) -> bool:
+    def delete_character_res(self, filer_dir: str) -> bool:
         """
-        :param file_dir: fetch resources which contain filter string
+        :param filer_dir: fetch resources which contain filter string
         :return: get all background resources
         """
-        return self.__delete_general_res(CHARACTER_CAT, file_dir)
+        return self.__delete_general_res(CHARACTER_CAT, filer_dir)
+
+    def delete(self) -> bool:
+        """
+        delete the whole project
+        :return: status of delete action
+        """
+        return delete_project(self.__base)

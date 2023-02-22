@@ -5,7 +5,7 @@ API module for game slot control
 from .DBManager import DBManager
 import time
 from .ConfigManager import Loader
-from service.utils.args_utils import ARGS
+from service.utils.args_utils import Args
 
 
 def get_cur_time():
@@ -21,14 +21,14 @@ class GameSlot:
     Game slot control service
     """
 
-    def __init__(self, db_dir: str, slot_name: str = ARGS.DEFAULT):
+    def __init__(self, db_dir: str, slot_name: str = Args.DEFAULT):
         """
         constructor for game slot service
 
         :param db_dir: database direction, create one if not exist
         :param slot_name: specified slot name, use default if not specified
         """
-        if slot_name is ARGS.DEFAULT:
+        if slot_name is Args.DEFAULT:
             config = Loader(Loader.DEFAULT_CONFIG_DIR)
             slot_name = config.game_memory()['default_slot_name']
 

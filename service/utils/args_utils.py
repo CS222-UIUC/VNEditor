@@ -4,5 +4,5 @@ define of special arguments
 from enum import Enum
 
 
-class ARGS(Enum):
+class Args(Enum):
     DEFAULT = 1
