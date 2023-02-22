@@ -4,3 +4,11 @@ class DBManagerError(Exception):
 
 class GameSlotError(Exception):
     pass
+
+
+class ProjectManagerError(Exception):
+    pass
+
+
+class ConfigLoaderError(Exception):
+    pass

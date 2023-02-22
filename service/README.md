@@ -15,7 +15,7 @@ service to provide control on player's game memory
 + `request format`: \
 
 ```json
-\
+
 ```
 
 + `request`: \
@@ -79,7 +79,7 @@ service to provide control on player's game memory
 + `request`: \
 
 ```json
-\
+
 ```
 
 + `return format`: int
