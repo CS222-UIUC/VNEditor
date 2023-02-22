@@ -10,6 +10,6 @@ An online-driven visual novel editor
 
 [API Reference](service/README.md)
 
-### Prototype🧈
+### Prototype🧻
 
 ![demo](doc/demo.png)
