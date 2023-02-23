@@ -20,20 +20,22 @@ def delete_project(folder_dir: str) -> bool:
 
 
 class projectManager:
-    def __init__(self, base: str):
+    def __init__(self, base_dir: str, config_dir: str):
         """
         constructor for project manager
-        :param base: the base direction of the project
-        """
-        if not file_utils.check_folder_valid(base):
-            os.makedirs(base)
 
-        self.__base = base
-        config = Loader(Loader.DEFAULT_CONFIG_DIR)
+        :param base_dir: the base direction of the project
+        :param config_dir: direction of config
+        """
+        if not file_utils.check_folder_valid(base_dir):
+            os.makedirs(base_dir)
+
+        self.__base = base_dir
+        config = Loader(config_dir)
         self.__config_res = config.resources()
 
         for i in config.resources().keys():
-            res_path_abs = os.path.join(base, config.resources()[i])
+            res_path_abs = os.path.join(base_dir, config.resources()[i])
             if not file_utils.check_folder_valid(res_path_abs):
                 os.makedirs(res_path_abs)
             self.__config_res[i] = res_path_abs

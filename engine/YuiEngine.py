@@ -3,9 +3,9 @@ from Background import Background
 from Character import Character
 from Dialogue import Dialogue
 from Music import Music
-from service.module.Exception import *
-from service.module.ConfigManager import Loader
-from service.utils.file_utils import *
+from module.Exception import *
+from module.ConfigManager import Loader
+from utils.file_utils import *
 import os
 import pickle
 
@@ -22,8 +22,7 @@ class Engine:
     cur_frame_id = -1
     game_content = None
 
-    def __int__(self, project_dir: str, game_file: str = DEFAULT_GAME_FILE_NAME,
-                config_dir: str = Loader.DEFAULT_CONFIG_DIR):
+    def __int__(self, project_dir: str, config_dir: str, game_file_name: str = DEFAULT_GAME_FILE_NAME):
 
         if not check_folder_valid(project_dir):
             raise EngineError("project {} not exist".format(project_dir))
@@ -34,7 +33,7 @@ class Engine:
         self.bg_base_dir = abs_dir(project_dir, self.config.resources()['background_dir'])
         self.music_base_dir = abs_dir(project_dir, self.config.resources()['music_dir'])
         self.chara_base_dir = abs_dir(project_dir, self.config.resources()['character_dir'])
-        self.game_file_dir = abs_dir(project_dir, game_file)
+        self.game_file_dir = abs_dir(project_dir, game_file_name)
 
         if check_file_valid(self.game_file_dir):
             with open(self.game_file_dir, 'r') as fo:

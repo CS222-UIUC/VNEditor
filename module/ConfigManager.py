@@ -7,7 +7,6 @@ class Loader:
     """
     config loading helper
     """
-    DEFAULT_CONFIG_DIR = "../router/service.ini"
 
     def __init__(self, config_dir: str):
         if check_file_valid(config_dir):

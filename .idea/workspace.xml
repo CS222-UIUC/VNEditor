@@ -85,7 +85,7 @@
       <recent name="C:\Users\Twisl\Desktop\VNEditor\service" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.unofficial_test">
+  <component name="RunManager">
     <configuration name="DBManager" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="VNEditor" />
       <option name="INTERPRETER_OPTIONS" value="" />

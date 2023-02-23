@@ -25,7 +25,7 @@ else:
 # test ProjectManager
 project = ProjectManager.projectManager(base="./myProject")
 
-if project.delete():
-    print("remove project")
-else:
-    print("remove project fail")
+# if project.delete():
+#     print("remove project")
+# else:
+#     print("remove project fail")
