@@ -1,1 +1,1 @@
-from service.module import *
+from module import *

@@ -5,7 +5,7 @@ API module for game slot control
 from .DBManager import DBManager
 import time
 from .ConfigManager import Loader
-from service.utils.args_utils import Args
+from utils.args_utils import Args
 
 
 def get_cur_time():

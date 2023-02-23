@@ -1,6 +1,6 @@
-from service.module import GameSlot, ProjectManager
+from module import GameSlot, ProjectManager
 import random
-from service.utils import file_utils
+from utils import file_utils
 
 game_slot = GameSlot.GameSlot(db_dir="test.db")
 

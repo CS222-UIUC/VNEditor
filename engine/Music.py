@@ -1,5 +1,5 @@
 from enum import Enum
-from service.utils.args_utils import Args
+from utils.args_utils import Args
 
 DEFAULT = Args.DEFAULT
 

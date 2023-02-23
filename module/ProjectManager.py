@@ -1,6 +1,6 @@
 import os.path
 
-from service.utils import file_utils
+from utils import file_utils
 from .ConfigManager import *
 
 BACKGROUND_CAT = 'background_dir'
