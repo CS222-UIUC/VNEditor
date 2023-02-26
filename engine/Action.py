@@ -1,11 +1,14 @@
 from Frame import Frame
 from Branch import BranchTree
+from utils.args_utils import Args
 
 
 class Action:
     """
-    Frame attribute, guild the next step after current frame
+    Frame attribute, guild the next step after current frame,
     """
+
+    DEFAULT = Args.DEFAULT
 
     def __init__(self, next_f: Frame, action: BranchTree = BranchTree.DEFAULT):
         """

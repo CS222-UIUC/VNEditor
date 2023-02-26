@@ -8,7 +8,7 @@ class MusicSignal(Enum):
     Keep = 1
     Pause = 2
     Next = 3
-    Insert = 4
+    PLAY = 4
 
 
 class Music:

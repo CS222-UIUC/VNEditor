@@ -1,5 +1,16 @@
+from enum import Enum
+
+
+class CharacterPosition(Enum):
+    L2 = 1
+    L1 = 2
+    M = 3
+    R1 = 4
+    R2 = 5
+
+
 class Character:
-    def __init__(self, res_name: str, position: int):
+    def __init__(self, res_name: str, position: CharacterPosition):
         """
         constructor for character
 

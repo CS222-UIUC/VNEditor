@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="753d2819-a6ed-487a-8106-d0759bca7d94" name="变更" comment="fix bug and add new function in ProjectManager.py">
-      <change afterPath="$PROJECT_DIR$/test/ConfigManagerTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/DBManagerTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/GameSlotTest.py" afterDir="false" />
+    <list default="true" id="753d2819-a6ed-487a-8106-d0759bca7d94" name="变更" comment="finish unittest for 75% code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/Action.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Action.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/Branch.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Branch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/Character.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Character.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/Frame.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Frame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/Music.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Music.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/YuiEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/YuiEngine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/ConfigManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/module/ConfigManager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/DBManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/module/DBManager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/GameSlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/module/GameSlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/unofficial_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/unofficial_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,7 +210,7 @@
       <workItem from="1677099893565" duration="4886000" />
       <workItem from="1677128088258" duration="5750000" />
       <workItem from="1677171542954" duration="1060000" />
-      <workItem from="1677384102171" duration="2159000" />
+      <workItem from="1677384102171" duration="7424000" />
     </task>
     <task id="LOCAL-00001" summary="Changes">
       <created>1676788212285</created>
@@ -256,7 +254,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677134551914</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="finish unittest for 75% code">
+      <created>1677386352389</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1677386352389</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,13 +295,14 @@
     <MESSAGE value="prettify code and add Exception module" />
     <MESSAGE value="1. Finish ProjectManager.py and ConfigManager.py&#10;2. prettify naming and optimize module control" />
     <MESSAGE value="fix bug and add new function in ProjectManager.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix bug and add new function in ProjectManager.py" />
+    <MESSAGE value="finish unittest for 75% code" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish unittest for 75% code" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/VNEditor$apitest.coverage" NAME="apitest 覆盖结果" MODIFIED="1676863013966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/test" />
     <SUITE FILE_PATH="coverage/VNEditor$GameMemory.coverage" NAME="GameMemory Coverage Results" MODIFIED="1676787957281" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/utils" />
     <SUITE FILE_PATH="coverage/VNEditor$__init__.coverage" NAME="__init__ 覆盖结果" MODIFIED="1677133922774" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/module" />
-    <SUITE FILE_PATH="coverage/VNEditor$.coverage" NAME=" 覆盖结果" MODIFIED="1677386270881" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/VNEditor$.coverage" NAME=" 覆盖结果" MODIFIED="1677386295256" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/VNEditor$utiltest.coverage" NAME="utiltest 覆盖结果" MODIFIED="1677051975875" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/test" />
     <SUITE FILE_PATH="coverage/VNEditor$DBManager.coverage" NAME="DBManager 覆盖结果" MODIFIED="1676863009808" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/module" />
     <SUITE FILE_PATH="coverage/VNEditor$unofficial_test.coverage" NAME="unofficial_test 覆盖结果" MODIFIED="1677171785817" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
