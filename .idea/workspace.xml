@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="753d2819-a6ed-487a-8106-d0759bca7d94" name="变更" comment="finish unittest for 75% code">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/Action.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Action.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/Branch.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Branch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/Character.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Character.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/Frame.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Frame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/Music.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Music.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/YuiEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/YuiEngine.py" afterDir="false" />
-    </list>
+    <list default="true" id="753d2819-a6ed-487a-8106-d0759bca7d94" name="变更" comment="engine dev in progress" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -210,7 +202,7 @@
       <workItem from="1677099893565" duration="4886000" />
       <workItem from="1677128088258" duration="5750000" />
       <workItem from="1677171542954" duration="1060000" />
-      <workItem from="1677384102171" duration="7424000" />
+      <workItem from="1677384102171" duration="7457000" />
     </task>
     <task id="LOCAL-00001" summary="Changes">
       <created>1676788212285</created>
@@ -261,7 +253,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677386352389</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="engine dev in progress">
+      <created>1677394705301</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1677394705301</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -296,7 +295,8 @@
     <MESSAGE value="1. Finish ProjectManager.py and ConfigManager.py&#10;2. prettify naming and optimize module control" />
     <MESSAGE value="fix bug and add new function in ProjectManager.py" />
     <MESSAGE value="finish unittest for 75% code" />
-    <option name="LAST_COMMIT_MESSAGE" value="finish unittest for 75% code" />
+    <MESSAGE value="engine dev in progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="engine dev in progress" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/VNEditor$apitest.coverage" NAME="apitest 覆盖结果" MODIFIED="1676863013966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/test" />
