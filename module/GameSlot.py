@@ -21,15 +21,16 @@ class GameSlot:
     Game slot control service
     """
 
-    def __init__(self, db_dir: str, slot_name: str = Args.DEFAULT):
+    def __init__(self, db_dir: str, config_dir: str, slot_name: str = Args.DEFAULT):
         """
         constructor for game slot service
 
         :param db_dir: database direction, create one if not exist
+        :param config_dir: config direction
         :param slot_name: specified slot name, use default if not specified
         """
         if slot_name is Args.DEFAULT:
-            config = Loader(Loader.DEFAULT_CONFIG_DIR)
+            config = Loader(config_dir)
             slot_name = config.game_memory()['default_slot_name']
 
         self.__dbman = DBManager(db_dir)

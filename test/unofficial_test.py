@@ -2,7 +2,8 @@ from module import GameSlot, ProjectManager
 import random
 from utils import file_utils
 
-game_slot = GameSlot.GameSlot(db_dir="test.db")
+CONFIG_DIR = '../router/service.ini'
+game_slot = GameSlot.GameSlot(db_dir="test.db", config_dir=CONFIG_DIR)
 
 game_slot.reset()
 
@@ -23,7 +24,7 @@ else:
     print("remove db fail")
 
 # test ProjectManager
-project = ProjectManager.projectManager(base="./myProject")
+project = ProjectManager.projectManager(base_dir="./myProject", config_dir=CONFIG_DIR)
 
 # if project.delete():
 #     print("remove project")

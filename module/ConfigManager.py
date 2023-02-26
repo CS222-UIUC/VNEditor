@@ -18,8 +18,8 @@ class Loader:
     def game_memory(self) -> dict:
         return dict(self.config['GameMemory'])
 
-    def game_file(self) -> dict:
-        return dict(self.config['GameFile'])
+    def engine(self) -> dict:
+        return dict(self.config['Engine'])
 
     def log_file(self) -> dict:
         return dict(self.config['LogFile'])

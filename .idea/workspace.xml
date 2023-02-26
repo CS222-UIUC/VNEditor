@@ -5,19 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="753d2819-a6ed-487a-8106-d0759bca7d94" name="变更" comment="fix bug and add new function in ProjectManager.py">
-      <change beforePath="$PROJECT_DIR$/.eslintrc.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.cjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/Music.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/Music.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/ConfigManagerTest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/DBManagerTest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/GameSlotTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/YuiEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/YuiEngine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/ConfigManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/module/ConfigManager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/DBManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/module/DBManager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/Exception.py" beforeDir="false" afterPath="$PROJECT_DIR$/module/Exception.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/GameSlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/module/GameSlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/ProjectManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/module/ProjectManager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/module/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router/service.ini" beforeDir="false" afterPath="$PROJECT_DIR$/router/service.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/unofficial_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/unofficial_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/args_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/args_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/file_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/file_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,23 +59,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Twisl/Desktop/VNEditor&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\Twisl\\Desktop\\VNEditor\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Twisl\\Desktop\\VNEditor\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/Twisl/Desktop/VNEditor",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\Twisl\\Desktop\\VNEditor\\node_modules\\prettier",
+    "settings.editor.selected.configurable": "settings.sync",
+    "ts.external.directory.path": "C:\\Users\\Twisl\\Desktop\\VNEditor\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Twisl\Desktop\VNEditor\service" />
@@ -152,6 +154,21 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Python 测试 (GameSlotTest.py 内)" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="VNEditor" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/GameSlotTest.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="test_GameSlot.TestService 的 Python 测试" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="VNEditor" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -169,11 +186,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python 测试.Python 测试 (GameSlotTest.py 内)" />
         <item itemvalue="Python.unofficial_test" />
         <item itemvalue="Python 测试.test_GameSlot.TestService 的 Python 测试" />
         <item itemvalue="Python.DBManager" />
         <item itemvalue="Python.apitest" />
-        <item itemvalue="Python.unofficial_test" />
       </list>
     </recent_temporary>
   </component>
@@ -194,6 +211,8 @@
       <workItem from="1677046887901" duration="9240000" />
       <workItem from="1677099893565" duration="4886000" />
       <workItem from="1677128088258" duration="5750000" />
+      <workItem from="1677171542954" duration="1060000" />
+      <workItem from="1677384102171" duration="2159000" />
     </task>
     <task id="LOCAL-00001" summary="Changes">
       <created>1676788212285</created>
@@ -230,7 +249,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677101860686</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix bug and add new function in ProjectManager.py">
+      <created>1677134551914</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1677134551914</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -269,10 +295,11 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/VNEditor$apitest.coverage" NAME="apitest 覆盖结果" MODIFIED="1676863013966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/test" />
     <SUITE FILE_PATH="coverage/VNEditor$GameMemory.coverage" NAME="GameMemory Coverage Results" MODIFIED="1676787957281" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/utils" />
-    <SUITE FILE_PATH="coverage/VNEditor$.coverage" NAME=" 覆盖结果" MODIFIED="1676790244075" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/utils" />
+    <SUITE FILE_PATH="coverage/VNEditor$__init__.coverage" NAME="__init__ 覆盖结果" MODIFIED="1677133922774" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/module" />
+    <SUITE FILE_PATH="coverage/VNEditor$.coverage" NAME=" 覆盖结果" MODIFIED="1677386270881" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/VNEditor$utiltest.coverage" NAME="utiltest 覆盖结果" MODIFIED="1677051975875" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/test" />
     <SUITE FILE_PATH="coverage/VNEditor$DBManager.coverage" NAME="DBManager 覆盖结果" MODIFIED="1676863009808" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/module" />
-    <SUITE FILE_PATH="coverage/VNEditor$unofficial_test.coverage" NAME="unofficial_test 覆盖结果" MODIFIED="1677101731666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/test" />
+    <SUITE FILE_PATH="coverage/VNEditor$unofficial_test.coverage" NAME="unofficial_test 覆盖结果" MODIFIED="1677171785817" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/VNEditor$GameSlot.coverage" NAME="GameSlot 覆盖结果" MODIFIED="1676790050195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/service/utils" />
   </component>
 </project>

@@ -18,10 +18,10 @@ class DBManager:
         self.connect(db_dir)
 
     def create_table_if_not_exist(self, table_name: str):
-        self.__cursor.execute('''CREATE TABLE IF NOT EXISTS {}
+        self.__cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name}
                             (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  ,
                             Key TEXT            NOT NULL UNIQUE ,
-                            Value Text          NOT NULL)'''.format(table_name))
+                            Value Text          NOT NULL)''')
 
     def push(self, key: str, value: str, table_name: str):
         try:
