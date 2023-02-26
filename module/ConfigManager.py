@@ -16,22 +16,22 @@ class Loader:
             raise ConfigLoaderError("cannot open config file")
 
     def game_memory(self) -> dict:
-        return dict(self.config['GameMemory'])
+        return dict(self.config["GameMemory"])
 
     def engine(self) -> dict:
-        return dict(self.config['Engine'])
+        return dict(self.config["Engine"])
 
     def log_file(self) -> dict:
-        return dict(self.config['LogFile'])
+        return dict(self.config["LogFile"])
 
     def resources(self) -> dict:
-        return dict(self.config['Resources'])
+        return dict(self.config["Resources"])
 
     def register_service(self) -> dict:
-        return dict(self.config['RegisterService'])
+        return dict(self.config["RegisterService"])
 
     def version(self) -> dict:
-        return dict(self.config['Version'])
+        return dict(self.config["Version"])
 
     def get_all_section(self) -> list:
         """

@@ -8,8 +8,8 @@ from module.Exception import *
 
 
 class GameSlotTest(unittest.TestCase):
-    CONFIG_DIR = '../router/service.ini'
-    GAME_DB_NAME = 'test.db'
+    CONFIG_DIR = "../router/service.ini"
+    GAME_DB_NAME = "test.db"
     game_slot = GameSlot(db_dir=GAME_DB_NAME, config_dir=CONFIG_DIR)
 
     def test_reset(self):
@@ -25,7 +25,7 @@ class GameSlotTest(unittest.TestCase):
         self.game_slot.reset()
         self.game_slot.dump_progress(12)
         self.assertEqual(len(self.game_slot.get_all_progress()), 1)
-        self.assertEqual(int(self.game_slot.get_all_progress()[0]['frame']), 12)
+        self.assertEqual(int(self.game_slot.get_all_progress()[0]["frame"]), 12)
 
     def test_multi_dump(self):
         self.game_slot.reset()
@@ -34,7 +34,7 @@ class GameSlotTest(unittest.TestCase):
             self.game_slot.dump_progress(i)
 
         all_process = self.game_slot.get_all_progress()
-        all_process_frame = [i['frame'] for i in all_process]
+        all_process_frame = [i["frame"] for i in all_process]
         expect_frame = list(range(1000))
 
         self.assertEqual(len(self.game_slot.get_all_progress()), 1000)
@@ -43,5 +43,5 @@ class GameSlotTest(unittest.TestCase):
             self.assertEqual(str(i), all_process_frame[idx])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

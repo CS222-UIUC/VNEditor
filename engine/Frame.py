@@ -9,8 +9,14 @@ class Frame:
     last_frame = True
     id = -1
 
-    def __init__(self, bg: Background, chara: Character, music: Music, dialog: Dialogue,
-                 branch: BranchTree = BranchTree.DEFAULT):
+    def __init__(
+        self,
+        bg: Background,
+        chara: Character,
+        music: Music,
+        dialog: Dialogue,
+        branch: BranchTree = BranchTree.DEFAULT,
+    ):
         self.bg = bg
         self.chara = chara
         self.music = music

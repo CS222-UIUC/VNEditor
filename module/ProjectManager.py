@@ -3,9 +3,9 @@ import os.path
 from utils import file_utils
 from .ConfigManager import *
 
-BACKGROUND_CAT = 'background_dir'
-CHARACTER_CAT = 'character_dir'
-MUSIC_CAT = 'music_dir'
+BACKGROUND_CAT = "background_dir"
+CHARACTER_CAT = "character_dir"
+MUSIC_CAT = "music_dir"
 
 
 def delete_project(folder_dir: str) -> bool:
@@ -40,7 +40,7 @@ class projectManager:
                 os.makedirs(res_path_abs)
             self.__config_res[i] = res_path_abs
 
-    def __get_general_res(self, cat: str, filter_by: str = '') -> list:
+    def __get_general_res(self, cat: str, filter_by: str = "") -> list:
         """
         helper for get all resources under specific category
         :param filter_by: fetch resources which contain filter string
@@ -65,21 +65,21 @@ class projectManager:
 
         return file_utils.delete_file(file_dir_abs)
 
-    def get_backgrounds_res(self, filter_by='') -> list:
+    def get_backgrounds_res(self, filter_by="") -> list:
         """
         :param filter_by: fetch resources which contain filter string
         :return: get all background resources
         """
         return self.__get_general_res(BACKGROUND_CAT, filter_by)
 
-    def get_music_res(self, filter_by='') -> list:
+    def get_music_res(self, filter_by="") -> list:
         """
         :param filter_by: fetch resources which contain filter string
         :return: get all background resources
         """
         return self.__get_general_res(MUSIC_CAT, filter_by)
 
-    def get_character_res(self, filter_by='') -> list:
+    def get_character_res(self, filter_by="") -> list:
         """
         :param filter_by: fetch resources which contain filter string
         :return: get all background resources

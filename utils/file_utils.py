@@ -26,7 +26,7 @@ def check_folder_valid(folder_dir: str) -> bool:
     return os.path.isdir(folder_dir)
 
 
-def get_files_in_folder(folder_dir: str, suffix: str = '') -> list:
+def get_files_in_folder(folder_dir: str, suffix: str = "") -> list:
     """
     get all files in folder
 
@@ -36,9 +36,9 @@ def get_files_in_folder(folder_dir: str, suffix: str = '') -> list:
     """
     files = get_all_in_folder(folder_dir)
     if not len(files):
-        files = [f for f in files if os.path.isfile(folder_dir + '/' + f)]
+        files = [f for f in files if os.path.isfile(folder_dir + "/" + f)]
         if not len(suffix):
-            files = [f for f in files if get_ext(f) == '.' + suffix]
+            files = [f for f in files if get_ext(f) == "." + suffix]
     return files
 
 
@@ -62,7 +62,7 @@ def get_folder_dir(file_dir: str) -> str:
     :param file_dir: path of file
     :return: return the given folder with given file direction
     """
-    return ''.join(file_dir.split('\\')[:-1])
+    return "".join(file_dir.split("\\")[:-1])
 
 
 def get_ext(file_dir: str) -> str:

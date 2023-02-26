@@ -31,7 +31,7 @@ class GameSlot:
         """
         if slot_name is Args.DEFAULT:
             config = Loader(config_dir)
-            slot_name = config.game_memory()['default_slot_name']
+            slot_name = config.game_memory()["default_slot_name"]
 
         self.__dbman = DBManager(db_dir)
         self.__slot_name = slot_name
@@ -67,7 +67,9 @@ class GameSlot:
         :return: progress create time
         """
         cur_time = get_cur_time()
-        self.__dbman.push(key=str(cur_time), value=str(frame), table_name=self.__slot_name)
+        self.__dbman.push(
+            key=str(cur_time), value=str(frame), table_name=self.__slot_name
+        )
         self.__dbman.commit()
         return cur_time
 
@@ -119,7 +121,8 @@ class GameSlot:
                     limit -= 1
                 print(i["time"][:16] + " " * 10 + i["frame"])
 
-            if limit == 0: print('...')
+            if limit == 0:
+                print("...")
         print("-" * 40)
 
 

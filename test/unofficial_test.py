@@ -2,7 +2,7 @@ from module import GameSlot, ProjectManager
 import random
 from utils import file_utils
 
-CONFIG_DIR = '../router/service.ini'
+CONFIG_DIR = "../router/service.ini"
 game_slot = GameSlot.GameSlot(db_dir="test.db", config_dir=CONFIG_DIR)
 
 game_slot.reset()
@@ -18,8 +18,8 @@ for _ in range(100):
 game_slot.print(limit=10)
 
 game_slot.close()
-if file_utils.delete_file('test.db'):
-    print('remove db')
+if file_utils.delete_file("test.db"):
+    print("remove db")
 else:
     print("remove db fail")
 

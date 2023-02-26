@@ -37,4 +37,3 @@ class BranchTree:
         :return: branchTree
         """
         return self.__branch_tree
-
