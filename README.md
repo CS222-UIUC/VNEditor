@@ -8,7 +8,8 @@ An online-driven visual novel editor
 
 ### Develop🏗️
 
-[API Reference](service/README.md)
+[API Reference](https://github.com/CS222-UIUC/VNEditor/blob/backend/doc/API.md)
+[Backend](https://github.com/CS222-UIUC/VNEditor/tree/backend)
 
 ### Prototype🧻
 
