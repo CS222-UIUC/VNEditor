@@ -2,16 +2,16 @@
 
 An online-driven visual novel editor 
 
-### Proposal
+### Proposal🎇
 
-[proposal for VNeditor](doc/proposal.md)
+[Proposal for VNeditor](doc/proposal.md)
 
-### Develop
+### Develop🏗️
 
-[API Reference](src/service/README.md)
+[API Reference](https://github.com/CS222-UIUC/VNEditor/blob/backend/doc/API.md)
 
-### Team
+[Backend&Engine](https://github.com/CS222-UIUC/VNEditor/tree/backend)
 
-[Group-114514](https://github.com/Group-114514)
+### Prototype🧻
 
-![](doc/demo.png)
+![demo](doc/demo.png)
