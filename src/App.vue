@@ -62,7 +62,7 @@ export default {
 }
 
 #header {
-  background-color: darkblue;
+  background-color: rgb(80, 140, 231);
   color: white;
 }
 
