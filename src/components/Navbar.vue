@@ -4,9 +4,9 @@ import item from "../components/NavbarItem.vue";
 
 <template>
   <header id="header" class="grid-item">
-    <item></item>
-    <item></item>
-    <item></item>
+  
+    
+    
   </header>
 </template>
 
