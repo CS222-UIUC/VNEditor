@@ -1,18 +1,19 @@
-from Frame import Frame
-from Music import Music
 from module.Exception import *
 from module.ConfigManager import Loader
 from utils.file_utils import *
 import os
 import pickle
-from Music import MusicSignal
-from Background import Background
-from Character import Character, CharacterPosition
-from Dialogue import Dialogue
 from utils.args_utils import Args
-from Action import Action
+from .Action import Action
 import time
 from enum import Enum
+
+from .Music import MusicSignal
+from .Music import Music
+from .Background import Background
+from .Character import Character, CharacterPosition
+from .Dialogue import Dialogue
+from .Frame import Frame
 
 VERSION = "1.0.0"
 RELEASE_DATE = "22/2/2023"
@@ -82,11 +83,11 @@ class Engine:
     __last_fid: int = -1  # the last used fid (frame id)
     __all_fids: set[int] = set()  # all fids in list
 
-    def __int__(
-        self,
-        project_dir: str,
-        config_dir: str,
-        game_file_name: str = DEFAULT_GAME_FILE_NAME,
+    def __init__(
+            self,
+            project_dir: str,
+            config_dir: str,
+            game_file_name: str = DEFAULT_GAME_FILE_NAME,
     ):
         """
         constructor for engine
@@ -99,20 +100,20 @@ class Engine:
         if not check_folder_valid(project_dir):
             raise EngineError("project {} not exist".format(project_dir))
 
-        self.project_dir = project_dir
-        self.config = Loader(config_dir=config_dir)
+        self.__project_dir = project_dir
+        self.__config = Loader(config_dir=config_dir)
 
-        self.bg_base_dir = abs_dir(
-            project_dir, self.config.resources()["background_dir"]
+        self.__bg_base_dir = abs_dir(
+            project_dir, self.__config.resources()["background_dir"]
         )
-        self.music_base_dir = abs_dir(project_dir, self.config.resources()["music_dir"])
-        self.chara_base_dir = abs_dir(
-            project_dir, self.config.resources()["character_dir"]
+        self.__music_base_dir = abs_dir(project_dir, self.__config.resources()["music_dir"])
+        self.__chara_base_dir = abs_dir(
+            project_dir, self.__config.resources()["character_dir"]
         )
-        self.game_file_dir = abs_dir(project_dir, game_file_name)
+        self.__game_file_dir = abs_dir(project_dir, game_file_name)
 
-        if check_file_valid(self.game_file_dir):
-            with open(self.game_file_dir, "r") as fo:
+        if check_file_valid(self.__game_file_dir):
+            with open(self.__game_file_dir, "r") as fo:
                 game_content_raw = pickle.load(fo)
             self.__metadata = game_content_raw[0]
             self.__game_content = game_content_raw[1]
@@ -138,14 +139,14 @@ class Engine:
 
     @engine_exception_handler
     def append_frame(
-        self,
-        bg_res: str,
-        chara_res: str,
-        chara_position: CharacterPosition,
-        music_status: MusicSignal,
-        dialogue: str,
-        dialogue_character: str = Args.OPTIONAL,
-        music_res: str = Args.OPTIONAL,
+            self,
+            bg_res: str,
+            chara_res: str,
+            chara_position: CharacterPosition,
+            music_status: MusicSignal,
+            dialogue: str,
+            dialogue_character: str = Args.OPTIONAL,
+            music_res: str = Args.OPTIONAL,
     ):
         """
         add frame to the end of the frame list
@@ -161,21 +162,21 @@ class Engine:
         """
 
         # check if input resources valid or not
-        if not check_file_valid(abs_dir(self.bg_base_dir, bg_res)):
+        if not check_file_valid(abs_dir(self.__bg_base_dir, bg_res)):
             raise EngineError("Background resource {} cannot find".format(bg_res))
 
-        if not check_file_valid(abs_dir(self.chara_base_dir, chara_res)):
+        if not check_file_valid(abs_dir(self.__chara_base_dir, chara_res)):
             raise EngineError("Character resource {} cannot find".format(chara_res))
 
-        if not check_file_valid(abs_dir(self.music_base_dir, music_res)):
+        if not check_file_valid(abs_dir(self.__music_base_dir, music_res)):
             raise EngineError("Music resource {} cannot find".format(bg_res))
 
         if music_status == MusicSignal.PLAY and not check_file_valid(
-            abs_dir(self.music_base_dir, music_res)
+                abs_dir(self.__music_base_dir, music_res)
         ):
             raise EngineError("Music resources {} cannot find".format(music_res))
 
-        if dialogue_character not in get_files_in_folder(self.chara_base_dir):
+        if dialogue_character != Args.OPTIONAL and dialogue_character not in get_files_in_folder(self.__chara_base_dir):
             raise EngineError("Character {} cannot find".format(dialogue_character))
 
         # make the component
@@ -183,7 +184,13 @@ class Engine:
         background = Background(res_name=bg_res)
         character = Character(res_name=chara_res, position=chara_position)
         music = Music(res_name=music_res, signal=music_status)
-        dialogue = Dialogue(dialogue=dialogue, character=dialogue_character)
+
+        if dialogue_character == Args.OPTIONAL:
+            dialogue_chara = Character()
+        else:
+            dialogue_chara = Character(res_name=dialogue_character)
+
+        dialogue = Dialogue(dialogue=dialogue, character=dialogue_chara)
         action = Action(next_f_id=Action.LAST_FRAME, prev_f_id=self.__tail)
 
         frame = Frame(
@@ -249,7 +256,7 @@ class Engine:
         self.__update_metadata()
         game_content_raw = [self.__metadata, self.__game_content]
         try:
-            with open(self.game_file_dir, "w") as fo:
+            with open(self.__game_file_dir, "w") as fo:
                 pickle.dump(game_content_raw, fo)
         except Exception as e:
             print_fail("fail to commit due to: " + str(e))

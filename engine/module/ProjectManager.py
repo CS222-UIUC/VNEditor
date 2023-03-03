@@ -10,7 +10,7 @@ MUSIC_CAT = "music_dir"
 
 def delete_project(folder_dir: str) -> bool:
     """
-    @param folder_dir: project directory to be delete
+    @param folder_dir: project directory to be deleted
     @return: status of delete action
     """
     if not file_utils.check_folder_valid(folder_dir):

@@ -8,7 +8,7 @@ from module.Exception import *
 
 
 class ConfigManagerTest(unittest.TestCase):
-    CONFIG_DIR = "../router/service.ini"
+    CONFIG_DIR = "../service.ini"
     config = Loader(CONFIG_DIR)
 
     def test_load_config_game_memory(self):

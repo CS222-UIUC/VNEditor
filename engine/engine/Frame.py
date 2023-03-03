@@ -1,9 +1,8 @@
-from Background import Background
-from Branch import BranchTree
-from Character import Character
-from Dialogue import Dialogue
-from Music import Music
-from Action import Action
+from .Background import Background
+from .Character import Character
+from .Dialogue import Dialogue
+from .Music import Music
+from .Action import Action
 
 
 class Frame:
@@ -20,6 +19,16 @@ class Frame:
         dialog: Dialogue,
         action: Action,
     ):
+        """
+        constructor for frame class
+
+        @param fid: frame id, should be unique
+        @param bg: background
+        @param chara: character
+        @param music: music
+        @param dialog: dialogue
+        @param action: action
+        """
         self.bg = bg
         self.chara = chara
         self.music = music
@@ -27,8 +36,19 @@ class Frame:
         self.action = action
         self.fid = fid
 
-    def set_id(self, id: int):
-        self.fid = id
+    def set_id(self, fid: int) -> None:
+        """
+        set frame id for current frame
 
-    def get_id(self):
+        @param fid: new fid
+        @return:
+        """
+        self.fid = fid
+
+    def get_id(self) -> int:
+        """
+        get the id for current frame
+
+        @return: frame id
+        """
         return self.fid

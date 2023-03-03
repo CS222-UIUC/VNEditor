@@ -1,6 +1,4 @@
-from Frame import Frame
-from Branch import BranchTree
-from utils.args_utils import Args
+from .Branch import BranchTree
 
 
 class Action:

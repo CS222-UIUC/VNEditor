@@ -1,8 +1,8 @@
-import Character
+from .Character import Character
 
 
 class Dialogue:
-    def __init__(self, dialogue: str, character: Character = None):
+    def __init__(self, dialogue: str, character: Character = Character.VO):
         """
         constructor for character
 

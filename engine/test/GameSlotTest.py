@@ -8,7 +8,7 @@ from module.Exception import *
 
 
 class GameSlotTest(unittest.TestCase):
-    CONFIG_DIR = "../router/service.ini"
+    CONFIG_DIR = "../service.ini"
     GAME_DB_NAME = "test.db"
     game_slot = GameSlot(db_dir=GAME_DB_NAME, config_dir=CONFIG_DIR)
 
