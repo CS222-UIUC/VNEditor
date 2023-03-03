@@ -1,54 +1,29 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-
-# C extensions
-*.so
-
-# Distribution / packaging
-bin/
-build/
-develop-eggs/
-dist/
-eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-.tox/
-.coverage
-.cache
-nosetests.xml
-coverage.xml
-
-# Translations
-*.mo
-
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-# Rope
-.ropeproject
-
-# Django stuff:
+# Logs
+logs
 *.log
-*.pot
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Sphinx documentation
-docs/_build/
+node_modules
+.DS_Store
+dist
+dist-ssr
+coverage
+*.local
 
-# dev stuff
+/cypress/videos/
+/cypress/screenshots/
+
+# Editor directories and files
+.vscode/*
+# !.vscode/extensions.json
 .idea
-black_formatter.bat
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.devcontainer

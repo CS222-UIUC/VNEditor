@@ -1,10 +1,17 @@
-## VNEditor Backend
+## VN Editor
 
-[API doc](doc/API.md)
+An online-driven visual novel editor 
 
+### Proposal🎇
 
+[Proposal for VNeditor](doc/proposal.md)
 
-format by [black](https://github.com/psf/black), please format before pushing to repo 
+### Develop🏗️
 
-unit test included in `./test` folder, power by [unittest framework](https://docs.python.org/3/library/unittest.html)
+[API Reference](https://github.com/CS222-UIUC/VNEditor/blob/backend/doc/API.md)
 
+[Backend&Engine](https://github.com/CS222-UIUC/VNEditor/tree/backend)
+
+### Prototype🧻
+
+![demo](doc/demo.png)
