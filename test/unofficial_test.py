@@ -1,32 +1,32 @@
+import traceback
+
 from module import GameSlot, ProjectManager
 import random
 from utils import file_utils
 
-CONFIG_DIR = "../router/service.ini"
-game_slot = GameSlot.GameSlot(db_dir="test.db", config_dir=CONFIG_DIR)
 
-game_slot.reset()
+def engine_exception_handler(func):
+    """
+    exception decorator for engine
 
-print("Initial Slot")
-game_slot.print()
+    @param func: function to be decorated
+    @return:
+    """
 
-# generate 10000 random progress
-for _ in range(100):
-    progress = int(random.random() * 100)
-    game_slot.dump_progress(frame=progress)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            print("Engine Error: ", str(e))
+            return -1
 
-game_slot.print(limit=10)
+    return wrapper
 
-game_slot.close()
-if file_utils.delete_file("test.db"):
-    print("remove db")
-else:
-    print("remove db fail")
 
-# test ProjectManager
-project = ProjectManager.projectManager(base_dir="./myProject", config_dir=CONFIG_DIR)
+@engine_exception_handler
+def foo():
+    return 1 / 0
 
-# if project.delete():
-#     print("remove project")
-# else:
-#     print("remove project fail")
+
+c = foo()
+print(c)

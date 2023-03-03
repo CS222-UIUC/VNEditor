@@ -6,8 +6,8 @@ class Dialogue:
         """
         constructor for character
 
-        :param dialogue: dialogue text
-        :param character: who speak it
+        @param dialogue: dialogue text
+        @param character: who speak it
         """
         self.dialogue = dialogue
         self.character = character

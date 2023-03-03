@@ -10,8 +10,8 @@ MUSIC_CAT = "music_dir"
 
 def delete_project(folder_dir: str) -> bool:
     """
-    :param folder_dir: project direction to be delete
-    :return: status of delete action
+    @param folder_dir: project directory to be delete
+    @return: status of delete action
     """
     if not file_utils.check_folder_valid(folder_dir):
         return False
@@ -24,8 +24,8 @@ class projectManager:
         """
         constructor for project manager
 
-        :param base_dir: the base direction of the project
-        :param config_dir: direction of config
+        @param base_dir: the base directory of the project
+        @param config_dir: directory of config
         """
         if not file_utils.check_folder_valid(base_dir):
             os.makedirs(base_dir)
@@ -43,9 +43,10 @@ class projectManager:
     def __get_general_res(self, cat: str, filter_by: str = "") -> list:
         """
         helper for get all resources under specific category
-        :param filter_by: fetch resources which contain filter string
-        :param cat: specified category
-        :return: get all resources in specified category
+
+        @param filter_by: fetch resources which contain filter string
+        @param cat: specified category
+        @return: get all resources in specified category
         """
         file_dir_abs = os.path.join(self.__base, self.__config_res[cat])
         res = file_utils.get_all_in_folder(file_dir_abs)
@@ -55,9 +56,10 @@ class projectManager:
     def __delete_general_res(self, cat: str, file_dir: str) -> bool:
         """
         helper for remove file under specific category
-        :param cat: specified category
-        :param file_dir: which file to delete, relative path
-        :return: ok or not
+
+        @param cat: specified category
+        @param file_dir: which file to delete, relative path
+        @return: ok or not
         """
         file_dir_abs = os.path.join(self.__base, os.path.join(cat, file_dir))
         if not file_utils.check_file_valid(file_dir_abs):
@@ -67,49 +69,50 @@ class projectManager:
 
     def get_backgrounds_res(self, filter_by="") -> list:
         """
-        :param filter_by: fetch resources which contain filter string
-        :return: get all background resources
+        @param filter_by: fetch resources which contain filter string
+        @return: get all background resources
         """
         return self.__get_general_res(BACKGROUND_CAT, filter_by)
 
     def get_music_res(self, filter_by="") -> list:
         """
-        :param filter_by: fetch resources which contain filter string
-        :return: get all background resources
+        @param filter_by: fetch resources which contain filter string
+        @return: get all background resources
         """
         return self.__get_general_res(MUSIC_CAT, filter_by)
 
     def get_character_res(self, filter_by="") -> list:
         """
-        :param filter_by: fetch resources which contain filter string
-        :return: get all background resources
+        @param filter_by: fetch resources which contain filter string
+        @return: get all background resources
         """
         return self.__get_general_res(CHARACTER_CAT, filter_by)
 
     def delete_backgrounds_res(self, filer_dir: str) -> bool:
         """
-        :param filer_dir: fetch resources which contain filter string
-        :return: get all background resources
+        @param filer_dir: fetch resources which contain filter string
+        @return: get all background resources
         """
         return self.__delete_general_res(BACKGROUND_CAT, filer_dir)
 
     def delete_music_res(self, filer_dir: str) -> bool:
         """
-        :param filer_dir: fetch resources which contain filter string
-        :return: get all background resources
+        @param filer_dir: fetch resources which contain filter string
+        @return: get all background resources
         """
         return self.__delete_general_res(MUSIC_CAT, filer_dir)
 
     def delete_character_res(self, filer_dir: str) -> bool:
         """
-        :param filer_dir: fetch resources which contain filter string
-        :return: get all background resources
+        @param filer_dir: fetch resources which contain filter string
+        @return: get all background resources
         """
         return self.__delete_general_res(CHARACTER_CAT, filer_dir)
 
     def delete(self) -> bool:
         """
         delete the whole project
-        :return: status of delete action
+
+        @return: status of delete action
         """
         return delete_project(self.__base)

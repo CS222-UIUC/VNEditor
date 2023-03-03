@@ -3,6 +3,6 @@ class Background:
         """
         constructor for background
 
-        :param res_name: the direction of background file, relative address
+        @param res_name: the direction of background file, relative address
         """
         self.res_name = res_name

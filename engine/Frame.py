@@ -7,27 +7,28 @@ from Action import Action
 
 
 class Frame:
-    last_frame = True
-    id = -1
+    """
+    Frame
+    """
 
     def __init__(
         self,
+        fid: int,
         bg: Background,
         chara: Character,
         music: Music,
         dialog: Dialogue,
-        action: Action = Action.DEFAULT,
+        action: Action,
     ):
         self.bg = bg
         self.chara = chara
         self.music = music
         self.dialog = dialog
         self.action = action
-
-        self.id = -1
+        self.fid = fid
 
     def set_id(self, id: int):
-        self.id = id
+        self.fid = id
 
     def get_id(self):
-        return self.id
+        return self.fid

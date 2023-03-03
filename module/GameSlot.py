@@ -25,9 +25,9 @@ class GameSlot:
         """
         constructor for game slot service
 
-        :param db_dir: database direction, create one if not exist
-        :param config_dir: config direction
-        :param slot_name: specified slot name, use default if not specified
+        @param db_dir: database directory, create one if not exist
+        @param config_dir: config directory
+        @param slot_name: specified slot name, use default if not specified
         """
         if slot_name is Args.DEFAULT:
             config = Loader(config_dir)
@@ -55,7 +55,7 @@ class GameSlot:
         """
         get slot name
 
-        :return: slot name
+        @return: slot name
         """
         return self.__slot_name
 
@@ -63,8 +63,8 @@ class GameSlot:
         """
         dump the current game progress (measured by frame) into slot
 
-        :param frame: current progress, measured by frame number
-        :return: progress create time
+        @param frame: current progress, measured by frame number
+        @return: progress create time
         """
         cur_time = get_cur_time()
         self.__dbman.push(
@@ -77,7 +77,7 @@ class GameSlot:
         """
         remove progress (measured by frame) into slot
 
-        :param time_strap: time to create progress
+        @param time_strap: time to create progress
         """
         self.__dbman.remove(time_strap, self.__slot_name)
         self.__dbman.commit()
@@ -86,7 +86,7 @@ class GameSlot:
         """
         return all user's progress in dictionary with key is time, value is corresponded progress
 
-        :return: list of {time: progress}
+        @return: list of {time: progress}
         """
         raw_data = self.__dbman.select(self.__slot_name)
         data = []
@@ -96,8 +96,9 @@ class GameSlot:
 
     def close(self):
         """
-        close the database
+        close the game slot service
 
+        @return:
         """
         self.__dbman.close()
 
@@ -105,7 +106,7 @@ class GameSlot:
         """
         visualizing the progress
 
-        :param limit: limit item print out, -1 for no limit
+        @param limit: limit item print out, -1 for no limit
         """
         print("-" * 40)
         print(" " * 7 + "time" + " " * 14 + "progress")
