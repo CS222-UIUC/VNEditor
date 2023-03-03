@@ -1,8 +1,5 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <b-sidebar>
-        test
-    </b-sidebar>
+  <b-sidebar> test </b-sidebar>
 </template>
