@@ -19,6 +19,7 @@ coverage
 
 # Editor directories and files
 .vscode/*
+*.devcontainer
 # !.vscode/extensions.json
 .idea
 *.suo
@@ -26,4 +27,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-*.devcontainer
+
+#python
+**/__pycache__/
