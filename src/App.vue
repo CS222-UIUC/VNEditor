@@ -25,7 +25,7 @@ export default {
 
 
 <template>
-  <Navbar >
+  <Navbar id = header>
 
   </Navbar>
   <main id="main-editor" class="grid-item" @clcik="fileUploadAreaDisplay = true" @dragenter="fileUploadAreaDisplay = true" @dragexit="fileUploadAreaDisplay = false">
@@ -64,6 +64,7 @@ export default {
 #header {
   background-color: rgb(80, 140, 231);
   color: white;
+  padding: 20px;
 }
 
 #footer {
