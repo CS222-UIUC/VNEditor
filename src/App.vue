@@ -51,7 +51,7 @@ export default {
 }
 
 #toolbar-sidebar {
-    background-color: cadetblue;
+    background-color: #efffdb;
     display: flex;
     flex-direction: column;
 }
