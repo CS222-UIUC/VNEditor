@@ -4,7 +4,7 @@ import IconDownArrow from "./icons/IconDownArrow.vue";
 export default {
     data() {
         return {
-            fileDisplay: true,
+            fileDisplay: false,
         };
     },
     components: {
@@ -19,7 +19,7 @@ export default {
         <div class="file-icon-wrapper" @click="fileDisplay = !fileDisplay">
             <slot name="dir-icon"></slot>
             <slot name="dir-name"></slot>
-            <IconDownArrow />
+            <IconDownArrow :class="{ 'down-rotated': !fileDisplay, 'up-rotated': fileDisplay }" />
         </div>
         <Transition name="drop">
             <div class="file-content-wrapper" v-show="fileDisplay">
@@ -36,6 +36,8 @@ export default {
 .file-wrapper {
     display: flex;
     flex-direction: column;
+    padding: 0.5rem;
+    border-bottom: 5px solid red;
 }
 
 .file-icon-wrapper > svg {
@@ -48,7 +50,7 @@ export default {
     overflow: hidden;
     text-align: left;
     display: flex;
-    flex: row;
+    flex-direction: row;
     font-size: x-large;
 }
 
@@ -67,7 +69,7 @@ svg:last-child {
 
 .drop-enter-active,
 .drop-leave-active {
-    transition: max-height 0.25s;
+    transition: max-height 0.25s ease;
     overflow: hidden;
 }
 .drop-enter-to,
@@ -78,5 +80,15 @@ svg:last-child {
 .drop-enter-from,
 .drop-leave-to {
     max-height: 0;
+}
+
+.up-rotated {
+    transform: rotate(180deg);
+    transition: transform 0.1s;
+}
+
+.down-rotated {
+    transform: rotate(0deg);
+    transition: transform 0.1s;
 }
 </style>
