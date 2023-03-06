@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 //import item from "../components/NavbarItem.vue";
 //find botton file
 //https://bootstrap-vue.org/docs/components/button
@@ -9,6 +9,17 @@ export default {
             countb: 0,
             countc: 0,
             countd: 0,
+            red: "cred",
+            // start of left
+            ulleft: "ulleft",
+            headerleft: "lileft",
+            buttonleft: "butleft",
+            //end of left part
+            ulcentral: "ulcent",
+            listcent: "licent",
+            butttoncent: "butcent",
+            //end of central part
+            ulright: "ulright",
         };
     },
     methods: {
@@ -30,57 +41,71 @@ export default {
         },
     },
     watch: {
-        botA() {
-            this.counta++;
-        },
-        botB() {
-            this.countb++;
-        },
-        botC() {
-            this.countc++;
-        },
-        botD() {
-            this.countd++;
-        },
+        // botA() {
+        //   this.counta++;
+        // },
+        // botB() {
+        //   this.countb++;
+        // },
+        // botC() {
+        //   this.countc++;
+        // },
+        // botD() {
+        //   this.countd++;
+        // },
     },
 };
 </script>
 
 <template>
-    <ul>
-        <li><button @click="botA">A</button></li>
-        <li><button @click="botB">B</button></li>
-        <li><button @click="botC">C</button></li>
-        <li><button @click="botD">D</button></li>
+    <ul :id="ulleft">
+        <li :id="headerleft"><b-button :id="buttonleft" @click="botA">A</b-button></li>
+        <li :id="headerleft"><b-button :id="buttonleft" @click="botB">B</b-button></li>
+        <li :id="headerleft"><b-button :id="buttonleft" @click="botC">C</b-button></li>
+        <li :id="headerleft"><b-button :id="buttonleft" @click="botD">D</b-button></li>
     </ul>
-    <p>
-        test click counta,b,c,d {{ counta }}, {{ countb }}, {{ countc }},
-        {{ countd }}
-    </p>
+
+    <ul :id="ulcentral">
+        <li :id="listcent"><b-button :id="butttoncent">Cen</b-button></li>
+        <li :id="listcent"><b-button :id="butttoncent">Cen</b-button></li>
+        <li :id="listcent"><b-button :id="butttoncent">Cen</b-button></li>
+        <li :id="listcent"><b-button :id="butttoncent">Cen</b-button></li>
+        <p>
+            test click counta,b,c,d {{ counta }}, {{ countb }}, {{ countc }},
+            {{ countd }}
+        </p>
+    </ul>
+
+    <ul :id="ulright">
+        <p :class="red">something to implement</p>
+    </ul>
 </template>
 
 <style>
-ul {
+#ulleft {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    min-height: 50px;
     overflow: hidden;
+    overflow-y: scroll;
     background-color: #333;
 }
-
-li {
+#lileft {
     float: left;
 }
-
-li b-button {
+#butleft {
     display: block;
     color: white;
+    margin: 0;
     text-align: center;
-    padding: 14px 16px;
+    padding-top: 16px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
     text-decoration: none;
 }
-
-li b-button:hover {
+#butleft:hover {
     background-color: #111;
 }
 /*end of left column*/
@@ -92,11 +117,9 @@ li b-button:hover {
     overflow-y: scroll;
     background-color: #30aef2;
 }
-
 #licent {
     float: left;
 }
-
 #butcent {
     display: block;
     color: rgb(0, 0, 0);
@@ -121,7 +144,6 @@ li b-button:hover {
     overflow-y: scroll;
     background-color: #333;
 }
-
 /*global setting*/
 .cred {
     color: red;
