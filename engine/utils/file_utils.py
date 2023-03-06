@@ -1,9 +1,8 @@
-import os
-import shutil
-
 """
 utils for checking files validation and get file path etc.
 """
+import os
+import shutil
 
 
 def check_file_valid(file_dir: str) -> bool:
@@ -35,9 +34,9 @@ def get_files_in_folder(folder_dir: str, suffix: str = "") -> list:
     :return: the list of files under folder
     """
     files = get_all_in_folder(folder_dir)
-    if not len(files):
+    if len(files) != 0:
         files = [f for f in files if os.path.isfile(folder_dir + "/" + f)]
-        if not len(suffix):
+        if len(suffix) != 0:
             files = [f for f in files if get_ext(f) == "." + suffix]
     return files
 

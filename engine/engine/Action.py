@@ -1,6 +1,7 @@
-from Frame import Frame
-from Branch import BranchTree
-from utils.args_utils import Args
+"""
+action component for frame
+"""
+from .branch import BranchTree
 
 
 class Action:

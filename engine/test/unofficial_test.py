@@ -1,6 +1,9 @@
+"""
+some unofficial testcase
+"""
 import traceback
 
-from module import GameSlot, ProjectManager
+from module import gameslot, project_manager
 import random
 from utils import file_utils
 

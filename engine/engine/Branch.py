@@ -1,3 +1,7 @@
+"""
+branch component for frame
+"""
+
 from utils.args_utils import Args
 
 
@@ -18,7 +22,7 @@ class BranchTree:
         @return: action status
         """
 
-        if corresponding_frame_id not in self.__branch_tree.keys():
+        if corresponding_frame_id not in self.__branch_tree:
             return False
 
         self.__branch_tree[corresponding_frame_id] = description
@@ -31,7 +35,7 @@ class BranchTree:
         @param corresponding_frame_id: id of the frame try to delete
         @return: action status
         """
-        if corresponding_frame_id not in self.__branch_tree.keys():
+        if corresponding_frame_id not in self.__branch_tree:
             return False
 
         self.__branch_tree.pop(corresponding_frame_id)

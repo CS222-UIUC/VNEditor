@@ -1,18 +1,29 @@
 """
 API module for game slot control
 """
-
-from .DBManager import DBManager
 import time
-from .ConfigManager import Loader
 from utils.args_utils import Args
+
+from .db_manager import DBManager
+from .config_manager import Loader
 
 
 def get_cur_time():
+    """
+    get current time format by time strap
+
+    @return: current time
+    """
     return str(time.time())
 
 
 def parse_data(data: dict):
+    """
+    parse data into proper data type used in this class
+
+    @param data: raw data
+    @return: formatted data
+    """
     return str(data)
 
 
@@ -90,8 +101,8 @@ class GameSlot:
         """
         raw_data = self.__dbman.select(self.__slot_name)
         data = []
-        for i in raw_data.keys():
-            data.append({"time": i, "frame": raw_data[i]})
+        for i in raw_data.items():
+            data.append({"time": i[0], "frame": i[1]})
         return data
 
     def close(self):
@@ -112,7 +123,7 @@ class GameSlot:
         print(" " * 7 + "time" + " " * 14 + "progress")
         print("-" * 40)
         progresses = self.get_all_progress()
-        if not len(progresses):
+        if len(progresses) == 0:
             print("empty")
         else:
             for i in self.get_all_progress():
