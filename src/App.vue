@@ -1,6 +1,6 @@
 <script>
 import Toolbar from "./components/ToolBar.vue";
-import Navbar from "./components/Navbar.vue";
+import Navbar from "./components/NavbarTemp.vue";
 import FileUploadArea from "./components/UploadArea.vue";
 
 export default {
@@ -18,7 +18,6 @@ export default {
 </script>
 
 <template>
-
     <Navbar> </Navbar>
     <main
         id="main-editor"
