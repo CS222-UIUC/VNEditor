@@ -26,4 +26,12 @@ export default {
             <div>Music</div>
         </template>
     </ToolbarDir>
+    <ToolbarDir>
+        <template #dir-icon>
+            <IconMusic />
+        </template>
+        <template #dir-name>
+            <div>Music</div>
+        </template>
+    </ToolbarDir>
 </template>
