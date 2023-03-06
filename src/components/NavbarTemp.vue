@@ -48,10 +48,10 @@ export default {
 
 <template>
     <ul>
-        <li><b-button @click="botA">A</b-button></li>
-        <li><b-button @click="botB">B</b-button></li>
-        <li><b-button @click="botC">C</b-button></li>
-        <li><b-button @click="botD">D</b-button></li>
+        <li><button @click="botA">A</button></li>
+        <li><button @click="botB">B</button></li>
+        <li><button @click="botC">C</button></li>
+        <li><button @click="botD">D</button></li>
     </ul>
     <p>
         test click counta,b,c,d {{ counta }}, {{ countb }}, {{ countc }},

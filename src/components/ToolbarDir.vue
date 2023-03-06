@@ -1,18 +1,11 @@
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+
 import FileItem from "./FileItem.vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
-export default {
-    data() {
-        return {
-            fileDisplay: false,
-            files: ["file1", "file2", "file3"],
-        };
-    },
-    components: {
-        IconDownArrow,
-        FileItem,
-    },
-};
+
+var fileDisplay = ref(false);
+var files = ["file1", "file2", "file3"];
 </script>
 
 <template>
