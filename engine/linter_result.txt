@@ -1,23 +1,29 @@
-Generated In: 2023/03/06 周一  1:54:58.97
+Generated In: 2023/03/06 周一 14:37:35.71
 
 check ./engine
 ************* Module engine.frame
 engine\frame.py:17:4: R0913: Too many arguments (7/5) (too-many-arguments)
 ************* Module engine.yui_engine
-engine\yui_engine.py:63:15: W0718: Catching too general exception Exception (broad-exception-caught)
-engine\yui_engine.py:80:0: R0902: Too many instance attributes (11/7) (too-many-instance-attributes)
-engine\yui_engine.py:155:4: R0913: Too many arguments (8/5) (too-many-arguments)
-engine\yui_engine.py:282:15: W0718: Catching too general exception Exception (broad-exception-caught)
+engine\yui_engine.py:54:15: W0718: Catching too general exception Exception (broad-exception-caught)
+engine\yui_engine.py:71:0: R0902: Too many instance attributes (11/7) (too-many-instance-attributes)
+engine\yui_engine.py:146:4: R0913: Too many arguments (8/5) (too-many-arguments)
+engine\yui_engine.py:273:15: W0718: Catching too general exception Exception (broad-exception-caught)
+engine\yui_engine.py:12:0: W0611: Unused Enum imported from enum (unused-import)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.77/10 (previous run: 9.44/10, +0.33)
+Your code has been rated at 9.72/10 (previous run: 9.77/10, -0.05)
 
 check ./module
+************* Module module.project_manager
+module\project_manager.py:35:8: R1720: Unnecessary "else" after "raise", remove the "else" and de-indent the code inside it (no-else-raise)
+module\project_manager.py:89:45: W0613: Unused argument 'file_dir' (unused-argument)
 
 -------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 9.90/10, +0.10)
+Your code has been rated at 9.90/10 (previous run: 10.00/10, -0.10)
 
 check ./router
+************* Module ./router
+./router:1:0: F0001: No module named ./router (fatal)
 check ./utils
 
 --------------------------------------------------------------------

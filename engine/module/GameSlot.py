@@ -5,7 +5,7 @@ import time
 from utils.args_utils import Args
 
 from .db_manager import DBManager
-from .config_manager import Loader
+from .config_manager import ConfigLoader
 
 
 def get_cur_time():
@@ -41,7 +41,7 @@ class GameSlot:
         @param slot_name: specified slot name, use default if not specified
         """
         if slot_name is Args.DEFAULT:
-            config = Loader(config_dir)
+            config = ConfigLoader(config_dir)
             slot_name = config.game_memory()["default_slot_name"]
 
         self.__dbman = DBManager(db_dir)

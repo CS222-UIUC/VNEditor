@@ -12,9 +12,9 @@ import time
 from enum import Enum
 
 from module.exception import EngineError
-from module.config_manager import Loader
+from module.config_manager import ConfigLoader
 from utils.file_utils import check_file_valid, check_folder_valid, get_files_in_folder
-from utils.args_utils import Args
+from utils.args_utils import Args, STATUS
 
 from .action import Action
 from .music import MusicSignal
@@ -27,15 +27,6 @@ from .frame import Frame
 VERSION = "1.0.0"
 RELEASE_DATE = "22/2/2023"
 DEFAULT_GAME_FILE_NAME = "GameFile.vne"
-
-
-class STATUS(Enum):
-    """
-    status code for the engine class
-    """
-
-    FAIL = 0
-    OK = 1
 
 
 def abs_dir(project_dir: str, relevant_dir: str):
@@ -113,7 +104,7 @@ class Engine:
             raise EngineError(f"project {project_dir} not exist")
 
         # self.__project_dir = project_dir
-        self.__config = Loader(config_dir=config_dir)
+        self.__config = ConfigLoader(config_dir=config_dir)
 
         self.__bg_base_dir = abs_dir(
             project_dir, self.__config.resources()["background_dir"]

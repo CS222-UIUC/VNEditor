@@ -1,20 +1,11 @@
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+
 import Toolbar from "./components/ToolBar.vue";
 import Navbar from "./components/NavbarTemp.vue";
 import FileUploadArea from "./components/UploadArea.vue";
 
-export default {
-    data() {
-        return {
-            fileUploadAreaDisplay: false,
-        };
-    },
-    components: {
-        Toolbar,
-        Navbar,
-        FileUploadArea,
-    },
-};
+var fileUploadAreaDisplay = ref(false);
 </script>
 
 <template>
@@ -26,9 +17,9 @@ export default {
         @dragenter="fileUploadAreaDisplay = true"
         @dragexit="fileUploadAreaDisplay = false"
     >
-        <FileUploadArea :fileUploadAreaDisplay="true" />
+        <FileUploadArea :display="fileUploadAreaDisplay" />
     </main>
-    <div id="preview-sidebar" class="grid-item">this is sidebar 1</div>
+    <div id="preview-sidebar" class="grid-item">this is sidebar 1 {{ fileUploadAreaDisplay }}</div>
     <div id="toolbar-sidebar" class="grid-item">
         <Toolbar />
     </div>

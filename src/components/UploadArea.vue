@@ -1,10 +1,13 @@
-<script>
-export default {};
+<script setup lang="ts">
+// import { props } from "vue";
+const props = defineProps({
+    display: Boolean,
+});
 </script>
 
 <template>
     <Transition>
-        <div id="file-upload-area" v-show="$parent.fileUploadAreaDisplay">
+        <div id="file-upload-area" v-show="props.display">
             <h2>
                 <b style="opacity: 1"> Drag files here to upload </b>
             </h2>
