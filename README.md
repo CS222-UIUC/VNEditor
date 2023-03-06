@@ -14,6 +14,6 @@ An online-driven visual novel editor
 
 [Frontend Linter Report](linter_result.txt)
 
-### Prototype🧻
+### Prototype🎁
 
 ![demo](doc/demo.png)
