@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
+    "@volar-plugins/vetur": "latest",
     "bootstrap": "^5.3.0-alpha1",
     "bootstrap-vue": "^2.23.1",
     "vue": "^3.2.45"
+    
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",

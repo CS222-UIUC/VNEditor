@@ -5,6 +5,7 @@ export default {
     data() {
         return {
             fileDisplay: false,
+            files: ["file1", "file2", "file3"],
         };
     },
     components: {
@@ -23,10 +24,7 @@ export default {
         </div>
         <Transition name="drop">
             <div class="file-content-wrapper" v-show="fileDisplay">
-                <FileItem></FileItem>
-                <FileItem></FileItem>
-                <FileItem></FileItem>
-                <FileItem></FileItem>
+                <FileItem v-for="item in files" :key="item">{{ item }}</FileItem>
             </div>
         </Transition>
     </div>
