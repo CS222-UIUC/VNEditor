@@ -29,7 +29,6 @@ export default {
             this.countd++;
         },
     },
-
     watch: {
         botA() {
             this.counta++;
@@ -84,4 +83,51 @@ li b-button {
 li b-button:hover {
     background-color: #111;
 }
+/*end of left column*/
+#ulcent{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: #30aef2;
+}
+
+#licent {
+  float: left;
+}
+
+#butcent {
+  display: block;
+  color: rgb(0, 0, 0);
+  margin: 0;
+  text-align: center;
+  padding-top: 18px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  text-decoration: none;
+}
+
+#butcent:hover
+{
+  background-color: #0a7adc;
+}
+/*end of central column*/
+#ulright
+{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: #333;
+}
+
+/*global setting*/
+.cred
+{
+  color:red;
+}
+
 </style>
