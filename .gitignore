@@ -180,3 +180,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+*.devcontainer

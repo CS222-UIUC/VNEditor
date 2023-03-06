@@ -1,12 +1,6 @@
-<script>
+<script setup lang="ts">
 import ToolbarDir from "./ToolbarDir.vue";
 import IconMusic from "./icons/IconMusic.vue";
-export default {
-    components: {
-        ToolbarDir,
-        IconMusic,
-    },
-};
 </script>
 
 <template>

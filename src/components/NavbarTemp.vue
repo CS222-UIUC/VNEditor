@@ -48,10 +48,10 @@ export default {
 
 <template>
     <ul>
-        <li><b-button @click="botA">A</b-button></li>
-        <li><b-button @click="botB">B</b-button></li>
-        <li><b-button @click="botC">C</b-button></li>
-        <li><b-button @click="botD">D</b-button></li>
+        <li><button @click="botA">A</button></li>
+        <li><button @click="botB">B</button></li>
+        <li><button @click="botC">C</button></li>
+        <li><button @click="botD">D</button></li>
     </ul>
     <p>
         test click counta,b,c,d {{ counta }}, {{ countb }}, {{ countc }},
@@ -84,50 +84,46 @@ li b-button:hover {
     background-color: #111;
 }
 /*end of left column*/
-#ulcent{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  overflow-y: scroll;
-  background-color: #30aef2;
+#ulcent {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: #30aef2;
 }
 
 #licent {
-  float: left;
+    float: left;
 }
 
 #butcent {
-  display: block;
-  color: rgb(0, 0, 0);
-  margin: 0;
-  text-align: center;
-  padding-top: 18px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  text-decoration: none;
+    display: block;
+    color: rgb(0, 0, 0);
+    margin: 0;
+    text-align: center;
+    padding-top: 18px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    text-decoration: none;
 }
 
-#butcent:hover
-{
-  background-color: #0a7adc;
+#butcent:hover {
+    background-color: #0a7adc;
 }
 /*end of central column*/
-#ulright
-{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  overflow-y: scroll;
-  background-color: #333;
+#ulright {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: #333;
 }
 
 /*global setting*/
-.cred
-{
-  color:red;
+.cred {
+    color: red;
 }
-
 </style>

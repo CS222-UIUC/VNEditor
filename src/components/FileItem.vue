@@ -1,7 +1,9 @@
-<script></script>
+<script setup lang="ts"></script>
 
 <template>
-    <div class="file-item">File1</div>
+    <div class="file-item">
+        <slot>unknown file name</slot>
+    </div>
 </template>
 
 <style>

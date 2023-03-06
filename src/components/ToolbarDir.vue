@@ -1,17 +1,11 @@
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+
 import FileItem from "./FileItem.vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
-export default {
-    data() {
-        return {
-            fileDisplay: false,
-        };
-    },
-    components: {
-        IconDownArrow,
-        FileItem,
-    },
-};
+
+var fileDisplay = ref(false);
+var files = ["file1", "file2", "file3"];
 </script>
 
 <template>
@@ -23,10 +17,7 @@ export default {
         </div>
         <Transition name="drop">
             <div class="file-content-wrapper" v-show="fileDisplay">
-                <FileItem></FileItem>
-                <FileItem></FileItem>
-                <FileItem></FileItem>
-                <FileItem></FileItem>
+                <FileItem v-for="item in files" :key="item">{{ item }}</FileItem>
             </div>
         </Transition>
     </div>
