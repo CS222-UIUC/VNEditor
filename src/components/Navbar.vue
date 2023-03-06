@@ -1,118 +1,87 @@
-<script lang="ts">
+<script>
 //import item from "../components/NavbarItem.vue";
 //find botton file
 //https://bootstrap-vue.org/docs/components/button
 export default {
-  data() {
-    return {
-      counta: 0,
-      countb: 0,
-      countc: 0,
-      countd: 0,
-      red: "cred",
-      // start of left
-      ulleft: "ulleft",
-      headerleft: "lileft",
-      buttonleft: "butleft",
-      //end of left part
-      ulcentral: "ulcent",
-      listcent: "licent",
-      butttoncent: "butcent",
-      //end of central part
-      ulright: "ulright",
-    };
-  },
-  methods: {
-    botA() {
-      // update component state
-      this.counta++;
+    data() {
+        return {
+            counta: 0,
+            countb: 0,
+            countc: 0,
+            countd: 0,
+        };
     },
-    botB() {
-      // update component state
-      this.countb++;
+    methods: {
+        botA() {
+            // update component state
+            this.counta++;
+        },
+        botB() {
+            // update component state
+            this.countb++;
+        },
+        botC() {
+            // update component state
+            this.countc++;
+        },
+        botD() {
+            // update component state
+            this.countd++;
+        },
     },
-    botC() {
-      // update component state
-      this.countc++;
+    watch: {
+        botA() {
+            this.counta++;
+        },
+        botB() {
+            this.countb++;
+        },
+        botC() {
+            this.countc++;
+        },
+        botD() {
+            this.countd++;
+        },
     },
-    botD() {
-      // update component state
-      this.countd++;
-    },
-  },
-
-  watch: {
-    // botA() {
-    //   this.counta++;
-    // },
-    // botB() {
-    //   this.countb++;
-    // },
-    // botC() {
-    //   this.countc++;
-    // },
-    // botD() {
-    //   this.countd++;
-    // },
-  },
 };
 </script>
 
 <template>
-  <ul :id="ulleft">
-    <li :id="headerleft"><b-button :id= "buttonleft" @click="botA">A</b-button></li>
-    <li :id="headerleft"><b-button :id= "buttonleft" @click="botB">B</b-button></li>
-    <li :id="headerleft"><b-button :id= "buttonleft" @click="botC">C</b-button></li>
-    <li :id="headerleft"><b-button :id= "buttonleft" @click="botD">D</b-button></li>
-  </ul>
-  
-  <ul :id="ulcentral">
-    <li :id="listcent"><b-button :id= "butttoncent">Cen</b-button></li>
-    <li :id="listcent"><b-button :id= "butttoncent">Cen</b-button></li>
-    <li :id="listcent"><b-button :id= "butttoncent">Cen</b-button></li>
-    <li :id="listcent"><b-button :id= "butttoncent">Cen</b-button></li>
+    <ul>
+        <li><b-button @click="botA">A</b-button></li>
+        <li><b-button @click="botB">B</b-button></li>
+        <li><b-button @click="botC">C</b-button></li>
+        <li><b-button @click="botD">D</b-button></li>
+    </ul>
     <p>
-      test click counta,b,c,d {{ counta }}, {{ countb }}, {{ countc }},
-      {{ countd }}
+        test click counta,b,c,d {{ counta }}, {{ countb }}, {{ countc }},
+        {{ countd }}
     </p>
-  </ul>
-
-  <ul :id="ulright">
-    <p :class="red">something to implement</p>
-  </ul>
-  
 </template>
 
 <style>
-#ulleft{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  min-height: 50px;
-  overflow: hidden;
-  overflow-y: scroll;
-  background-color: #333;
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
 }
 
-#lileft {
-  float: left;
+li {
+    float: left;
 }
 
-#butleft {
-  display: block;
-  color: white;
-  margin: 0;
-  text-align: center;
-  padding-top: 16px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  text-decoration: none;
+li b-button {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
 }
 
-#butleft:hover
-{
-  background-color: #111;
+li b-button:hover {
+    background-color: #111;
 }
 /*end of left column*/
 #ulcent{

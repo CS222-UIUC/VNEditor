@@ -1,3 +1,4 @@
+
 # Logs
 logs
 *.log
@@ -13,13 +14,13 @@ dist
 dist-ssr
 coverage
 *.local
-package-lock.json
 
 /cypress/videos/
 /cypress/screenshots/
 
 # Editor directories and files
 .vscode/*
+*.devcontainer
 # !.vscode/extensions.json
 .idea
 *.suo
@@ -27,4 +28,7 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
-*.devcontainer
+
+#python
+**/__pycache__/
+
