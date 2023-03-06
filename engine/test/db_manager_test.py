@@ -4,7 +4,7 @@ test case for DB manager
 import unittest
 from module.gameslot import GameSlot
 from module.db_manager import DBManager
-from module.config_manager import Loader
+from module.config_manager import ConfigLoader
 from utils import file_utils
 from module.exception import *
 

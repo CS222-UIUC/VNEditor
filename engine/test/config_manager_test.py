@@ -4,14 +4,14 @@ test case for config manager
 import unittest
 from module.gameslot import GameSlot
 from module.db_manager import DBManager
-from module.config_manager import Loader
+from module.config_manager import ConfigLoader
 from utils import file_utils
 from module.exception import *
 
 
 class ConfigManagerTest(unittest.TestCase):
     CONFIG_DIR = "../service.ini"
-    config = Loader(CONFIG_DIR)
+    config = ConfigLoader(CONFIG_DIR)
 
     def test_load_config_game_memory(self):
         """
