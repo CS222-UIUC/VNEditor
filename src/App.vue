@@ -18,6 +18,7 @@ export default {
 </script>
 
 <template>
+
     <Navbar> </Navbar>
     <main
         id="main-editor"
