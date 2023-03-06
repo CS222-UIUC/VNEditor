@@ -22,4 +22,3 @@ memory_service.remove_memory(create_time)
 
 
 memory_service.print()
-

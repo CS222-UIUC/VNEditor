@@ -22,19 +22,29 @@ class Service:
         self._dbman.drop_table(self._slot_name)
         self._dbman.create_table_if_not_exist(self._slot_name)
         self._dbman.commit()
-        print(MsgColor.MsgColor.OK, "(+) successfully reset slot: %s" % self._slot_name, MsgColor.MsgColor.END)
+        print(
+            MsgColor.MsgColor.OK,
+            "(+) successfully reset slot: %s" % self._slot_name,
+            MsgColor.MsgColor.END,
+        )
 
     def drop(self):
         self._dbman.drop_table(self._slot_name)
         self._dbman.commit()
-        print(MsgColor.MsgColor.OK, "(-) successfully drop slot: %s" % self._slot_name, MsgColor.MsgColor.END)
+        print(
+            MsgColor.MsgColor.OK,
+            "(-) successfully drop slot: %s" % self._slot_name,
+            MsgColor.MsgColor.END,
+        )
 
     def get_slot_name(self) -> str:
         return self._slot_name
 
     def dump_memory(self, frame: int) -> str:
         cur_time = get_cur_time()
-        self._dbman.push(key=str(cur_time), value=str(frame), table_name=self._slot_name)
+        self._dbman.push(
+            key=str(cur_time), value=str(frame), table_name=self._slot_name
+        )
         self._dbman.commit()
         return cur_time
 
