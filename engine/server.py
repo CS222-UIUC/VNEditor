@@ -72,6 +72,7 @@ class RouterUtils:
         self.__project_manager: ProjectManager = ProjectManager()
         self.__config_loader = ConfigLoader(config_dir=CONFIG_DIR)
         self.__resources_config: dict = self.__config_loader.resources()
+        self.version_info: dict = self.__config_loader.version()
 
     @router_exception_handler
     def init_project(self, base_dir: str) -> ReturnStatus:
@@ -154,6 +155,12 @@ class RouterUtils:
 
 
 router_utils = RouterUtils()
+
+with open('doc/ascii_logo', 'r') as f_stream:
+    print('\n', f_stream.read())
+    print("\n"
+          f"{router_utils.version_info['name']}\n"
+          f"Version: {router_utils.version_info['version']}\n")
 
 
 @app.get("/", include_in_schema=False)
