@@ -313,7 +313,7 @@ async def remove_task(task_id: str) -> ReturnDict:
     return router_utils.remove_task(task_id=task_id)
 
 
-@app.get("/resources/{item_cat}/{rtype}")
+@app.get("/resources/{rtype}/{item_name}")
 async def get_resources(task_id: str, rtype: ResourcesType, item_name: str):
     """
     get resources file
