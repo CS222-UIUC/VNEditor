@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, inject } from "vue";
 import axios from "axios";
 import FileItem from "./FileItem.vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
+import { initProject } from "./RequestAPI";
 
+var base_dir: string | undefined = inject("host_name");
 var fileDisplay = ref(false);
 var enterCount = ref(0);
 var files = ["file1", "file2", "file3"];
+
+const projectName: string = "test_project";
+
+const props = defineProps({
+    fileType: String,
+});
 
 function handleFilesDrop(event: DragEvent): void {
     event.preventDefault();
@@ -15,9 +23,15 @@ function handleFilesDrop(event: DragEvent): void {
         Array.from(event.dataTransfer.files).forEach((f: File) => {
             formData.append("file", f);
         });
-        axios.post("", formData);
+        axios.post(base_dir + `upload/?rtype=${props.fileType}`, formData);
     }
 }
+
+onMounted(() => {
+    // call project init
+    // load resource
+    initProject(projectName);
+});
 </script>
 
 <template>

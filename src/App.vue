@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, provide } from "vue";
 
 import Toolbar from "./components/ToolbarMain.vue";
 import Navbar from "./components/NavbarMain.vue";
 import FileUploadArea from "./components/UploadArea.vue";
 
 var fileUploadAreaDisplay = ref(false);
+
+provide("host_name", "http://127.0.0.1:8000/");
 </script>
 
 <template>
