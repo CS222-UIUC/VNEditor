@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import Toolbar from "./components/ToolBar.vue";
+import Toolbar from "./components/Toolbar.vue";
 import Navbar from "./components/NavbarTemp.vue";
 import FileUploadArea from "./components/UploadArea.vue";
 
