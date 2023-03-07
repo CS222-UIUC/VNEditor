@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import Toolbar from "./components/ToolBar.vue";
-import Navbar from "./components/NavbarTemp.vue";
+import Toolbar from "./components/ToolbarMain.vue";
+import Navbar from "./components/NavbarMain.vue";
 import FileUploadArea from "./components/UploadArea.vue";
 
 var fileUploadAreaDisplay = ref(false);
