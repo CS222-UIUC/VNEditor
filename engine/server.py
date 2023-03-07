@@ -178,7 +178,7 @@ async def initialize_project(base_dir: str) -> ReturnStatus:
 
 
 @app.post("/get_res")
-async def get_background(rtype: ResourcesType, filter_by: str = "") -> ReturnList:
+async def get_resources(rtype: ResourcesType, filter_by: str = "") -> ReturnList:
     """
     get background resources, need to initialize project before use
 
