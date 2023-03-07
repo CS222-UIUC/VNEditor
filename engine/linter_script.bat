@@ -8,8 +8,6 @@ echo start pylinter to check format...
   pylint ./engine
   echo check ./module
   pylint ./module
-  echo check ./router
-  pylint ./router
   echo check ./utils
   pylint ./utils
 )

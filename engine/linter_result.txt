@@ -1,4 +1,4 @@
-Generated In: 2023/03/06 周一 14:37:35.71
+Generated In: 2023/03/06 周一 21:19:55.30
 
 check ./engine
 ************* Module engine.frame
@@ -11,19 +11,16 @@ engine\yui_engine.py:273:15: W0718: Catching too general exception Exception (br
 engine\yui_engine.py:12:0: W0611: Unused Enum imported from enum (unused-import)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.72/10 (previous run: 9.77/10, -0.05)
+Your code has been rated at 9.72/10 (previous run: 9.72/10, +0.00)
 
 check ./module
 ************* Module module.project_manager
 module\project_manager.py:35:8: R1720: Unnecessary "else" after "raise", remove the "else" and de-indent the code inside it (no-else-raise)
-module\project_manager.py:89:45: W0613: Unused argument 'file_dir' (unused-argument)
+module\project_manager.py:92:45: W0613: Unused argument 'file_dir' (unused-argument)
 
--------------------------------------------------------------------
-Your code has been rated at 9.90/10 (previous run: 10.00/10, -0.10)
+------------------------------------------------------------------
+Your code has been rated at 9.91/10 (previous run: 9.91/10, +0.00)
 
-check ./router
-************* Module ./router
-./router:1:0: F0001: No module named ./router (fatal)
 check ./utils
 
 --------------------------------------------------------------------
