@@ -50,6 +50,14 @@ class ConfigLoader:
         """
         return dict(self.config["Resources"])
 
+    def project(self) -> dict:
+        """
+        get project config
+
+        @return: project config
+        """
+        return dict(self.config["Project"])
+
     def register_service(self) -> dict:
         """
         get register_service config

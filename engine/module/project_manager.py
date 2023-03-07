@@ -33,7 +33,7 @@ def init_check(func):
 
     def wrapper(*args, **kwargs):
         if not args[0].is_init:
-            raise ProjectManagerError("used before initialized project")
+            raise ProjectManagerError("Project not initialized")
         else:
             return func(*args, **kwargs)
 
@@ -46,8 +46,8 @@ class ProjectManager:
     """
 
     def __init__(self):
-        self.__config_res = None
-        self.__base = None
+        self.__config_res: dict = {}
+        self.__base: str = ""
         self.is_init = False
 
     def init_project(self, base_dir: str, config_dir: str):
@@ -57,15 +57,18 @@ class ProjectManager:
         @param base_dir: the base directory of the project
         @param config_dir: directory of config
         """
-        if not file_utils.check_folder_valid(base_dir):
-            os.makedirs(base_dir)
 
         self.__base = base_dir
         config = ConfigLoader(config_dir)
         self.__config_res = config.resources()
+        project_base_dir = config.project()["projects_base"]
+        self.__base = os.path.join(project_base_dir, self.__base)
 
-        for i in config.resources().keys():
-            res_path_abs = os.path.join(base_dir, config.resources()[i])
+        if not file_utils.check_folder_valid(self.__base):
+            os.makedirs(self.__base)
+
+        for i in ["background_dir", "music_dir", "character_dir"]:
+            res_path_abs = os.path.join(self.__base, config.resources()[i])
             if not file_utils.check_folder_valid(res_path_abs):
                 os.makedirs(res_path_abs)
             self.__config_res[i] = res_path_abs
@@ -80,7 +83,7 @@ class ProjectManager:
         @param cat: specified category
         @return: get all resources in specified category
         """
-        res = file_utils.get_all_in_folder(self.__config_res[cat])
+        res = file_utils.get_files_in_folder(self.__config_res[cat])
         if len(filter_by) != 0:
             return [i for i in res if filter_by in i]
         return res
@@ -148,3 +151,12 @@ class ProjectManager:
         @return: get all background resources
         """
         return self.__delete_general_res(CHARACTER_CAT, filer_dir)
+
+    @init_check
+    def get_base_dir(self):
+        """
+        get the base directory of the project
+
+        @return:
+        """
+        return self.__base
