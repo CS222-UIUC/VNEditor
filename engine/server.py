@@ -18,8 +18,6 @@ from module.exception import RouterError
 from utils.args_utils import STATUS
 from utils.file_utils import check_file_valid
 
-app = FastAPI()
-
 CONFIG_DIR = "./service.ini"
 
 
@@ -146,7 +144,7 @@ class RouterUtils:
 
     @router_exception_handler
     def get_resource_name(
-        self, task_id: str, rtype=ResourcesType, filter_str: str = ""
+            self, task_id: str, rtype=ResourcesType, filter_str: str = ""
     ) -> ReturnList:
         """
         get resources name
@@ -173,7 +171,7 @@ class RouterUtils:
 
     @router_exception_handler
     def upload_file(
-        self, task_id: str, rtype: ResourcesType, file: UploadFile
+            self, task_id: str, rtype: ResourcesType, file: UploadFile
     ) -> ReturnDict:
         if task_id not in self.__tasks:
             raise RouterError(f"cannot find task id '{task_id}'")
@@ -241,7 +239,7 @@ class RouterUtils:
 
     @router_exception_handler
     def get_resources(
-        self, task_id: str, item_cat: ResourcesType, item_name: str
+            self, task_id: str, item_cat: ResourcesType, item_name: str
     ) -> str:
         if task_id not in self.__tasks:
             raise RouterError(f"cannot find task id '{task_id}'")
@@ -255,9 +253,31 @@ class RouterUtils:
         else:
             raise RouterError(f"resource not found: {resources_at}")
 
+    @router_exception_handler
+    def remove_project(self, task_id: str) -> ReturnDict:
+        if task_id not in self.__tasks:
+            raise RouterError(f"cannot find task id '{task_id}'")
+
+        project_manager = self.__tasks[task_id].project_manager
+        status = project_manager.delete()
+
+        if status:
+            task_last_time = time.time() - self.__tasks[task_id].time_start
+            self.__tasks.pop(task_id)
+            return ReturnDict(status=STATUS.OK, content={'task_id': task_id, 'time_last': task_last_time})
+        else:
+            raise RouterError(f"remove project id:{task_id} fails")
+
 
 router_utils = RouterUtils()
 origins = router_utils.cors_info["origins"].split(',')
+
+app = FastAPI(
+    title=router_utils.version_info['name'],
+    description=router_utils.version_info['description'],
+    version=router_utils.version_info['version'],
+    swagger_ui_parameters={"defaultModelsExpandDepth": -1}
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -286,7 +306,7 @@ async def read_index():
     return FileResponse("doc/baka.png")
 
 
-@app.post("/init_project")
+@app.post("/init_project", tags=["project"])
 async def initialize_project(base_dir: str) -> ReturnDict:
     """
     initialize project, create new if given directory not exist
@@ -297,9 +317,9 @@ async def initialize_project(base_dir: str) -> ReturnDict:
     return result
 
 
-@app.post("/get_res")
+@app.post("/get_res", tags=["resources"])
 async def get_resources_name(
-    task_id: str, rtype: ResourcesType, filter_by: str = ""
+        task_id: str, rtype: ResourcesType, filter_by: str = ""
 ) -> ReturnList:
     """
     get background resources, need to initialize project before use
@@ -314,9 +334,9 @@ async def get_resources_name(
     return result
 
 
-@app.post("/upload")
+@app.post("/upload", tags=["resources"])
 async def upload_file(
-    task_id: str, rtype: ResourcesType, file: UploadFile
+        task_id: str, rtype: ResourcesType, file: UploadFile
 ) -> ReturnDict:
     """
     update resources to rtype
@@ -328,7 +348,7 @@ async def upload_file(
     return router_utils.upload_file(task_id=task_id, rtype=rtype, file=file)
 
 
-@app.post("/get_base")
+@app.post("/get_base", tags=["project"])
 async def get_base_dir(task_id: str) -> ReturnDict:
     """
     get the base directory of the project
@@ -337,7 +357,7 @@ async def get_base_dir(task_id: str) -> ReturnDict:
     return router_utils.get_base_dir(task_id=task_id)
 
 
-@app.post("/remove_task")
+@app.post("/remove_task", tags=["project"])
 async def remove_task(task_id: str) -> ReturnDict:
     """
     remove task by task id
@@ -346,7 +366,7 @@ async def remove_task(task_id: str) -> ReturnDict:
     return router_utils.remove_task(task_id=task_id)
 
 
-@app.get("/resources/{rtype}/{item_name}")
+@app.get("/resources/{rtype}/{item_name}", tags=["resources"])
 async def get_resources(task_id: str, rtype: ResourcesType, item_name: str):
     """
     get resources file
@@ -362,3 +382,13 @@ async def get_resources(task_id: str, rtype: ResourcesType, item_name: str):
         raise HTTPException(status_code=404, detail="Item not found")
     else:
         return FileResponse(resource_at)
+
+
+@app.post("/remove_project", tags=["project"])
+async def get_resources(task_id: str) -> ReturnDict:
+    """
+    remove the project
+
+    @param task_id: if for task
+    """
+    return router_utils.remove_project(task_id=task_id)
