@@ -1,15 +1,36 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
+import axios from "axios";
 import FileItem from "./FileItem.vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
 
 var fileDisplay = ref(false);
+var enterCount = ref(0);
 var files = ["file1", "file2", "file3"];
+
+function handleFilesDrop(event: DragEvent): void {
+    event.preventDefault();
+    if (event.dataTransfer?.files) {
+        let formData: FormData = new FormData();
+        Array.from(event.dataTransfer.files).forEach((f: File) => {
+            formData.append("file", f);
+        });
+        axios.post("", formData);
+    }
+}
 </script>
 
 <template>
-    <div class="file-wrapper">
+    <div
+        class="file-wrapper"
+        :class="{ 'upload-area': enterCount > 0 }"
+        @dragenter="
+            enterCount++;
+            fileDisplay = true;
+        "
+        @dragexit="enterCount--"
+        @drop="handleFilesDrop"
+    >
         <div class="file-icon-wrapper" @click="fileDisplay = !fileDisplay">
             <slot name="dir-icon"></slot>
             <slot name="dir-name"></slot>
@@ -29,6 +50,10 @@ var files = ["file1", "file2", "file3"];
     flex-direction: column;
     padding: 0.5rem;
     border-bottom: 5px solid red;
+}
+
+.upload-area {
+    background-color: beige;
 }
 
 .file-icon-wrapper > svg {
