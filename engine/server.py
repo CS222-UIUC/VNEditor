@@ -3,16 +3,19 @@ router service main entry
 """
 
 import os
-from fastapi import FastAPI, UploadFile
+import time
+from fastapi import FastAPI, UploadFile, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 from fastapi.responses import FileResponse
 from enum import Enum
+import secrets
 
 from module.project_manager import ProjectManager
 from module.config_manager import ConfigLoader
 from module.exception import RouterError
 from utils.args_utils import STATUS
+from utils.file_utils import check_file_valid
 
 app = FastAPI()
 
@@ -38,6 +41,15 @@ class ReturnList(ReturnStatus):
 class ReturnDict(ReturnStatus):
     msg: str = "ok"
     content: Optional[dict]
+
+
+class Task:
+    project_manager: ProjectManager
+    time_start: time
+
+    def __init__(self, project_manager: ProjectManager):
+        self.project_manager = project_manager
+        self.time_start = time.time()
 
 
 def router_exception_handler(func):
@@ -69,63 +81,108 @@ class RouterUtils:
         constructor for router class
 
         """
-        self.__project_manager: ProjectManager = ProjectManager()
-        self.__config_loader = ConfigLoader(config_dir=CONFIG_DIR)
-        self.__resources_config: dict = self.__config_loader.resources()
-        self.version_info: dict = self.__config_loader.version()
+        config_loader = ConfigLoader(config_dir=CONFIG_DIR)
+        self.__resources_config: dict = config_loader.resources()
+        self.__project_config: dict = config_loader.project()
+        self.version_info: dict = config_loader.version()
+
+        self.__tasks: dict[str, Task] = {}
+
+    def __new_task(self, base_dir: str) -> str:
+        token = secrets.token_urlsafe(16)
+        while token in self.__tasks:
+            token = secrets.token_urlsafe(16)
+
+        project_manager = ProjectManager()
+        project_manager.init_project(base_dir=base_dir, config_dir=CONFIG_DIR)
+        self.__tasks[token] = Task(project_manager=project_manager)
+        return token
+
+    def __get_dir_by_rtype(self, rtype: str, project_manager: ProjectManager):
+        if rtype is ResourcesType.background:
+            to_path = os.path.join(
+                project_manager.get_base_dir(),
+                self.__resources_config["background_dir"],
+            )
+
+        elif rtype is ResourcesType.music:
+            to_path = os.path.join(
+                project_manager.get_base_dir(),
+                self.__resources_config["music_dir"],
+            )
+
+        elif rtype is ResourcesType.character:
+            to_path = os.path.join(
+                project_manager.get_base_dir(),
+                self.__resources_config["character_dir"],
+            )
+        else:
+            to_path = ""
+
+        return to_path
 
     @router_exception_handler
-    def init_project(self, base_dir: str) -> ReturnStatus:
+    def init_project(self, base_dir: str) -> ReturnDict:
         """
         initialize project
 
         @param base_dir: project directory
         @return: status code
         """
-        self.__project_manager.init_project(base_dir=base_dir, config_dir=CONFIG_DIR)
-        return ReturnStatus(status=STATUS.OK, msg=f"initialize project at: {base_dir}")
+        task_id = self.__new_task(base_dir)
+        return ReturnDict(status=STATUS.OK,
+                          msg=f"successfully initialize project in '{base_dir}'",
+                          content={'task_id': task_id})
 
     @router_exception_handler
-    def get_resources(self, rtype=ResourcesType, filter_str: str = "") -> ReturnList:
+    def get_resource_name(self, task_id: str, rtype=ResourcesType, filter_str: str = "") -> ReturnList:
         """
-        get background resources
+        get resources name
 
+        @param task_id: id for the task
         @param rtype: type of resources to fetch
         @param filter_str: filter resources by a specific string
         @return: status code
         """
+        if task_id not in self.__tasks:
+            raise RouterError(f"cannot find task id '{task_id}'")
+
+        project_manager = self.__tasks[task_id].project_manager
         if rtype is ResourcesType.background:
-            resources = self.__project_manager.get_backgrounds_res(filter_by=filter_str)
+            resources = project_manager.get_backgrounds_res(filter_by=filter_str)
         elif rtype is ResourcesType.music:
-            resources = self.__project_manager.get_music_res(filter_by=filter_str)
+            resources = project_manager.get_music_res(filter_by=filter_str)
         elif rtype is ResourcesType.character:
-            resources = self.__project_manager.get_character_res(filter_by=filter_str)
+            resources = project_manager.get_character_res(filter_by=filter_str)
         else:
             raise RouterError(f"cannot find rtype: '{rtype}'")
 
         return ReturnList(status=STATUS.OK, content=resources)
 
     @router_exception_handler
-    def upload_file(self, rtype: ResourcesType, file: UploadFile) -> ReturnDict:
+    def upload_file(self, task_id: str, rtype: ResourcesType, file: UploadFile) -> ReturnDict:
+        if task_id not in self.__tasks:
+            raise RouterError(f"cannot find task id '{task_id}'")
+
+        project_manager = self.__tasks[task_id].project_manager
+
         max_file_size = int(self.__resources_config["max_size"])
-        suffix = os.path.splitext(file.filename)[-1]
+        suffix = os.path.splitext(file.filename)[-1].lower()
+        to_path = self.__get_dir_by_rtype(rtype, project_manager)
+
+        if to_path == "":
+            raise RouterError(f"no such rtype: {rtype}")
 
         if rtype is ResourcesType.background:
-            to_path = os.path.join(self.__project_manager.get_base_dir(),
-                                   self.__resources_config["background_dir"])
-            if suffix not in self.__resources_config["background_support"].split(','):
+            if suffix not in self.__resources_config["background_support"].split(","):
                 raise RouterError(f"file type '{suffix}' not support")
 
         elif rtype is ResourcesType.music:
-            to_path = os.path.join(self.__project_manager.get_base_dir(),
-                                   self.__resources_config["music_dir"])
-            if suffix not in self.__resources_config["music_support"].split(','):
+            if suffix not in self.__resources_config["music_support"].split(","):
                 raise RouterError(f"file type '{suffix}' not support")
 
         elif rtype is ResourcesType.character:
-            to_path = os.path.join(self.__project_manager.get_base_dir(),
-                                   self.__resources_config["character_dir"])
-            if suffix not in self.__resources_config["character_support"].split(','):
+            if suffix not in self.__resources_config["character_support"].split(","):
                 raise RouterError(f"file type '{suffix}' not support")
         else:
             raise RouterError(f"no such rtype: {rtype}")
@@ -137,8 +194,8 @@ class RouterUtils:
             file.file.close()
             raise RouterError(f"file excess max size {str(max_file_size)}")
         try:
-            with open(os.path.join(to_path, file.filename), "wb") as f_stream:
-                f_stream.write(file_content)
+            with open(os.path.join(to_path, file.filename), "wb") as f:
+                f.write(file_content)
         except Exception as e:
             file.file.close()
             raise RouterError(f"cannot write file {file.filename} due to {str(e)}")
@@ -149,32 +206,61 @@ class RouterUtils:
         return ReturnDict(status=STATUS.OK, content=to_return)
 
     @router_exception_handler
-    def get_base_dir(self) -> ReturnDict:
-        to_return = {"base": self.__project_manager.get_base_dir()}
+    def get_base_dir(self, task_id: str) -> ReturnDict:
+        if task_id not in self.__tasks:
+            raise RouterError(f"cannot find task id '{task_id}'")
+
+        project_manager = self.__tasks[task_id].project_manager
+        to_return = {"base": project_manager.get_base_dir()}
         return ReturnDict(status=STATUS.OK, content=to_return)
+
+    @router_exception_handler
+    def remove_task(self, task_id: str) -> ReturnDict:
+        if task_id not in self.__tasks:
+            raise RouterError(f"cannot find task id '{task_id}'")
+
+        task_last_time = time.time() - self.__tasks[task_id].time_start
+        self.__tasks.pop(task_id)
+        return ReturnDict(status=STATUS.OK, content={"task_id": task_id, "time_last": task_last_time})
+
+    @router_exception_handler
+    def get_resources(self, task_id: str, item_cat: ResourcesType, item_name: str) -> str:
+        if task_id not in self.__tasks:
+            raise RouterError(f"cannot find task id '{task_id}'")
+
+        project_manager = self.__tasks[task_id].project_manager
+        resource_dir = self.__get_dir_by_rtype(item_cat, project_manager)
+        resources_at = os.path.join(resource_dir, item_name)
+
+        if check_file_valid(resources_at):
+            return resources_at
+        else:
+            return ""
 
 
 router_utils = RouterUtils()
 
-with open('doc/ascii_logo', 'r') as f_stream:
-    print('\n', f_stream.read())
-    print("\n"
-          f"{router_utils.version_info['name']}\n"
-          f"Version: {router_utils.version_info['version']}\n")
+with open("doc/ascii_logo", "r", encoding="UTF-8") as f_stream:
+    print("\n", f_stream.read())
+    print(
+        "\n"
+        f"{router_utils.version_info['name']}\n"
+        f"Version: {router_utils.version_info['version']}\n"
+    )
 
 
 @app.get("/", include_in_schema=False)
 async def read_index():
-    return FileResponse('doc/index.html')
+    return FileResponse("doc/index.html")
 
 
 @app.get("/baka", include_in_schema=False)
 async def read_index():
-    return FileResponse('doc/baka.png')
+    return FileResponse("doc/baka.png")
 
 
 @app.post("/init_project")
-async def initialize_project(base_dir: str) -> ReturnStatus:
+async def initialize_project(base_dir: str) -> ReturnDict:
     """
     initialize project, create new if given directory not exist
 
@@ -185,26 +271,59 @@ async def initialize_project(base_dir: str) -> ReturnStatus:
 
 
 @app.post("/get_res")
-async def get_resources(rtype: ResourcesType, filter_by: str = "") -> ReturnList:
+async def get_resources_name(task_id: str, rtype: ResourcesType, filter_by: str = "") -> ReturnList:
     """
     get background resources, need to initialize project before use
 
+    @param task_id: id for task
     @param rtype: type of resources to get
     @param filter_by: filter by specific string
     """
-    result = router_utils.get_resources(rtype=rtype, filter_str=filter_by)
+    result = router_utils.get_resource_name(task_id=task_id, rtype=rtype, filter_str=filter_by)
     return result
 
 
-@app.post("/upload/")
-async def upload_file(rtype: ResourcesType, file: UploadFile):
-    return router_utils.upload_file(rtype=rtype, file=file)
+@app.post("/upload")
+async def upload_file(task_id: str, rtype: ResourcesType, file: UploadFile) -> ReturnDict:
+    """
+    update resources to rtype
+
+    @param task_id: id for task
+    @param rtype: resource type
+    @param file: file steam
+    """
+    return router_utils.upload_file(task_id=task_id, rtype=rtype, file=file)
 
 
-@app.post("/get_base/")
-async def get_base_dir() -> ReturnDict:
+@app.post("/get_base")
+async def get_base_dir(task_id: str) -> ReturnDict:
     """
     get the base directory of the project
 
     """
-    return router_utils.get_base_dir()
+    return router_utils.get_base_dir(task_id=task_id)
+
+
+@app.post("/remove_task")
+async def remove_task(task_id: str) -> ReturnDict:
+    """
+    remove task by task id
+
+    """
+    return router_utils.remove_task(task_id=task_id)
+
+
+@app.get("/resources/{rtype}/{item_name}")
+async def get_resources(task_id: str, rtype: ResourcesType, item_name: str):
+    """
+    get resources file
+
+    @param task_id: if for task
+    @param rtype: resource type
+    @param item_name: resource name
+    """
+    resource_at = router_utils.get_resources(task_id=task_id, item_cat=rtype, item_name=item_name)
+    if resource_at == "":
+        raise HTTPException(status_code=404, detail="Item not found")
+    else:
+        return FileResponse(resource_at)
