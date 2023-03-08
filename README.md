@@ -8,7 +8,7 @@ An online-driven visual novel editor
 
 ### Develop🏗️
 
-[API Reference](https://github.com/CS222-UIUC/VNEditor/blob/backend/doc/API.md)
+[API Reference](http://45.63.79.66:8080/docs)
 
 [Backend & Engine](https://github.com/CS222-UIUC/VNEditor/tree/main/engine)
 
