@@ -14,7 +14,9 @@ An online-driven visual novel editor
 
 ### Built With
 vue.js
+
 TypeScript
+
 Fastapi
 
 ### Prototype🎁
