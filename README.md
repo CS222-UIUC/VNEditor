@@ -13,7 +13,7 @@ An online-driven visual novel editor
 [Backend & Engine](https://github.com/CS222-UIUC/VNEditor/tree/main/engine)
 
 ### Built With ❤️
-vue.js
+Vue.js
 
 TypeScript
 
