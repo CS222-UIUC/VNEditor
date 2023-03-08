@@ -10,9 +10,12 @@ An online-driven visual novel editor
 
 [API Reference](https://github.com/CS222-UIUC/VNEditor/blob/backend/doc/API.md)
 
-[Backend Linter Report](engine/linter_result.txt)
+[Backend & Engine](https://github.com/CS222-UIUC/VNEditor/tree/main/engine)
 
-[Frontend Linter Report](linter_result.txt)
+### Built With
+vue.js
+TypeScript
+Fastapi
 
 ### Prototype🎁
 
