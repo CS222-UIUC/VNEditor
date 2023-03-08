@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import { ref, provide } from "vue";
-
+import { ref, provide, onMounted } from "vue";
+import { initProject } from "./components/RequestAPI";
 import Toolbar from "./components/ToolbarMain.vue";
 import Navbar from "./components/NavbarMain.vue";
 import FileUploadArea from "./components/UploadArea.vue";
+import { hostNameKey, projectIDKey } from "./components/InjectionKeys";
 
-var fileUploadAreaDisplay = ref(false);
+const fileUploadAreaDisplay = ref(false);
+const projectID = ref<string | undefined>(undefined);
 
-provide("host_name", "http://127.0.0.1:8000/");
+provide(hostNameKey, "http://127.0.0.1:8000/");
+provide(projectIDKey, projectID);
+initProject("p1").then((res: string | undefined) => {
+    if (res) {
+        projectID.value = res;
+    } else {
+        console.log("project init failed");
+    }
+});
 </script>
 
 <template>

@@ -1,49 +1,60 @@
 <script setup lang="ts">
-import { onMounted, ref, inject } from "vue";
+import { ref, inject, watch, onMounted, watchEffect } from "vue";
+import type { Ref } from "vue";
 import axios from "axios";
 import FileItem from "./FileItem.vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
-import { initProject } from "./RequestAPI";
+import { hostNameKey, projectIDKey } from "./InjectionKeys";
+import { getResources, uploadFiles } from "./RequestAPI";
 
-var base_dir: string | undefined = inject("host_name");
 var fileDisplay = ref(false);
 var enterCount = ref(0);
-var files = ["file1", "file2", "file3"];
-
-const projectName: string = "test_project";
-
+const files = ref<string[]>(["file1", "file2", "file3"]);
 const props = defineProps({
-    fileType: String,
+    fileType: {
+        type: String,
+        default: "background",
+    },
+});
+const projectID = inject(projectIDKey) as Ref<string>;
+
+watchEffect(() => {
+    if (projectID.value && fileDisplay)
+        getResources(projectID.value, props.fileType).then((res: string[] | undefined) => {
+            if (res) files.value = res;
+        });
 });
 
 function handleFilesDrop(event: DragEvent): void {
     event.preventDefault();
+    enterCount.value = 0;
     if (event.dataTransfer?.files) {
         let formData: FormData = new FormData();
+        let names: string[] = [];
         Array.from(event.dataTransfer.files).forEach((f: File) => {
             formData.append("file", f);
+            names.push(f.name);
         });
-        axios.post(base_dir + `upload/?rtype=${props.fileType}`, formData);
+        (async () => {
+            console.log("upload");
+            const success: boolean = await uploadFiles(projectID.value, props.fileType, formData);
+            if (success) files.value.push(...names);
+            console.log(files);
+        })();
     }
 }
-
-onMounted(() => {
-    // call project init
-    // load resource
-    initProject(projectName);
-});
 </script>
 
 <template>
     <div
         class="file-wrapper"
         :class="{ 'upload-area': enterCount > 0 }"
-        @dragenter="
+        @dragenter.prevent.stop="
             enterCount++;
             fileDisplay = true;
         "
-        @dragexit="enterCount--"
-        @drop="handleFilesDrop"
+        @dragexit.prevent.stop="enterCount--"
+        @drop.prevent.stop="handleFilesDrop"
     >
         <div class="file-icon-wrapper" @click="fileDisplay = !fileDisplay">
             <slot name="dir-icon"></slot>
