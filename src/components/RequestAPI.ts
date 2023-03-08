@@ -37,8 +37,7 @@ export async function uploadFiles(id: string, rtype: string, formData: FormData)
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
         });
-
-        return response.status == 1;
+        return response.data["status"] === 1;
     } catch (err: any) {
         return false;
     }

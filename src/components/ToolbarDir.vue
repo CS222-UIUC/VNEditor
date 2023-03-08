@@ -9,7 +9,7 @@ import { getResources, uploadFiles } from "./RequestAPI";
 
 var fileDisplay = ref(false);
 var enterCount = ref(0);
-const files = ref<string[]>(["file1", "file2", "file3"]);
+const files = ref<string[]>([]);
 const props = defineProps({
     fileType: {
         type: String,
@@ -21,7 +21,7 @@ const projectID = inject(projectIDKey) as Ref<string>;
 watchEffect(() => {
     if (projectID.value && fileDisplay)
         getResources(projectID.value, props.fileType).then((res: string[] | undefined) => {
-            if (res) files.value = res;
+            if (res) files.value.push(...res);
         });
 });
 
@@ -38,6 +38,7 @@ function handleFilesDrop(event: DragEvent): void {
         (async () => {
             console.log("upload");
             const success: boolean = await uploadFiles(projectID.value, props.fileType, formData);
+            console.log(success);
             if (success) files.value.push(...names);
             console.log(files);
         })();
