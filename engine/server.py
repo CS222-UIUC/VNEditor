@@ -5,6 +5,7 @@ router service main entry
 import os
 import time
 from fastapi import FastAPI, UploadFile, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 from fastapi.responses import FileResponse
@@ -16,8 +17,6 @@ from module.config_manager import ConfigLoader
 from module.exception import RouterError
 from utils.args_utils import STATUS
 from utils.file_utils import check_file_valid
-
-app = FastAPI()
 
 CONFIG_DIR = "./service.ini"
 
@@ -46,10 +45,12 @@ class ReturnDict(ReturnStatus):
 class Task:
     project_manager: ProjectManager
     time_start: time
+    base_dir: str
 
-    def __init__(self, project_manager: ProjectManager):
+    def __init__(self, project_manager: ProjectManager, base_dir: str):
         self.project_manager = project_manager
         self.time_start = time.time()
+        self.base_dir = base_dir
 
 
 def router_exception_handler(func):
@@ -85,17 +86,22 @@ class RouterUtils:
         self.__resources_config: dict = config_loader.resources()
         self.__project_config: dict = config_loader.project()
         self.version_info: dict = config_loader.version()
+        self.cors_info: dict = config_loader.cors()
 
         self.__tasks: dict[str, Task] = {}
 
     def __new_task(self, base_dir: str) -> str:
+        for task_id, task in self.__tasks.items():
+            if task.base_dir == base_dir:
+                return task_id
+
         token = secrets.token_urlsafe(16)
         while token in self.__tasks:
             token = secrets.token_urlsafe(16)
 
         project_manager = ProjectManager()
         project_manager.init_project(base_dir=base_dir, config_dir=CONFIG_DIR)
-        self.__tasks[token] = Task(project_manager=project_manager)
+        self.__tasks[token] = Task(project_manager=project_manager, base_dir=base_dir)
         return token
 
     def __get_dir_by_rtype(self, rtype: str, project_manager: ProjectManager):
@@ -117,7 +123,7 @@ class RouterUtils:
                 self.__resources_config["character_dir"],
             )
         else:
-            to_path = ""
+            raise RouterError(f"cannot find rtype: '{rtype}'")
 
         return to_path
 
@@ -130,12 +136,16 @@ class RouterUtils:
         @return: status code
         """
         task_id = self.__new_task(base_dir)
-        return ReturnDict(status=STATUS.OK,
-                          msg=f"successfully initialize project in '{base_dir}'",
-                          content={'task_id': task_id})
+        return ReturnDict(
+            status=STATUS.OK,
+            msg=f"successfully initialize project in '{base_dir}'",
+            content={"task_id": task_id},
+        )
 
     @router_exception_handler
-    def get_resource_name(self, task_id: str, rtype=ResourcesType, filter_str: str = "") -> ReturnList:
+    def get_resource_name(
+            self, task_id: str, rtype=ResourcesType, filter_str: str = ""
+    ) -> ReturnList:
         """
         get resources name
 
@@ -160,7 +170,9 @@ class RouterUtils:
         return ReturnList(status=STATUS.OK, content=resources)
 
     @router_exception_handler
-    def upload_file(self, task_id: str, rtype: ResourcesType, file: UploadFile) -> ReturnDict:
+    def upload_file(
+            self, task_id: str, rtype: ResourcesType, file: UploadFile
+    ) -> ReturnDict:
         if task_id not in self.__tasks:
             raise RouterError(f"cannot find task id '{task_id}'")
 
@@ -221,10 +233,14 @@ class RouterUtils:
 
         task_last_time = time.time() - self.__tasks[task_id].time_start
         self.__tasks.pop(task_id)
-        return ReturnDict(status=STATUS.OK, content={"task_id": task_id, "time_last": task_last_time})
+        return ReturnDict(
+            status=STATUS.OK, content={"task_id": task_id, "time_last": task_last_time}
+        )
 
     @router_exception_handler
-    def get_resources(self, task_id: str, item_cat: ResourcesType, item_name: str) -> str:
+    def get_resources(
+            self, task_id: str, item_cat: ResourcesType, item_name: str
+    ) -> str:
         if task_id not in self.__tasks:
             raise RouterError(f"cannot find task id '{task_id}'")
 
@@ -235,10 +251,41 @@ class RouterUtils:
         if check_file_valid(resources_at):
             return resources_at
         else:
-            return ""
+            raise RouterError(f"resource not found: {resources_at}")
+
+    @router_exception_handler
+    def remove_project(self, task_id: str) -> ReturnDict:
+        if task_id not in self.__tasks:
+            raise RouterError(f"cannot find task id '{task_id}'")
+
+        project_manager = self.__tasks[task_id].project_manager
+        status = project_manager.delete()
+
+        if status:
+            task_last_time = time.time() - self.__tasks[task_id].time_start
+            self.__tasks.pop(task_id)
+            return ReturnDict(status=STATUS.OK, content={'task_id': task_id, 'time_last': task_last_time})
+        else:
+            raise RouterError(f"remove project id:{task_id} fails")
 
 
 router_utils = RouterUtils()
+origins = router_utils.cors_info["origins"].split(',')
+
+app = FastAPI(
+    title=router_utils.version_info['name'],
+    description=router_utils.version_info['description'],
+    version=router_utils.version_info['version'],
+    swagger_ui_parameters={"defaultModelsExpandDepth": -1}
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 with open("doc/ascii_logo", "r", encoding="UTF-8") as f_stream:
     print("\n", f_stream.read())
@@ -259,7 +306,7 @@ async def read_index():
     return FileResponse("doc/baka.png")
 
 
-@app.post("/init_project")
+@app.post("/init_project", tags=["project"])
 async def initialize_project(base_dir: str) -> ReturnDict:
     """
     initialize project, create new if given directory not exist
@@ -270,8 +317,10 @@ async def initialize_project(base_dir: str) -> ReturnDict:
     return result
 
 
-@app.post("/get_res")
-async def get_resources_name(task_id: str, rtype: ResourcesType, filter_by: str = "") -> ReturnList:
+@app.post("/get_res", tags=["resources"])
+async def get_resources_name(
+        task_id: str, rtype: ResourcesType, filter_by: str = ""
+) -> ReturnList:
     """
     get background resources, need to initialize project before use
 
@@ -279,12 +328,16 @@ async def get_resources_name(task_id: str, rtype: ResourcesType, filter_by: str 
     @param rtype: type of resources to get
     @param filter_by: filter by specific string
     """
-    result = router_utils.get_resource_name(task_id=task_id, rtype=rtype, filter_str=filter_by)
+    result = router_utils.get_resource_name(
+        task_id=task_id, rtype=rtype, filter_str=filter_by
+    )
     return result
 
 
-@app.post("/upload")
-async def upload_file(task_id: str, rtype: ResourcesType, file: UploadFile) -> ReturnDict:
+@app.post("/upload", tags=["resources"])
+async def upload_file(
+        task_id: str, rtype: ResourcesType, file: UploadFile
+) -> ReturnDict:
     """
     update resources to rtype
 
@@ -295,7 +348,7 @@ async def upload_file(task_id: str, rtype: ResourcesType, file: UploadFile) -> R
     return router_utils.upload_file(task_id=task_id, rtype=rtype, file=file)
 
 
-@app.post("/get_base")
+@app.post("/get_base", tags=["project"])
 async def get_base_dir(task_id: str) -> ReturnDict:
     """
     get the base directory of the project
@@ -304,7 +357,7 @@ async def get_base_dir(task_id: str) -> ReturnDict:
     return router_utils.get_base_dir(task_id=task_id)
 
 
-@app.post("/remove_task")
+@app.post("/remove_task", tags=["project"])
 async def remove_task(task_id: str) -> ReturnDict:
     """
     remove task by task id
@@ -313,7 +366,7 @@ async def remove_task(task_id: str) -> ReturnDict:
     return router_utils.remove_task(task_id=task_id)
 
 
-@app.get("/resources/{item_cat}/{rtype}")
+@app.get("/resources/{rtype}/{item_name}", tags=["resources"])
 async def get_resources(task_id: str, rtype: ResourcesType, item_name: str):
     """
     get resources file
@@ -322,8 +375,20 @@ async def get_resources(task_id: str, rtype: ResourcesType, item_name: str):
     @param rtype: resource type
     @param item_name: resource name
     """
-    resource_at = router_utils.get_resources(task_id=task_id, item_cat=rtype, item_name=item_name)
+    resource_at = router_utils.get_resources(
+        task_id=task_id, item_cat=rtype, item_name=item_name
+    )
     if resource_at == "":
         raise HTTPException(status_code=404, detail="Item not found")
     else:
         return FileResponse(resource_at)
+
+
+@app.post("/remove_project", tags=["project"])
+async def get_resources(task_id: str) -> ReturnDict:
+    """
+    remove the project
+
+    @param task_id: if for task
+    """
+    return router_utils.remove_project(task_id=task_id)
