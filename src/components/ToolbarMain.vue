@@ -4,15 +4,15 @@ import IconMusic from "./icons/IconMusic.vue";
 </script>
 
 <template>
-    <ToolbarDir>
+    <ToolbarDir file-type="background">
         <template #dir-icon>
             <IconMusic />
         </template>
         <template #dir-name>
-            <div>Images</div>
+            <div>Background</div>
         </template>
     </ToolbarDir>
-    <ToolbarDir>
+    <ToolbarDir file-type="music">
         <template #dir-icon>
             <IconMusic />
         </template>
@@ -20,12 +20,12 @@ import IconMusic from "./icons/IconMusic.vue";
             <div>Music</div>
         </template>
     </ToolbarDir>
-    <ToolbarDir>
+    <ToolbarDir file-type="character">
         <template #dir-icon>
             <IconMusic />
         </template>
         <template #dir-name>
-            <div>Music</div>
+            <div>Character</div>
         </template>
     </ToolbarDir>
 </template>
