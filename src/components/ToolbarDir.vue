@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, inject, watch, onMounted, watchEffect } from "vue";
+import { ref, inject, watch, onMounted, watchEffect, type PropType } from "vue";
 import type { Ref } from "vue";
 import axios from "axios";
 import FileItem from "./FileItem.vue";
@@ -16,7 +16,7 @@ const props = defineProps({
         default: "background",
     },
     itemCallBack: {
-        type: (...param: any) => void,
+        type: Function as PropType<(event: MouseEvent) => void>,
         default: () => console.log("CallBack undefined"),
     },
 });
@@ -68,8 +68,12 @@ function handleFilesDrop(event: DragEvent): void {
         </div>
         <Transition name="drop">
             <div class="file-content-wrapper" v-show="fileDisplay">
-                <FileItem @click="itemCallBack" v-for="item in files" :key="item"
-                    >{{ item }}></FileItem
+                <FileItem
+                    @click="itemCallBack($event)"
+                    v-for="item in files"
+                    :key="item"
+                    :name="item"
+                    >{{ item }}</FileItem
                 >
             </div>
         </Transition>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import ToolbarDir from "./ToolbarDir.vue";
 import IconMusic from "./icons/IconMusic.vue";
+import type { PropType } from "vue";
 
-defineProps({
+const props = defineProps({
     backgroundCallBack: {
-        type: Function,
+        type: Function as PropType<(event: MouseEvent) => void>,
         default: () => console.log("CallBack undefined"),
     },
 });
@@ -12,7 +13,7 @@ defineProps({
 
 <template>
     <div>
-        <ToolbarDir file-type="background">
+        <ToolbarDir file-type="background" :item-call-back="props.backgroundCallBack">
             <template #dir-icon>
                 <IconMusic />
             </template>

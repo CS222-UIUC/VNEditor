@@ -56,6 +56,7 @@ export async function uploadFiles(id: string, rtype: string, formData: FormData)
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
         });
+        console.log(response);
         return response.data["status"] === 1;
     } catch (err: any) {
         return false;

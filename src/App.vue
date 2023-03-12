@@ -23,9 +23,10 @@ initProject("p1").then((res: string | undefined) => {
     }
 });
 
-function setEditorBackground(img: string) {
+function setEditorBackground(event: MouseEvent) {
+    const el: Element = event.target as Element;
     if (projectID.value)
-        editorBackground.value = getUrl(`resources/background/${img}`, {
+        editorBackground.value = getUrl(`resources/background/${el.innerHTML}`, {
             task_id: projectID.value,
         });
 }
@@ -44,7 +45,7 @@ function setEditorBackground(img: string) {
         <FileUploadArea :display="fileUploadAreaDisplay" />
     </EditorMain>
     <div id="preview-sidebar" class="grid-item">this is sidebar 1 {{ fileUploadAreaDisplay }}</div>
-    <Toolbar id="toolbar-sidebar" class="grid-item" />
+    <Toolbar id="toolbar-sidebar" class="grid-item" :background-call-back="setEditorBackground" />
     <footer id="footer" class="grid-item">this is footer</footer>
 </template>
 
