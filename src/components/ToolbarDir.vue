@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref, inject, watch, onMounted, watchEffect, type PropType } from "vue";
+import { ref, inject, watchEffect, type PropType } from "vue";
 import type { Ref } from "vue";
-import axios from "axios";
 import FileItem from "./FileItem.vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
-import { hostNameKey, projectIDKey } from "./InjectionKeys";
-import { getResources, uploadFiles } from "./RequestAPI";
+import { hostNameKey, projectIDKey } from "../InjectionKeys";
+import { getResources, uploadFiles } from "../RequestAPI";
 
 var fileDisplay = ref(false);
 var enterCount = ref(0);

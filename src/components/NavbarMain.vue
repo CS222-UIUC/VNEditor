@@ -1,5 +1,5 @@
 <script lang="ts">
-//import item from "../components/NavbarItem.vue";
+import item from "../components/NavbarItem.vue";
 //find botton file
 //https://bootstrap-vue.org/docs/components/button
 </script>
@@ -25,8 +25,10 @@ function botD() {
 
 <template>
     <div>
-        <div class="navbar-section" id="header-left">aaa</div>
-        <div class="navbar-section" id="header-mid">aaa</div>
+        <div class="navbar-section" id="header-left">
+            <item />
+        </div>
+        <div class="navbar-section" id="header-mid"></div>
         <div class="navbar-section" id="header-right">aaa</div>
     </div>
 </template>
@@ -34,11 +36,15 @@ function botD() {
 <style>
 .navbar-section {
     height: max-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 #header {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 #header-left {

@@ -8,6 +8,16 @@ const props = defineProps({
         type: Function as PropType<(event: MouseEvent) => void>,
         default: () => console.log("CallBack undefined"),
     },
+
+    musicCallBack: {
+        type: Function as PropType<(event: MouseEvent) => void>,
+        default: () => console.log("CallBack undefined"),
+    },
+
+    characterCallBack: {
+        type: Function as PropType<(event: MouseEvent) => void>,
+        default: () => console.log("CallBack undefined"),
+    },
 });
 </script>
 
@@ -21,7 +31,7 @@ const props = defineProps({
                 <div>Background</div>
             </template>
         </ToolbarDir>
-        <ToolbarDir file-type="music">
+        <ToolbarDir file-type="music" :item-call-back="props.musicCallBack">
             <template #dir-icon>
                 <IconMusic />
             </template>
@@ -29,7 +39,7 @@ const props = defineProps({
                 <div>Music</div>
             </template>
         </ToolbarDir>
-        <ToolbarDir file-type="character">
+        <ToolbarDir file-type="character" :item-call-back="props.characterCallBack">
             <template #dir-icon>
                 <IconMusic />
             </template>
