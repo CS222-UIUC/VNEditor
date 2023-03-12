@@ -15,6 +15,10 @@ const props = defineProps({
         type: String,
         default: "background",
     },
+    itemCallBack: {
+        type: (...param: any) => void,
+        default: () => console.log("CallBack undefined"),
+    },
 });
 const projectID = inject(projectIDKey) as Ref<string>;
 
@@ -64,7 +68,9 @@ function handleFilesDrop(event: DragEvent): void {
         </div>
         <Transition name="drop">
             <div class="file-content-wrapper" v-show="fileDisplay">
-                <FileItem v-for="item in files" :key="item">{{ item }}</FileItem>
+                <FileItem @click="itemCallBack" v-for="item in files" :key="item"
+                    >{{ item }}></FileItem
+                >
             </div>
         </Transition>
     </div>
