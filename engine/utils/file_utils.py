@@ -41,6 +41,19 @@ def get_files_in_folder(folder_dir: str, suffix: str = "") -> list:
     return files
 
 
+def get_folders_in_folder(folder_dir: str) -> list:
+    """
+    get all folders in folder
+
+    :param folder_dir: folder direction
+    :return: the list of files under folder
+    """
+    folders = get_all_in_folder(folder_dir)
+    if len(folders) != 0:
+        folders = [f for f in folders if os.path.isdir(folder_dir + "/" + f)]
+    return folders
+
+
 def get_all_in_folder(folder_dir: str) -> list:
     """
     get all files and folder in given folder
@@ -72,6 +85,22 @@ def get_ext(file_dir: str) -> str:
     :return: extension for file, regardless validation of file
     """
     return os.path.splitext(file_dir)[1]
+
+
+def rename_file(file_dir: str, new_name: str) -> bool:
+    """
+    rename a file by new_name
+
+    @param new_name: new name of the file
+    @param file_dir: where is the file
+    @return:
+    """
+    if not check_file_valid(file_dir):
+        return False
+
+    new_dir = os.path.join(os.path.split(file_dir)[0], new_name)
+    os.rename(file_dir, new_dir)
+    return True
 
 
 def delete_file(file_dir: str) -> bool:
