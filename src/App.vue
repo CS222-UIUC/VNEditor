@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { ref, provide, onMounted } from "vue";
+import { ref, provide } from "vue";
+import { getUrl } from "./components/RequestAPI";
 import { initProject } from "./components/RequestAPI";
 import Toolbar from "./components/ToolbarMain.vue";
 import Navbar from "./components/NavbarMain.vue";
 import FileUploadArea from "./components/UploadArea.vue";
 import { hostNameKey, projectIDKey } from "./components/InjectionKeys";
+import EditorMain from "./components/EditorMain.vue";
 
 const fileUploadAreaDisplay = ref(false);
+const editorBackground = ref("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg");
 const projectID = ref<string | undefined>(undefined);
 
 provide(hostNameKey, "http://127.0.0.1:8000/");
 provide(projectIDKey, projectID);
+
 initProject("p1").then((res: string | undefined) => {
     if (res) {
         projectID.value = res;
@@ -18,23 +22,29 @@ initProject("p1").then((res: string | undefined) => {
         console.log("project init failed");
     }
 });
+
+function setEditorBackground(img: string) {
+    if (projectID.value)
+        editorBackground.value = getUrl(`resources/background/${img}`, {
+            task_id: projectID.value,
+        });
+}
 </script>
 
 <template>
-    <Navbar> </Navbar>
-    <main
+    <Navbar id="header"> </Navbar>
+    <EditorMain
         id="main-editor"
         class="grid-item"
         @clcik="fileUploadAreaDisplay = true"
         @dragenter="fileUploadAreaDisplay = true"
         @dragexit="fileUploadAreaDisplay = false"
+        :style="{ 'background-image': 'url(' + editorBackground + ')' }"
     >
         <FileUploadArea :display="fileUploadAreaDisplay" />
-    </main>
+    </EditorMain>
     <div id="preview-sidebar" class="grid-item">this is sidebar 1 {{ fileUploadAreaDisplay }}</div>
-    <div id="toolbar-sidebar" class="grid-item">
-        <Toolbar />
-    </div>
+    <Toolbar id="toolbar-sidebar" class="grid-item" />
     <footer id="footer" class="grid-item">this is footer</footer>
 </template>
 
@@ -44,7 +54,6 @@ initProject("p1").then((res: string | undefined) => {
 }
 
 #main-editor {
-    background: azure;
     display: flex;
     flex-direction: column;
 }
