@@ -58,14 +58,6 @@ class ConfigLoader:
         """
         return dict(self.config["Project"])
 
-    def register_service(self) -> dict:
-        """
-        get register_service config
-
-        @return: register_service config
-        """
-        return dict(self.config["RegisterService"])
-
     def version(self) -> dict:
         """
         get version config
@@ -73,6 +65,14 @@ class ConfigLoader:
         @return: version config
         """
         return dict(self.config["Version"])
+
+    def cors(self) -> dict:
+        """
+        get CORS config
+
+        @return: cors config
+        """
+        return dict(self.config["CORS"])
 
     def get_all_section(self) -> list:
         """

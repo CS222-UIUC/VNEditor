@@ -1,12 +1,13 @@
 """
 test case for config manager
 """
+
+import sys
+
+sys.path.append("..")
+
 import unittest
-from module.game_slot import GameSlot
-from module.db_manager import DBManager
 from module.config_manager import ConfigLoader
-from utils import file_utils
-from module.exception import *
 
 
 class ConfigManagerTest(unittest.TestCase):
@@ -27,17 +28,15 @@ class ConfigManagerTest(unittest.TestCase):
         @return:
         """
         game_memory_config = self.config.engine()
-        self.assertEqual(game_memory_config["engine"], "engine/yui_engine.py")
+        self.assertEqual(game_memory_config["engine"], "engine/engine.py")
 
     def test_load_config_resources(self):
         game_memory_config = self.config.resources()
         self.assertEqual(game_memory_config["background_dir"], "resources/background")
 
-    def test_load_config_registerService(self):
-        game_memory_config = self.config.register_service()
-        self.assertEqual(
-            game_memory_config["game_slot_service"], "api/GameMemoryService.py"
-        )
+    def test_load(self):
+        game_cors_config = self.config.cors()
+        self.assertEqual(game_cors_config["origins"], "*")
 
 
 if __name__ == "__main__":

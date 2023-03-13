@@ -1,31 +1,51 @@
 <script setup lang="ts">
 import ToolbarDir from "./ToolbarDir.vue";
 import IconMusic from "./icons/IconMusic.vue";
+import type { PropType } from "vue";
+
+const props = defineProps({
+    backgroundCallBack: {
+        type: Function as PropType<(event: MouseEvent) => void>,
+        default: () => console.log("CallBack undefined"),
+    },
+
+    musicCallBack: {
+        type: Function as PropType<(event: MouseEvent) => void>,
+        default: () => console.log("CallBack undefined"),
+    },
+
+    characterCallBack: {
+        type: Function as PropType<(event: MouseEvent) => void>,
+        default: () => console.log("CallBack undefined"),
+    },
+});
 </script>
 
 <template>
-    <ToolbarDir>
-        <template #dir-icon>
-            <IconMusic />
-        </template>
-        <template #dir-name>
-            <div>Images</div>
-        </template>
-    </ToolbarDir>
-    <ToolbarDir>
-        <template #dir-icon>
-            <IconMusic />
-        </template>
-        <template #dir-name>
-            <div>Music</div>
-        </template>
-    </ToolbarDir>
-    <ToolbarDir>
-        <template #dir-icon>
-            <IconMusic />
-        </template>
-        <template #dir-name>
-            <div>Music</div>
-        </template>
-    </ToolbarDir>
+    <div>
+        <ToolbarDir file-type="background" :item-call-back="props.backgroundCallBack">
+            <template #dir-icon>
+                <IconMusic />
+            </template>
+            <template #dir-name>
+                <div>Background</div>
+            </template>
+        </ToolbarDir>
+        <ToolbarDir file-type="music" :item-call-back="props.musicCallBack">
+            <template #dir-icon>
+                <IconMusic />
+            </template>
+            <template #dir-name>
+                <div>Music</div>
+            </template>
+        </ToolbarDir>
+        <ToolbarDir file-type="character" :item-call-back="props.characterCallBack">
+            <template #dir-icon>
+                <IconMusic />
+            </template>
+            <template #dir-name>
+                <div>Character</div>
+            </template>
+        </ToolbarDir>
+    </div>
 </template>

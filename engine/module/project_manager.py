@@ -3,7 +3,7 @@ Manage Project, provide service to manage project, include add, remove, edit
 """
 
 import os.path
-
+from enum import Enum
 from module.exception import ProjectManagerError
 from utils import file_utils
 from .config_manager import ConfigLoader
@@ -11,6 +11,17 @@ from .config_manager import ConfigLoader
 BACKGROUND_CAT = "background_dir"
 CHARACTER_CAT = "character_dir"
 MUSIC_CAT = "music_dir"
+
+
+class ResourcesType(str, Enum):
+    """
+    Resource Type Enumerator
+
+    """
+
+    Background = "background"
+    Music = "music"
+    Character = "character"
 
 
 def delete_project(folder_dir: str) -> bool:
@@ -34,8 +45,8 @@ def init_check(func):
     def wrapper(*args, **kwargs):
         if not args[0].is_init:
             raise ProjectManagerError("Project not initialized")
-        else:
-            return func(*args, **kwargs)
+
+        return func(*args, **kwargs)
 
     return wrapper
 
@@ -50,7 +61,7 @@ class ProjectManager:
         self.__base: str = ""
         self.is_init = False
 
-    def init_project(self, base_dir: str, config_dir: str):
+    def init_project(self, base_dir: str, config_dir: str) -> str:
         """
         constructor for project manager
 
@@ -73,6 +84,7 @@ class ProjectManager:
                 os.makedirs(res_path_abs)
             self.__config_res[i] = res_path_abs
         self.is_init = True
+        return self.__base
 
     @init_check
     def __get_general_res(self, cat: str, filter_by: str = "") -> list:
@@ -89,20 +101,41 @@ class ProjectManager:
         return res
 
     @init_check
-    def __delete_general_res(self, cat: str, file_dir: str) -> bool:
+    def __delete_general_res(self, cat: str, res_name: str) -> bool:
         """
         helper for remove file under specific category
 
         @param cat: specified category
-        @param file_dir: which file to delete, relative path
+        @param res_name: resources name
         @return: ok or not
         """
-        if not file_utils.check_file_valid(self.__config_res[cat]):
+        base = self.__config_res[cat]
+        res_abs_dir = os.path.join(base, res_name)
+
+        if not file_utils.check_file_valid(res_abs_dir):
             return False
-        return file_utils.delete_file(self.__config_res[cat])
+        return file_utils.delete_file(res_abs_dir)
 
     @init_check
-    def delete(self) -> bool:
+    def __rename_general_res(self, cat: str, res_name: str, new_name: str) -> bool:
+        """
+        helper for rename file under specific category
+
+        @param cat: specified category
+        @param res_name: resources name
+        @return: ok or not
+        """
+        base = self.__config_res[cat]
+        res_abs_dir = os.path.join(base, res_name)
+
+        if not file_utils.check_file_valid(res_abs_dir):
+            return False
+
+        res_abs_dir = os.path.join(base, res_name)
+        return file_utils.rename_file(file_dir=res_abs_dir, new_name=new_name)
+
+    @init_check
+    def delete_project(self) -> bool:
         """
         delete the whole project
 
@@ -110,53 +143,83 @@ class ProjectManager:
         """
         return delete_project(self.__base)
 
-    def get_backgrounds_res(self, filter_by="") -> list:
+    def get_resources_by_rtype(self, rtype: ResourcesType, filter_by="") -> list:
         """
+        get the resources by resource type
+
+        @param rtype: resource type
         @param filter_by: fetch resources which contain filter string
-        @return: get all background resources
-        """
-        return self.__get_general_res(BACKGROUND_CAT, filter_by)
+        @return: valid resources name
 
-    def get_music_res(self, filter_by="") -> list:
         """
-        @param filter_by: fetch resources which contain filter string
-        @return: get all background resources
-        """
-        return self.__get_general_res(MUSIC_CAT, filter_by)
+        if rtype == ResourcesType.Background:
+            return self.__get_general_res(BACKGROUND_CAT, filter_by)
+        if rtype == ResourcesType.Music:
+            return self.__get_general_res(MUSIC_CAT, filter_by)
+        if rtype == ResourcesType.Character:
+            return self.__get_general_res(CHARACTER_CAT, filter_by)
 
-    def get_character_res(self, filter_by="") -> list:
-        """
-        @param filter_by: fetch resources which contain filter string
-        @return: get all background resources
-        """
-        return self.__get_general_res(CHARACTER_CAT, filter_by)
+        raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 
-    def delete_backgrounds_res(self, filer_dir: str) -> bool:
+    def delete_resources_by_rtype(self, rtype: ResourcesType, file_name: str) -> bool:
         """
-        @param filer_dir: fetch resources which contain filter string
-        @return: get all background resources
-        """
-        return self.__delete_general_res(BACKGROUND_CAT, filer_dir)
+        delete resources by resources type
 
-    def delete_music_res(self, filer_dir: str) -> bool:
+        @param rtype: resources type
+        @param file_name: file name
+        @return: ok or not
         """
-        @param filer_dir: fetch resources which contain filter string
-        @return: get all background resources
-        """
-        return self.__delete_general_res(MUSIC_CAT, filer_dir)
+        if rtype == ResourcesType.Background:
+            return self.__delete_general_res(BACKGROUND_CAT, file_name)
+        if rtype == ResourcesType.Music:
+            return self.__delete_general_res(MUSIC_CAT, file_name)
+        if rtype == ResourcesType.Character:
+            return self.__delete_general_res(CHARACTER_CAT, file_name)
 
-    def delete_character_res(self, filer_dir: str) -> bool:
+        raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
+
+    def rename_resources_by_rtype(
+        self, rtype: ResourcesType, file_name: str, new_name: str
+    ) -> bool:
         """
-        @param filer_dir: fetch resources which contain filter string
-        @return: get all background resources
+        rename the resources by new_name
+
+        @param rtype: resources type
+        @param file_name: origin file name
+        @param new_name: new file name
+        @return: ok or not
         """
-        return self.__delete_general_res(CHARACTER_CAT, filer_dir)
+        if rtype == ResourcesType.Background:
+            return self.__rename_general_res(BACKGROUND_CAT, file_name, new_name)
+        if rtype == ResourcesType.Music:
+            return self.__rename_general_res(MUSIC_CAT, file_name, new_name)
+        if rtype == ResourcesType.Character:
+            return self.__rename_general_res(CHARACTER_CAT, file_name, new_name)
+
+        raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 
     @init_check
-    def get_base_dir(self):
+    def get_dir_by_rtype(self, rtype: str):
         """
-        get the base directory of the project
+        get the directory by resources type
 
-        @return:
+        @param rtype: resources type
+        @return: corresponding directory
+        """
+        if rtype is ResourcesType.Background:
+            return self.__config_res[BACKGROUND_CAT]
+        if rtype is ResourcesType.Music:
+            return self.__config_res[MUSIC_CAT]
+        if rtype is ResourcesType.Character:
+            return self.__config_res[CHARACTER_CAT]
+
+        raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
+
+    @init_check
+    def get_base_dir(self) -> str:
+        """
+        get the base directory of current project
+
+        @return: the base directory for the project
         """
         return self.__base
