@@ -23,7 +23,7 @@ const projectID = inject(projectIDKey) as Ref<string>;
 
 watchEffect(() => {
     if (projectID.value && fileDisplay)
-        getResources(projectID.value, props.fileType).then((res: string[] | undefined) => {
+        getResources(projectID.value, props.fileType).then((res: string[]) => {
             if (res) files.value.push(...res);
         });
 });
