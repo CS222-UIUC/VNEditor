@@ -58,14 +58,6 @@ class ConfigLoader:
         """
         return dict(self.config["Project"])
 
-    def register_service(self) -> dict:
-        """
-        get register_service config
-
-        @return: register_service config
-        """
-        return dict(self.config["RegisterService"])
-
     def version(self) -> dict:
         """
         get version config

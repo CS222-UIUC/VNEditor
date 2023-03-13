@@ -1,12 +1,13 @@
 ## YuiEngine
 
-[Linter Report](linter_result.txt)
+![icon](static/ok.webp)
 
+**start server by running `start_server.bat`**, you can find API document on the engine website
 
+run `code_report.bat` to generate code report, this script will automatically format code properly and generate a [code report](./code_report.txt) in base directory
 
-start server by running `start_server.bat`, you can find API document on the engine website
+**dependence:**
 
-code format by [black](https://github.com/psf/black), linter by [pylint](https://pypi.org/project/pylint/), run `linter_script.bat` to check code format every time before pull request.
-
-unit test included in `./test` folder, power by [unittest framework](https://docs.python.org/3/library/unittest.html)
-
++ fastapi
++ uvicorn
++ python-multipart
