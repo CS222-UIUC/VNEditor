@@ -113,10 +113,7 @@ def delete_file(file_dir: str) -> bool:
     if not check_file_valid(file_dir):
         return False
 
-    try:
-        os.remove(file_dir)
-    except OSError:
-        return False
+    os.remove(file_dir)
     return True
 
 
@@ -130,8 +127,5 @@ def delete_folder(folder_dir: str) -> bool:
     if not check_folder_valid(folder_dir):
         return False
 
-    try:
-        shutil.rmtree(folder_dir)
-    except OSError:
-        return False
+    shutil.rmtree(folder_dir)
     return True

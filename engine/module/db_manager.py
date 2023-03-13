@@ -99,10 +99,7 @@ class DBManager:
         @param table_name: table name
         @return:
         """
-        try:
-            self.__cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
-        except sqlite3.Error as e_msg:
-            raise DBManagerError(f"drop table {table_name} fail") from e_msg
+        self.__cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
 
     def select(self, table_name: str, is_desc: bool = False, amount: int = -1) -> dict:
         """
@@ -163,7 +160,3 @@ class DBManager:
             print(f"connect to db: {db_dir}")
         self.__db = sqlite3.connect(db_dir)
         self.__cursor = self.__db.cursor()
-
-
-if __name__ == "__main__":
-    print("Load DBManager Class")

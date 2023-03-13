@@ -1,4 +1,64 @@
-Generated In: 2023/03/13 周一 15:37:37.43
+Generated In: 2023/03/13 周一 18:54:46.46
 LINTER REPORT
 
 check ./engine
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+check ./module
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+check ./utils
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+check server.py
+
+-------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 9.76/10, +0.24)
+
+COVERAGE REPORT
+
+connect to db: test.db
+connect to db: test.db
+----------------------------------------
+       time              progress
+----------------------------------------
+empty
+----------------------------------------
+----------------------------------------
+       time              progress
+----------------------------------------
+1678751691.13021          12
+----------------------------------------
+----------------------------------------
+       time              progress
+----------------------------------------
+1678751691.13021          12
+...
+----------------------------------------
+----------------------------------------
+       time              progress
+----------------------------------------
+1678751691.13021          12
+----------------------------------------
+Name                                                        Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------------------------
+C:\Users\Twisl\Desktop\YuiEngine\module\__init__.py             0      0   100%
+C:\Users\Twisl\Desktop\YuiEngine\module\config_manager.py      25      0   100%
+C:\Users\Twisl\Desktop\YuiEngine\module\db_manager.py          57      3    95%   147-148, 158
+C:\Users\Twisl\Desktop\YuiEngine\module\exception.py            6      0   100%
+C:\Users\Twisl\Desktop\YuiEngine\module\game_slot.py           56      1    98%   132
+C:\Users\Twisl\Desktop\YuiEngine\utils\__init__.py              0      0   100%
+C:\Users\Twisl\Desktop\YuiEngine\utils\args_utils.py            8      0   100%
+C:\Users\Twisl\Desktop\YuiEngine\utils\file_utils.py           43      0   100%
+test_config_manager.py                                         35      0   100%
+test_db_manager.py                                             63      0   100%
+test_file_utils.py                                             35      0   100%
+test_game_slot.py                                              39      0   100%
+-----------------------------------------------------------------------------------------
+TOTAL                                                         367      4    99%

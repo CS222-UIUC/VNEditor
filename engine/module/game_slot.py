@@ -136,7 +136,3 @@ class GameSlot:
             if limit == 0:
                 print("...")
         print("-" * 40)
-
-
-if __name__ == "__main__":
-    print("Load GameSlot Class")

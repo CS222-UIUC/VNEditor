@@ -466,7 +466,7 @@ async def get_resources_name(
 
 
 @app.post("/remove_res", tags=["resources"])
-async def remove_project(
+async def remove_resource(
     task_id: str, rtype: ResourcesType, item_name: str
 ) -> ReturnList:
     """
