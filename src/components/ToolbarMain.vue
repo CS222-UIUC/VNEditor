@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ToolbarDir from "./ToolbarDir.vue";
 import IconMusic from "./icons/IconMusic.vue";
+import Rtye, { Rtype } from "../RequestAPI";
 import type { PropType } from "vue";
 
 const props = defineProps({
@@ -23,7 +24,7 @@ const props = defineProps({
 
 <template>
     <div>
-        <ToolbarDir file-type="background" :item-call-back="props.backgroundCallBack">
+        <ToolbarDir :file-type="Rtype.background" :item-call-back="props.backgroundCallBack">
             <template #dir-icon>
                 <IconMusic />
             </template>
@@ -31,7 +32,7 @@ const props = defineProps({
                 <div>Background</div>
             </template>
         </ToolbarDir>
-        <ToolbarDir file-type="music" :item-call-back="props.musicCallBack">
+        <ToolbarDir :file-type="Rtype.music" :item-call-back="props.musicCallBack">
             <template #dir-icon>
                 <IconMusic />
             </template>
@@ -39,7 +40,7 @@ const props = defineProps({
                 <div>Music</div>
             </template>
         </ToolbarDir>
-        <ToolbarDir file-type="character" :item-call-back="props.characterCallBack">
+        <ToolbarDir :file-type="Rtype.character" :item-call-back="props.characterCallBack">
             <template #dir-icon>
                 <IconMusic />
             </template>

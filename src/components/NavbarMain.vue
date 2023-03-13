@@ -5,22 +5,22 @@ import item from "../components/NavbarItem.vue";
 </script>
 
 <script setup lang="ts">
-let counta: number = 0;
-let countb: number = 0;
-let countc: number = 0;
-let countd: number = 0;
-function botA() {
-    counta++;
-}
-function botB() {
-    countb++;
-}
-function botC() {
-    countc++;
-}
-function botD() {
-    countd++;
-}
+// let counta: number = 0;
+// let countb: number = 0;
+// let countc: number = 0;
+// let countd: number = 0;
+// function botA() {
+//     counta++;
+// }
+// function botB() {
+//     countb++;
+// }
+// function botC() {
+//     countc++;
+// }
+// function botD() {
+//     countd++;
+// }
 </script>
 
 <template>
