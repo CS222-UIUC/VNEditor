@@ -1,11 +1,13 @@
 """
 test case for DB manager
 """
+import sys
+
+sys.path.append("..")
+
+
 import unittest
-from module.game_slot import GameSlot
 from module.db_manager import DBManager
-from module.config_manager import ConfigLoader
-from utils import file_utils
 from module.exception import *
 
 

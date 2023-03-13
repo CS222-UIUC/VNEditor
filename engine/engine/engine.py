@@ -9,7 +9,6 @@ contain all basic information to build a visual novel
 import os
 import pickle
 import time
-from enum import Enum
 
 from module.exception import EngineError
 from module.config_manager import ConfigLoader
