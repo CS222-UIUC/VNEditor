@@ -3,9 +3,7 @@ music component for frame
 """
 
 from enum import Enum
-from utils.args_utils import Args
-
-DEFAULT = Args.DEFAULT
+from typing import Optional
 
 
 class MusicSignal(Enum):
@@ -24,7 +22,11 @@ class Music:
     music component in frame
     """
 
-    def __init__(self, res_name: str = DEFAULT, signal: MusicSignal = MusicSignal.KEEP):
+    def __init__(
+        self,
+        res_name: Optional[str] = None,
+        signal: Optional[MusicSignal] = MusicSignal.KEEP,
+    ):
         """
         constructor for Music, for PLAY signal, it must specify a resources to be played
 
@@ -35,7 +37,7 @@ class Music:
         self.signal: MusicSignal = signal
 
     def set_music(
-        self, res_name: str = DEFAULT, signal: MusicSignal = MusicSignal.KEEP
+        self, res_name: str = Optional[str], signal: MusicSignal = MusicSignal.KEEP
     ):
         """
         setter for music resources
