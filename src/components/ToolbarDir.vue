@@ -3,16 +3,16 @@ import { ref, inject, watchEffect, type PropType } from "vue";
 import type { Ref } from "vue";
 import FileItem from "./FileItem.vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
-import { hostNameKey, projectIDKey } from "../InjectionKeys";
-import { getResources, uploadFiles } from "../RequestAPI";
+import { projectIDKey } from "../InjectionKeys";
+import { getResources, uploadFiles, Rtype } from "../RequestAPI";
 
 var fileDisplay = ref(false);
 var enterCount = ref(0);
 const files = ref<string[]>([]);
 const props = defineProps({
     fileType: {
-        type: String,
-        default: "background",
+        type: String as PropType<Rtype>,
+        default: Rtype.background,
     },
     itemCallBack: {
         type: Function as PropType<(event: MouseEvent) => void>,
