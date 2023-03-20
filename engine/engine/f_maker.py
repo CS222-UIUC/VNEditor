@@ -16,10 +16,14 @@ class FrameMaker:
         @return: status
 
         """
-        if type(_type) == type(Frame):
+        if self.__is_type(_type, Frame):
             return self.__make_frame(**kwargs)
         else:
             return None
+
+    @staticmethod
+    def __is_type(type1: type, type2: type):
+        return type(type1) == type(type2)
 
     @staticmethod
     def __make_frame(
@@ -28,5 +32,6 @@ class FrameMaker:
             music: Music,
             dialog: Dialogue,
     ):
-
-        return Frame(Frame.VOID_FRAME_ID, background, chara, music, dialog, Frame.VOID_ACTION)
+        return Frame(
+            Frame.VOID_FRAME_ID, background, chara, music, dialog
+        )

@@ -9,9 +9,15 @@ from module.config_manager import ConfigLoader
 class FrameChecker:
     def __init__(self, project_dir: str, config: ConfigLoader):
         self.__project_dir = project_dir
-        self.__bg_base_dir = os.path.join(self.__project_dir, config.resources()["background_dir"])
-        self.__music_base_dir = os.path.join(self.__project_dir, config.resources()["music_dir"])
-        self.__chara_base_dir = os.path.join(self.__project_dir, config.resources()["character_dir"])
+        self.__bg_base_dir = os.path.join(
+            self.__project_dir, config.resources()["background_dir"]
+        )
+        self.__music_base_dir = os.path.join(
+            self.__project_dir, config.resources()["music_dir"]
+        )
+        self.__chara_base_dir = os.path.join(
+            self.__project_dir, config.resources()["character_dir"]
+        )
 
     def check(self, frame: BasicFrame) -> list[bool, Optional[str]]:
         """
@@ -77,6 +83,9 @@ class FrameChecker:
             if not check_file_valid(
                 abs_dir(self.__chara_base_dir, dialogue_character.res_name)
             ):
-                return [False, f"Character resource {dialogue_character.res_name} cannot find"]
+                return [
+                    False,
+                    f"Character resource {dialogue_character.res_name} cannot find",
+                ]
 
         return [True, None]

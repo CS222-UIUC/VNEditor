@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import { ref, inject, watch, onMounted, watchEffect } from "vue";
+import { ref, inject, watchEffect, type PropType } from "vue";
 import type { Ref } from "vue";
-import axios from "axios";
 import FileItem from "./FileItem.vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
-import { hostNameKey, projectIDKey } from "./InjectionKeys";
-import { getResources, uploadFiles } from "./RequestAPI";
+import { projectIDKey } from "../InjectionKeys";
+import { getResources, uploadFiles, Rtype } from "../RequestAPI";
 
 var fileDisplay = ref(false);
 var enterCount = ref(0);
 const files = ref<string[]>([]);
 const props = defineProps({
     fileType: {
-        type: String,
-        default: "background",
+        type: String as PropType<Rtype>,
+        default: Rtype.background,
+    },
+    itemCallBack: {
+        type: Function as PropType<(event: MouseEvent) => void>,
+        default: () => console.log("CallBack undefined"),
     },
 });
 const projectID = inject(projectIDKey) as Ref<string>;
 
 watchEffect(() => {
     if (projectID.value && fileDisplay)
-        getResources(projectID.value, props.fileType).then((res: string[] | undefined) => {
+        getResources(projectID.value, props.fileType).then((res: string[]) => {
             if (res) files.value.push(...res);
         });
 });
@@ -64,7 +67,13 @@ function handleFilesDrop(event: DragEvent): void {
         </div>
         <Transition name="drop">
             <div class="file-content-wrapper" v-show="fileDisplay">
-                <FileItem v-for="item in files" :key="item">{{ item }}</FileItem>
+                <FileItem
+                    @click="itemCallBack($event)"
+                    v-for="item in files"
+                    :key="item"
+                    :name="item"
+                    >{{ item }}</FileItem
+                >
             </div>
         </Transition>
     </div>

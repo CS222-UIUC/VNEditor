@@ -2,6 +2,7 @@
 frame component for frame
 """
 
+from typing import Optional
 from engine.component.background import Background
 from engine.component.character import Character
 from engine.component.dialogue import Dialogue
@@ -13,13 +14,14 @@ class BasicFrame:
     """
     base modal for frame
     """
+    VOID_FRAME_ID = -1  # indicate no frame
 
-    VOID_FRAME_ID = -1                                  # indicate no frame
-    VOID_ACTION = Action(VOID_FRAME_ID, VOID_FRAME_ID)  # indicate no action
-
-    def __init__(self, fid: int, action: Action):
+    def __init__(self, fid: int, action: Optional[Action] = None):
         self.fid: int = fid
-        self.action: Action = action
+
+        if action is None:
+            action = Action(self.VOID_FRAME_ID, self.VOID_FRAME_ID)
+        self.action = action
 
 
 class Frame(BasicFrame):
@@ -28,13 +30,13 @@ class Frame(BasicFrame):
     """
 
     def __init__(
-        self,
-        fid: int,
-        background: Background,
-        chara: list[Character],
-        music: Music,
-        dialog: Dialogue,
-        action: Action,
+            self,
+            fid: int,
+            background: Background,
+            chara: list[Character],
+            music: Music,
+            dialog: Dialogue,
+            action: Optional[Action] = None,
     ):
         """
         constructor for frame class

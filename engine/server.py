@@ -7,16 +7,20 @@ import time
 import secrets
 
 from typing import Optional
+from functools import wraps
 from pydantic import BaseModel
 from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
+import engine.engine
 from module.project_manager import ProjectManager, ResourcesType
 from module.config_manager import ConfigLoader
 from module.exception import RouterError
 from utils.status import StatusCode
 from utils.file_utils import check_file_valid, get_folders_in_folder, check_folder_valid
+
+from engine.engine import Engine
 
 CONFIG_DIR = "./service.ini"
 
@@ -26,7 +30,6 @@ class ReturnStatus(BaseModel):
     define of return status base model
 
     """
-
     status: StatusCode = StatusCode.FAIL
     msg: Optional[str]
 
@@ -36,7 +39,6 @@ class ReturnList(ReturnStatus):
     define of return list base model
 
     """
-
     content: Optional[list]
 
 
@@ -45,7 +47,6 @@ class ReturnDict(ReturnStatus):
     define of return dictionary base model
 
     """
-
     content: Optional[dict]
 
 
@@ -54,13 +55,14 @@ class Task:
     single task structure
 
     """
-
     project_manager: ProjectManager
+    project_engine: Engine
     time_start: time
     base_dir: str
 
-    def __init__(self, project_manager: ProjectManager, base_dir: str):
+    def __init__(self, project_manager: ProjectManager, project_engine: Engine, base_dir: str):
         self.project_manager = project_manager
+        self.project_engine = project_engine
         self.time_start = time.time()
         self.base_dir = base_dir
 
@@ -70,16 +72,17 @@ def router_exception_handler(func):
     exception decorator for router
 
     @param func: function to be decorated
-    @return:
-    """
 
+    """
+    @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
         except Exception as e_msg:
-            print("Router Error: ", str(e_msg))
+            print(f"Router Error ({type(e_msg).__name__}): ", str(e_msg))
             return ReturnStatus(status=StatusCode.FAIL, msg=str(e_msg))
 
+    wrapper: func
     return wrapper
 
 
@@ -88,7 +91,6 @@ class RouterUtils:
     class for router service
 
     """
-
     def __init__(self):
         """
         constructor for router class
@@ -120,9 +122,9 @@ class RouterUtils:
         while token in self.__tasks:
             token = secrets.token_urlsafe(token_length)
 
-        project_manager = ProjectManager()
-        project_manager.init_project(base_dir=base_dir, config_dir=CONFIG_DIR)
-        self.__tasks[token] = Task(project_manager=project_manager, base_dir=base_dir)
+        project_manager = ProjectManager(base_dir=base_dir, config_dir=CONFIG_DIR)
+        project_engine = Engine(project_dir=project_manager.get_project_dir(), config_dir=CONFIG_DIR)
+        self.__tasks[token] = Task(project_manager=project_manager, project_engine=project_engine, base_dir=base_dir)
         return token
 
     @router_exception_handler
@@ -143,7 +145,7 @@ class RouterUtils:
 
     @router_exception_handler
     def get_resource_name(
-        self, task_id: str, rtype: ResourcesType, filter_str: str = ""
+            self, task_id: str, rtype: ResourcesType, filter_str: str = ""
     ) -> ReturnList:
         """
         get resources name
@@ -163,10 +165,9 @@ class RouterUtils:
         )
         return ReturnList(status=StatusCode.OK, msg="ok", content=resources)
 
-    # @router_exception_handler
     @router_exception_handler
     def upload_file(
-        self, task_id: str, rtype: ResourcesType, file: UploadFile
+            self, task_id: str, rtype: ResourcesType, file: UploadFile
     ) -> ReturnDict:
         """
         upload a single file into the rtype directory
@@ -224,9 +225,9 @@ class RouterUtils:
         return ReturnDict(status=StatusCode.OK, msg="ok", content=to_return)
 
     @router_exception_handler
-    def get_base_dir(self, task_id: str) -> ReturnDict:
+    def get_project_dir(self, task_id: str) -> ReturnDict:
         """
-        get the base directory of the project
+        get the project directory
 
         @param task_id: id for task
         @return: diction contain status information
@@ -236,7 +237,7 @@ class RouterUtils:
             raise RouterError(f"cannot find task id '{task_id}'")
 
         project_manager = self.__tasks[task_id].project_manager
-        to_return = {"base": project_manager.get_base_dir()}
+        to_return = {"base": project_manager.get_project_dir()}
         return ReturnDict(status=StatusCode.OK, content=to_return)
 
     @router_exception_handler
@@ -260,7 +261,7 @@ class RouterUtils:
 
     @router_exception_handler
     def get_resources(
-        self, task_id: str, rtype: ResourcesType, item_name: str
+            self, task_id: str, rtype: ResourcesType, item_name: str
     ) -> ReturnList:
         """
         get the resources absolute address
@@ -288,7 +289,7 @@ class RouterUtils:
 
     @router_exception_handler
     def remove_resource(
-        self, task_id: str, rtype: ResourcesType, item_name: str
+            self, task_id: str, rtype: ResourcesType, item_name: str
     ) -> ReturnList:
         """
         remove resources
@@ -313,7 +314,7 @@ class RouterUtils:
 
     @router_exception_handler
     def rename_resource(
-        self, task_id: str, rtype: ResourcesType, item_name: str, new_name: str
+            self, task_id: str, rtype: ResourcesType, item_name: str, new_name: str
     ) -> ReturnDict:
         """
         rename the resource
@@ -417,6 +418,7 @@ with open("static/ascii_logo", "r", encoding="UTF-8") as f_stream:
         "\n"
         f"{router_utils.version_info['name']}\n"
         f"Version: {router_utils.version_info['version']}\n"
+        f"{engine.engine.ENGINE_NAME}: {engine.engine.ENGINE_VERSION}\n"
     )
 
 
@@ -451,7 +453,7 @@ async def initialize_project(base_dir: str) -> ReturnDict:
 
 @app.post("/get_res", tags=["resources"])
 async def get_resources_name(
-    task_id: str, rtype: ResourcesType, filter_by: str = ""
+        task_id: str, rtype: ResourcesType, filter_by: str = ""
 ) -> ReturnList:
     """
     get background resources, need to initialize project before use
@@ -468,7 +470,7 @@ async def get_resources_name(
 
 @app.post("/remove_res", tags=["resources"])
 async def remove_resource(
-    task_id: str, rtype: ResourcesType, item_name: str
+        task_id: str, rtype: ResourcesType, item_name: str
 ) -> ReturnList:
     """
     remove resources by resources name
@@ -485,7 +487,7 @@ async def remove_resource(
 
 @app.post("/rename_res", tags=["resources"])
 async def rename_project(
-    task_id: str, rtype: ResourcesType, item_name: str, new_name: str
+        task_id: str, rtype: ResourcesType, item_name: str, new_name: str
 ) -> ReturnDict:
     """
     rename resources by resources name
@@ -503,7 +505,7 @@ async def rename_project(
 
 @app.post("/upload", tags=["resources"])
 async def upload_file(
-    task_id: str, rtype: ResourcesType, file: UploadFile
+        task_id: str, rtype: ResourcesType, file: UploadFile
 ) -> ReturnDict:
     """
     update resources to rtype
@@ -517,7 +519,7 @@ async def upload_file(
 
 @app.post("/upload_files", tags=["resources"])
 async def upload_files(
-    task_id: str, rtype: ResourcesType, files: list[UploadFile]
+        task_id: str, rtype: ResourcesType, files: list[UploadFile]
 ) -> ReturnList:
     """
     update multi resources to rtype
@@ -547,12 +549,12 @@ async def upload_files(
 
 
 @app.post("/get_base", tags=["project"])
-async def get_base_dir(task_id: str) -> ReturnDict:
+async def get_project_dir(task_id: str) -> ReturnDict:
     """
-    get the base directory of the project
+    get the project directory
 
     """
-    return router_utils.get_base_dir(task_id=task_id)
+    return router_utils.get_project_dir(task_id=task_id)
 
 
 @app.post("/remove_task", tags=["project"])
@@ -566,7 +568,7 @@ async def remove_task(task_id: str) -> ReturnDict:
 
 @app.get("/resources/{rtype}/{item_name}", tags=["resources"])
 async def get_resources(
-    task_id: str, rtype: ResourcesType, item_name: str
+        task_id: str, rtype: ResourcesType, item_name: str
 ) -> FileResponse:
     """
     get resources file

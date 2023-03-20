@@ -14,7 +14,7 @@ def pickle_loader(file_dir: str):
     @return ok or not
 
     """
-    with open(file_dir, 'rb') as file_stream:
+    with open(file_dir, "rb") as file_stream:
         return pickle.load(file_stream)
 
 
@@ -27,5 +27,5 @@ def pickle_dumper(game_content_raw: list, file_dir: str):
     @return: ok or not
 
     """
-    with open(file_dir, 'wb') as file_stream:
+    with open(file_dir, "wb") as file_stream:
         pickle.dump(game_content_raw, file_stream)
