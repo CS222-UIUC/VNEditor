@@ -35,33 +35,12 @@ def delete_project(folder_dir: str) -> bool:
     return file_utils.delete_folder(folder_dir=folder_dir)
 
 
-def init_check(func):
-    """
-    check if project has been initialized
-
-    @return:
-    """
-
-    def wrapper(*args, **kwargs):
-        if not args[0].is_init:
-            raise ProjectManagerError("Project not initialized")
-
-        return func(*args, **kwargs)
-
-    return wrapper
-
-
 class ProjectManager:
     """
     project manager class
     """
 
-    def __init__(self):
-        self.__config_res: dict = {}
-        self.__base: str = ""
-        self.is_init = False
-
-    def init_project(self, base_dir: str, config_dir: str) -> str:
+    def __init__(self, base_dir: str, config_dir: str):
         """
         constructor for project manager
 
@@ -69,11 +48,10 @@ class ProjectManager:
         @param config_dir: directory of config
         """
 
-        self.__base = base_dir
         config = ConfigLoader(config_dir)
         self.__config_res = config.resources()
         project_base_dir = config.project()["projects_base"]
-        self.__base = os.path.join(project_base_dir, self.__base)
+        self.__base = os.path.join(project_base_dir, base_dir)
 
         if not file_utils.check_folder_valid(self.__base):
             os.makedirs(self.__base)
@@ -83,10 +61,7 @@ class ProjectManager:
             if not file_utils.check_folder_valid(res_path_abs):
                 os.makedirs(res_path_abs)
             self.__config_res[i] = res_path_abs
-        self.is_init = True
-        return self.__base
 
-    @init_check
     def __get_general_res(self, cat: str, filter_by: str = "") -> list:
         """
         helper for get all resources under specific category
@@ -100,7 +75,6 @@ class ProjectManager:
             return [i for i in res if filter_by in i]
         return res
 
-    @init_check
     def __delete_general_res(self, cat: str, res_name: str) -> bool:
         """
         helper for remove file under specific category
@@ -116,7 +90,6 @@ class ProjectManager:
             return False
         return file_utils.delete_file(res_abs_dir)
 
-    @init_check
     def __rename_general_res(self, cat: str, res_name: str, new_name: str) -> bool:
         """
         helper for rename file under specific category
@@ -134,7 +107,6 @@ class ProjectManager:
         res_abs_dir = os.path.join(base, res_name)
         return file_utils.rename_file(file_dir=res_abs_dir, new_name=new_name)
 
-    @init_check
     def delete_project(self) -> bool:
         """
         delete the whole project
@@ -179,7 +151,7 @@ class ProjectManager:
         raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 
     def rename_resources_by_rtype(
-        self, rtype: ResourcesType, file_name: str, new_name: str
+            self, rtype: ResourcesType, file_name: str, new_name: str
     ) -> bool:
         """
         rename the resources by new_name
@@ -198,7 +170,6 @@ class ProjectManager:
 
         raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 
-    @init_check
     def get_dir_by_rtype(self, rtype: str):
         """
         get the directory by resources type
@@ -215,8 +186,7 @@ class ProjectManager:
 
         raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 
-    @init_check
-    def get_base_dir(self) -> str:
+    def get_project_dir(self) -> str:
         """
         get the base directory of current project
 
