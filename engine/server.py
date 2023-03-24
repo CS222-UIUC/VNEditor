@@ -37,6 +37,11 @@ class ReturnList(ReturnStatus):
 
     """
 
+    """
+    define of return list base model
+
+    """
+
     content: Optional[list]
 
 
@@ -46,10 +51,20 @@ class ReturnDict(ReturnStatus):
 
     """
 
+    """
+    define of return dictionary base model
+
+    """
+
     content: Optional[dict]
 
 
 class Task:
+    """
+    single task structure
+
+    """
+
     """
     single task structure
 
@@ -110,6 +125,13 @@ class RouterUtils:
         @return: task token
 
         """
+        """
+        generate a new task, called when initial a new project
+
+        @param base_dir: base directory of the project
+        @return: task token
+
+        """
         base_dir = base_dir.lower()
         for task_id, task in self.__tasks.items():
             if task.base_dir == base_dir:
@@ -117,7 +139,10 @@ class RouterUtils:
 
         token_length = int(self.__project_config["token_length"])
         token = secrets.token_urlsafe(token_length)
+        token_length = int(self.__project_config["token_length"])
+        token = secrets.token_urlsafe(token_length)
         while token in self.__tasks:
+            token = secrets.token_urlsafe(token_length)
             token = secrets.token_urlsafe(token_length)
 
         project_manager = ProjectManager()
@@ -132,6 +157,7 @@ class RouterUtils:
 
         @param base_dir: project directory
         @return: status code
+
 
         """
         task_id = self.__new_task(base_dir)
@@ -152,6 +178,7 @@ class RouterUtils:
         @param rtype: type of resources to fetch
         @param filter_str: filter resources by a specific string
         @return: status code
+
 
         """
         if task_id not in self.__tasks:
@@ -177,6 +204,15 @@ class RouterUtils:
         @return: diction contain upload file information
 
         """
+        """
+        upload a single file into the rtype directory
+
+        @param task_id: id for task
+        @param rtype: resources type
+        @param file: file to be uploaded
+        @return: diction contain upload file information
+
+        """
         if task_id not in self.__tasks:
             raise RouterError(f"cannot find task id '{task_id}'")
 
@@ -190,13 +226,16 @@ class RouterUtils:
             raise RouterError(f"no such rtype: {rtype}")
 
         if rtype is ResourcesType.Background:
+        if rtype is ResourcesType.Background:
             if suffix not in self.__resources_config["background_support"].split(","):
                 raise RouterError(f"file type '{suffix}' not support")
 
         elif rtype is ResourcesType.Music:
+        elif rtype is ResourcesType.Music:
             if suffix not in self.__resources_config["music_support"].split(","):
                 raise RouterError(f"file type '{suffix}' not support")
 
+        elif rtype is ResourcesType.Character:
         elif rtype is ResourcesType.Character:
             if suffix not in self.__resources_config["character_support"].split(","):
                 raise RouterError(f"file type '{suffix}' not support")
@@ -217,6 +256,9 @@ class RouterUtils:
             raise RouterError(
                 f"cannot write file {file.filename} due to {str(e)}"
             ) from e
+            raise RouterError(
+                f"cannot write file {file.filename} due to {str(e)}"
+            ) from e
         finally:
             file.file.close()
 
@@ -225,6 +267,13 @@ class RouterUtils:
 
     @router_exception_handler
     def get_base_dir(self, task_id: str) -> ReturnDict:
+        """
+        get the base directory of the project
+
+        @param task_id: id for task
+        @return: diction contain status information
+
+        """
         """
         get the base directory of the project
 
@@ -248,6 +297,13 @@ class RouterUtils:
         @return: diction contain status information
 
         """
+        """
+        remove the task from task list
+
+        @param task_id: if for task
+        @return: diction contain status information
+
+        """
         if task_id not in self.__tasks:
             raise RouterError(f"cannot find task id '{task_id}'")
 
@@ -262,6 +318,15 @@ class RouterUtils:
     def get_resources(
         self, task_id: str, rtype: ResourcesType, item_name: str
     ) -> ReturnList:
+        """
+        get the resources absolute address
+
+        @param task_id: id for task
+        @param rtype: resource type
+        @param item_name: resource name
+        @return: list contain status information
+
+        """
         """
         get the resources absolute address
 
@@ -299,6 +364,16 @@ class RouterUtils:
         @return: list contain status information
 
         """
+    ) -> ReturnList:
+        """
+        remove resources
+
+        @param task_id: id for task
+        @param rtype: resources type
+        @param item_name: resource name
+        @return: list contain status information
+
+        """
         if task_id not in self.__tasks:
             raise RouterError(f"cannot find task id '{task_id}'")
 
@@ -315,6 +390,16 @@ class RouterUtils:
     def rename_resource(
         self, task_id: str, rtype: ResourcesType, item_name: str, new_name: str
     ) -> ReturnDict:
+        """
+        rename the resource
+
+        @param task_id: id for task
+        @param rtype: resources type
+        @param item_name: resource name
+        @param new_name: new name
+        @return: dictionary contain status information
+
+        """
         """
         rename the resource
 
@@ -364,6 +449,14 @@ class RouterUtils:
         @return: dictionary contain status information
 
         """
+    def remove_project_dir(self, task_id: str) -> ReturnDict:
+        """
+        remove the project, include the whole directory
+
+        @param task_id: id for task
+        @return: dictionary contain status information
+
+        """
         if task_id not in self.__tasks:
             raise RouterError(f"cannot find task id '{task_id}'")
 
@@ -381,8 +474,13 @@ class RouterUtils:
 
         raise RouterError(f"remove project id:{task_id} fails")
 
+        raise RouterError(f"remove project id:{task_id} fails")
+
     def check_task_exist(self, task_id: str) -> bool:
         """
+        check if the given task id in the current progress, for most situation,
+        router utils can handle task checking process automatically,
+        THIS FUNCTION SHOULD NOT ALWAYS USE!!!
         check if the given task id in the current progress, for most situation,
         router utils can handle task checking process automatically,
         THIS FUNCTION SHOULD NOT ALWAYS USE!!!
@@ -412,6 +510,7 @@ app.add_middleware(
 )
 
 with open("static/ascii_logo", "r", encoding="UTF-8") as f_stream:
+with open("static/ascii_logo", "r", encoding="UTF-8") as f_stream:
     print("\n", f_stream.read())
     print(
         "\n"
@@ -427,8 +526,20 @@ async def read_index():
 
     """
     return FileResponse("static/index.html")
+    """
+    server index page
+
+    """
+    return FileResponse("static/index.html")
 
 
+@app.get("/ok_image", include_in_schema=False)
+async def ok_image():
+    """
+    server index page image
+
+    """
+    return FileResponse("static/ok.webp")
 @app.get("/ok_image", include_in_schema=False)
 async def ok_image():
     """
@@ -468,7 +579,9 @@ async def get_resources_name(
 
 @app.post("/remove_res", tags=["resources"])
 async def remove_resource(
+async def remove_resource(
     task_id: str, rtype: ResourcesType, item_name: str
+) -> ReturnList:
 ) -> ReturnList:
     """
     remove resources by resources name
@@ -583,6 +696,8 @@ async def get_resources(
 
     return FileResponse(resource_at.content[0])
 
+    return FileResponse(resource_at.content[0])
+
 
 @app.post("/list_projects", tags=["project"])
 async def list_project() -> ReturnList:
@@ -600,4 +715,5 @@ async def remove_project(task_id: str) -> ReturnDict:
 
     @param task_id: if for task
     """
+    return router_utils.remove_project_dir(task_id=task_id)
     return router_utils.remove_project_dir(task_id=task_id)
