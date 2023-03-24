@@ -16,9 +16,10 @@ const projectID = ref<string | undefined>(undefined);
 provide(hostNameKey, "http://127.0.0.1:8000/");
 provide(projectIDKey, projectID);
 
-initProject("p1").then((res: string | undefined) => {
+initProject("test_1").then((res: string | undefined) => {
     if (res) {
         projectID.value = res;
+        console.log(projectID.value);
     } else {
         console.log("project init failed");
     }
