@@ -53,3 +53,4 @@ docs/_build/
 .idea
 projects
 start_server_dev.bat
+test/test.db

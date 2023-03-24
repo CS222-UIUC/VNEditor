@@ -1,0 +1,85 @@
+Generated In: 2023/03/14 ÖÜ¶þ 16:05:11.84
+LINTER REPORT
+
+check ./engine
+************* Module engine.engine
+engine\engine.py:11:0: E0401: Unable to import 'eng_io' (import-error)
+engine\engine.py:254:12: W0707: Consider explicitly re-raising using 'raise EngineError('fail to commit due to: ' + str(e_msg)) from e_msg' (raise-missing-from)
+engine\engine.py:13:0: C0411: standard import "from typing import Optional" should be placed before "import eng_io" (wrong-import-order)
+************* Module engine.eng_io
+engine\eng_io.py:7:0: E0401: Unable to import 'extension.ext_io' (import-error)
+engine\eng_io.py:7:0: W0401: Wildcard import extension.ext_io (wildcard-import)
+************* Module engine.frame_checker
+engine\frame_checker.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+engine\frame_checker.py:8:0: C0115: Missing class docstring (missing-class-docstring)
+engine\frame_checker.py:30:4: R0911: Too many return statements (7/6) (too-many-return-statements)
+engine\frame_checker.py:30:4: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
+engine\frame_checker.py:10:8: W0238: Unused private member `FrameChecker.__project_dir` (unused-private-member)
+engine\frame_checker.py:2:0: C0411: standard import "from typing import Optional" should be placed before "from engine.frame import BasicFrame, Frame" (wrong-import-order)
+************* Module engine.frame_maker
+engine\frame_maker.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+engine\frame_maker.py:10:0: C0115: Missing class docstring (missing-class-docstring)
+engine\frame_maker.py:11:4: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
+engine\frame_maker.py:7:0: C0411: standard import "from typing import Optional" should be placed before "from engine.component.action import Action" (wrong-import-order)
+engine\frame_maker.py:7:0: W0611: Unused Optional imported from typing (unused-import)
+************* Module engine.test
+engine\test.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+engine\test.py:1:0: E0401: Unable to import 'eng_io' (import-error)
+************* Module engine.component.action
+engine\component\action.py:5:0: C0411: standard import "from typing import Optional" should be placed before "from engine.component.branch import BranchTree" (wrong-import-order)
+************* Module engine.component.branch
+engine\component\branch.py:25:8: E1137: 'self.__branch_tree' does not support item assignment (unsupported-assignment-operation)
+************* Module engine.component.dialogue
+engine\component\dialogue.py:6:0: C0411: standard import "from typing import Optional" should be placed before "from .character import Character" (wrong-import-order)
+************* Module engine.extension.ext_io
+engine\extension\ext_io.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+engine\extension\ext_io.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)
+engine\extension\ext_io.py:4:18: W0613: Unused argument 'file_stream' (unused-argument)
+engine\extension\ext_io.py:8:0: C0116: Missing function or method docstring (missing-function-docstring)
+engine\extension\ext_io.py:8:18: W0613: Unused argument 'game_content_raw' (unused-argument)
+engine\extension\ext_io.py:8:42: W0613: Unused argument 'file_stream' (unused-argument)
+
+------------------------------------------------------------------
+Your code has been rated at 8.44/10 (previous run: 8.77/10, -0.33)
+
+check ./module
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+check ./utils
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+check server.py
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+COVERAGE REPORT
+
+connect to db: test.db
+connect to db: test.db
+----------------------------------------
+       time              progress
+----------------------------------------
+empty
+----------------------------------------
+----------------------------------------
+       time              progress
+----------------------------------------
+1678827917.08223          12
+----------------------------------------
+----------------------------------------
+       time              progress
+----------------------------------------
+1678827917.08223          12
+...
+----------------------------------------
+----------------------------------------
+       time              progress
+----------------------------------------
+1678827917.08223          12
+----------------------------------------
+No source for code: 'C:\Users\Twisl\Desktop\YuiEngine\utils\args_utils.py'.
