@@ -19,6 +19,8 @@
     "header header header"
     "preview-sidebar main-editor toolbar-sidebar"
     "footer footer footer";
+
+  z-index: 1;
 }
 #header {
   grid-area: 1 / 1 / 2 / 4;

@@ -2,14 +2,14 @@
 
 <template>
     <div class="navbar-item">
-        <img src="../assets/logo.svg" aot="logo" width="50" height="50" />
+        <slot name="el"></slot>
     </div>
 </template>
 
 <style>
 .navbar-item {
-    width: 5%;
     height: max-content;
+    margin-left: 2%;
     margin-top: auto;
     margin-bottom: auto;
 }
