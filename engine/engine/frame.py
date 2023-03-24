@@ -2,23 +2,36 @@
 frame component for frame
 """
 
-from .background import Background
-from .character import Character
-from .dialogue import Dialogue
-from .music import Music
-from .action import Action
+from engine.component.background import Background
+from engine.component.character import Character
+from engine.component.dialogue import Dialogue
+from engine.component.music import Music
+from engine.component.action import Action
 
 
-class Frame:
+class BasicFrame:
     """
-    Frame
+    base modal for frame
+    """
+
+    VOID_FRAME_ID = -1                                  # indicate no frame
+    VOID_ACTION = Action(VOID_FRAME_ID, VOID_FRAME_ID)  # indicate no action
+
+    def __init__(self, fid: int, action: Action):
+        self.fid: int = fid
+        self.action: Action = action
+
+
+class Frame(BasicFrame):
+    """
+    a normal frame
     """
 
     def __init__(
         self,
         fid: int,
         background: Background,
-        chara: Character,
+        chara: list[Character],
         music: Music,
         dialog: Dialogue,
         action: Action,
@@ -33,26 +46,8 @@ class Frame:
         @param dialog: dialogue
         @param action: action
         """
-        self.background = background
-        self.chara = chara
-        self.music = music
-        self.dialog = dialog
-        self.action = action
-        self.fid = fid
-
-    def set_id(self, fid: int) -> None:
-        """
-        set frame id for current frame
-
-        @param fid: new fid
-        @return:
-        """
-        self.fid = fid
-
-    def get_id(self) -> int:
-        """
-        get the id for current frame
-
-        @return: frame id
-        """
-        return self.fid
+        super().__init__(fid, action)
+        self.background: Background = background
+        self.chara: list[Character] = chara
+        self.music: Music = music
+        self.dialog: Dialogue = dialog

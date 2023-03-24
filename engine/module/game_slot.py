@@ -2,7 +2,7 @@
 API module for game slot control
 """
 import time
-from utils.args_utils import Args
+from typing import Optional
 
 from .db_manager import DBManager
 from .config_manager import ConfigLoader
@@ -32,7 +32,7 @@ class GameSlot:
     Game slot control service
     """
 
-    def __init__(self, db_dir: str, config_dir: str, slot_name: str = Args.DEFAULT):
+    def __init__(self, db_dir: str, config_dir: str, slot_name: Optional[str] = None):
         """
         constructor for game slot service
 
@@ -40,7 +40,7 @@ class GameSlot:
         @param config_dir: config directory
         @param slot_name: specified slot name, use default if not specified
         """
-        if slot_name is Args.DEFAULT:
+        if slot_name is None:
             config = ConfigLoader(config_dir)
             slot_name = config.game_memory()["default_slot_name"]
 

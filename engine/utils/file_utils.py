@@ -129,3 +129,14 @@ def delete_folder(folder_dir: str) -> bool:
 
     shutil.rmtree(folder_dir)
     return True
+
+
+def abs_dir(project_dir: str, relevant_dir: str):
+    """
+    get absolute directory from project/relevant directory
+
+    @param project_dir: project directory
+    @param relevant_dir: relevant directory
+    @return: absolute directory
+    """
+    return os.path.join(project_dir, relevant_dir)

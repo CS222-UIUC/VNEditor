@@ -1,18 +1,24 @@
-def check_authorization(f):
-    def wrapper(*args):
-        print(args[0].url)
-        return f(*args)
+from engine.engine import Engine
 
-    return wrapper
-
-
-class Client(object):
-    def __init__(self, url):
-        self.url = url
-
-    @check_authorization
-    def get(self):
-        print("get")
+from engine.component.character import CharacterPosition
+from engine.component.music import MusicSignal
+from engine.frame import *
 
 
-Client("https://www.google.com").get()
+engine = Engine(project_dir="../projects/aaa",
+                config_dir="../service.ini")
+
+
+background = Background(res_name='b.jpg')
+character1 = Character(res_name="c.jpg", position=CharacterPosition(x=12, y=11.9))
+character2 = Character(res_name="c.jpg", position=CharacterPosition(x=56, y=11.9))
+characters = [character1, character2]
+dialogue = Dialogue(dialogue="hello world", character=character1)
+music = Music(signal=MusicSignal.KEEP)
+
+for i in range(100):
+    frame = engine.make_frame(_type=Frame, background=background, chara=characters, music=music, dialog=dialogue)
+    if i % 10 == 0:
+        engine.append_frame(frame)
+
+engine.commit()

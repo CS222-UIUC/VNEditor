@@ -15,7 +15,7 @@ from fastapi.responses import FileResponse
 from module.project_manager import ProjectManager, ResourcesType
 from module.config_manager import ConfigLoader
 from module.exception import RouterError
-from utils.args_utils import STATUS
+from utils.status import StatusCode
 from utils.file_utils import check_file_valid, get_folders_in_folder, check_folder_valid
 
 CONFIG_DIR = "./service.ini"
@@ -27,7 +27,11 @@ class ReturnStatus(BaseModel):
 
     """
 
+<<<<<<< HEAD
     status: STATUS = STATUS.FAIL
+=======
+    status: StatusCode = StatusCode.FAIL
+>>>>>>> Tesseract
     msg: Optional[str]
 
 
@@ -78,7 +82,7 @@ def router_exception_handler(func):
             return func(*args, **kwargs)
         except Exception as e_msg:
             print("Router Error: ", str(e_msg))
-            return ReturnStatus(status=STATUS.FAIL, msg=str(e_msg))
+            return ReturnStatus(status=StatusCode.FAIL, msg=str(e_msg))
 
     return wrapper
 
@@ -136,7 +140,7 @@ class RouterUtils:
         """
         task_id = self.__new_task(base_dir)
         return ReturnDict(
-            status=STATUS.OK,
+            status=StatusCode.OK,
             msg=f"successfully initialize project in '{base_dir}'",
             content={"task_id": task_id},
         )
@@ -161,7 +165,7 @@ class RouterUtils:
         resources = project_manager.get_resources_by_rtype(
             rtype=rtype, filter_by=filter_str
         )
-        return ReturnList(status=STATUS.OK, msg="ok", content=resources)
+        return ReturnList(status=StatusCode.OK, msg="ok", content=resources)
 
     # @router_exception_handler
     @router_exception_handler
@@ -221,7 +225,11 @@ class RouterUtils:
             file.file.close()
 
         to_return = {"filename": file.filename, "directory": to_path, "size": file_size}
+<<<<<<< HEAD
         return ReturnDict(status=STATUS.OK, msg="ok", content=to_return)
+=======
+        return ReturnDict(status=StatusCode.OK, msg="ok", content=to_return)
+>>>>>>> Tesseract
 
     @router_exception_handler
     def get_base_dir(self, task_id: str) -> ReturnDict:
@@ -237,7 +245,7 @@ class RouterUtils:
 
         project_manager = self.__tasks[task_id].project_manager
         to_return = {"base": project_manager.get_base_dir()}
-        return ReturnDict(status=STATUS.OK, content=to_return)
+        return ReturnDict(status=StatusCode.OK, content=to_return)
 
     @router_exception_handler
     def remove_task(self, task_id: str) -> ReturnDict:
@@ -254,7 +262,8 @@ class RouterUtils:
         task_last_time = time.time() - self.__tasks[task_id].time_start
         self.__tasks.pop(task_id)
         return ReturnDict(
-            status=STATUS.OK, content={"task_id": task_id, "time_last": task_last_time}
+            status=StatusCode.OK,
+            content={"task_id": task_id, "time_last": task_last_time},
         )
 
     @router_exception_handler
@@ -278,10 +287,17 @@ class RouterUtils:
         resources_at = os.path.join(resource_dir, item_name)
 
         if check_file_valid(resources_at):
+<<<<<<< HEAD
             return ReturnList(status=STATUS.OK, msg="ok", content=[resources_at])
 
         return ReturnList(
             status=STATUS.FAIL,
+=======
+            return ReturnList(status=StatusCode.OK, msg="ok", content=[resources_at])
+
+        return ReturnList(
+            status=StatusCode.FAIL,
+>>>>>>> Tesseract
             msg=f"fail to get resources because file '{resources_at}' is not valid",
         )
 
@@ -308,7 +324,11 @@ class RouterUtils:
         if not status:
             raise RouterError(f"item {item_name} cannot find in category {rtype}")
 
+<<<<<<< HEAD
         return ReturnList(status=STATUS.OK, msg="ok", content=[item_name])
+=======
+        return ReturnList(status=StatusCode.OK, msg="ok", content=[item_name])
+>>>>>>> Tesseract
 
     @router_exception_handler
     def rename_resource(
@@ -335,7 +355,7 @@ class RouterUtils:
             raise RouterError(f"item {item_name} cannot find in category {rtype}")
 
         return ReturnDict(
-            status=STATUS.OK, msg="ok", content={"old": item_name, "new": new_name}
+            status=StatusCode.OK, msg="ok", content={"old": item_name, "new": new_name}
         )
 
     @router_exception_handler
@@ -348,7 +368,11 @@ class RouterUtils:
         project_base = self.__project_config["projects_base"]
         if check_folder_valid(project_base):
             project_dirs = get_folders_in_folder(project_base)
+<<<<<<< HEAD
             return ReturnList(status=STATUS.OK, content=project_dirs)
+=======
+            return ReturnList(status=StatusCode.OK, content=project_dirs)
+>>>>>>> Tesseract
 
         raise RouterError(
             f"project folder {project_base} not valid, check the ini file"
@@ -373,7 +397,7 @@ class RouterUtils:
             task_last_time = time.time() - self.__tasks[task_id].time_start
             self.__tasks.pop(task_id)
             return ReturnDict(
-                status=STATUS.OK,
+                status=StatusCode.OK,
                 msg="ok",
                 content={"task_id": task_id, "time_last": task_last_time},
             )
@@ -526,18 +550,18 @@ async def upload_files(
     @param files: files steam
     """
     to_return = []
-    status: STATUS = STATUS.FAIL  # at least one mission succeed
+    status: StatusCode = StatusCode.FAIL  # at least one mission succeed
 
     if router_utils.check_task_exist(task_id):
         for file in files:
             mission_status = router_utils.upload_file(
                 task_id=task_id, rtype=rtype, file=file
             )
-            if mission_status.status == STATUS.OK:
-                status = STATUS.OK
+            if mission_status.status == StatusCode.OK:
+                status = StatusCode.OK
             to_return.append(mission_status)
 
-    if status == STATUS.FAIL:
+    if status == StatusCode.FAIL:
         msg = "fail to upload files"
     else:
         msg = "ok"
@@ -577,7 +601,7 @@ async def get_resources(
     resource_at = router_utils.get_resources(
         task_id=task_id, rtype=rtype, item_name=item_name
     )
-    if resource_at.status == STATUS.FAIL:
+    if resource_at.status == StatusCode.FAIL:
         raise HTTPException(status_code=404, detail="Item not found")
 
     return FileResponse(resource_at.content[0])
