@@ -1,8 +1,9 @@
 """
 action component for frame
 """
-from engine.component.branch import BranchTree
+
 from typing import Optional
+from engine.component.branch import BranchTree
 
 
 class Action:

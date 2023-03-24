@@ -1,7 +1,7 @@
 @echo off
 echo run linter script, please wait...
 black ./
-echo generating linter and coverage report
+echo generating linter and coverage report...
 >code_report.txt (
   echo Generated In: %date% %time%
   echo LINTER REPORT
@@ -21,6 +21,7 @@ echo generating linter and coverage report
   coverage run -m -a unittest test_db_manager.py
   coverage run -m -a unittest test_file_utils.py
   coverage run -m -a unittest test_game_slot.py
+  coverage run -m -a unittest test_engine.py
   coverage report -m
 )
 echo code result been pushed into 'code_report.txt'

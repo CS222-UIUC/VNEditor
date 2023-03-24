@@ -1,19 +1,24 @@
+"""
+Frame Checker class, if you implement your own frame, please also implement the checker here
+"""
+
 import os
-from engine.frame import BasicFrame, Frame
 from typing import Optional
+
+from engine.frame import BasicFrame, Frame
 from engine.component.music import MusicSignal
 from utils.file_utils import check_file_valid, abs_dir
 from module.config_manager import ConfigLoader
 
 
 class FrameChecker:
+    """
+    frame checker class
+
+    """
+
     def __init__(self, project_dir: str, config: ConfigLoader):
         self.__project_dir = project_dir
-<<<<<<< HEAD
-        self.__bg_base_dir = os.path.join(self.__project_dir, config.resources()["background_dir"])
-        self.__music_base_dir = os.path.join(self.__project_dir, config.resources()["music_dir"])
-        self.__chara_base_dir = os.path.join(self.__project_dir, config.resources()["character_dir"])
-=======
         self.__bg_base_dir = os.path.join(
             self.__project_dir, config.resources()["background_dir"]
         )
@@ -23,7 +28,6 @@ class FrameChecker:
         self.__chara_base_dir = os.path.join(
             self.__project_dir, config.resources()["character_dir"]
         )
->>>>>>> 70dad1d15cfc57f95f402403263021528a40be31
 
     def check(self, frame: BasicFrame) -> list[bool, Optional[str]]:
         """
@@ -89,13 +93,9 @@ class FrameChecker:
             if not check_file_valid(
                 abs_dir(self.__chara_base_dir, dialogue_character.res_name)
             ):
-<<<<<<< HEAD
-                return [False, f"Character resource {dialogue_character.res_name} cannot find"]
-=======
                 return [
                     False,
                     f"Character resource {dialogue_character.res_name} cannot find",
                 ]
->>>>>>> 70dad1d15cfc57f95f402403263021528a40be31
 
         return [True, None]

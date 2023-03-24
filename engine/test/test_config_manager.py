@@ -17,7 +17,7 @@ class TestConfigLoader(TestCase):
 
     def test_engine(self):
         game_memory_config = self.config.engine()
-        self.assertEqual(game_memory_config["engine"], "engine/engine.py")
+        self.assertEqual(game_memory_config["loader"], "pickle_loader")
 
     def test_log_file(self):
         game_log_config = self.config.log_file()
