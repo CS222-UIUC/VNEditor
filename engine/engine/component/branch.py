@@ -2,16 +2,13 @@
 branch component for frame
 """
 
-from utils.args_utils import Args
-
 
 class BranchTree:
     """
-    Branch struct -- "El Psy Congroo!"
+    Branch struct
     """
 
-    __branch_tree: dict = {}
-    DEFAULT = Args.DEFAULT
+    __branch_tree: dict = {int, str}
 
     def add_branch(self, corresponding_frame_id: int, description: str) -> bool:
         """

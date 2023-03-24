@@ -1,10 +1,29 @@
-Generated In: 2023/03/13 周一 18:54:46.46
+Generated In: 2023/03/19 周日 20:50:16.62
 LINTER REPORT
 
 check ./engine
+************* Module engine.engine
+engine\engine.py:20:0: R0402: Use 'from engine import eng_io' instead (consider-using-from-import)
+engine\engine.py:129:4: C0116: Missing function or method docstring (missing-function-docstring)
+************* Module engine.f_checker
+engine\f_checker.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+engine\f_checker.py:9:0: C0115: Missing class docstring (missing-class-docstring)
+engine\f_checker.py:37:4: R0911: Too many return statements (8/6) (too-many-return-statements)
+engine\f_checker.py:3:0: C0411: standard import "from typing import Optional" should be placed before "from engine.frame import BasicFrame, Frame" (wrong-import-order)
+************* Module engine.f_maker
+engine\f_maker.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+engine\f_maker.py:8:0: C0115: Missing class docstring (missing-class-docstring)
+engine\f_maker.py:19:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+engine\f_maker.py:19:11: C0123: Use isinstance() rather than type() for a typecheck. (unidiomatic-typecheck)
+************* Module engine.component.action
+engine\component\action.py:5:0: C0411: standard import "from typing import Optional" should be placed before "from engine.component.branch import BranchTree" (wrong-import-order)
+************* Module engine.component.branch
+engine\component\branch.py:25:8: E1137: 'self.__branch_tree' does not support item assignment (unsupported-assignment-operation)
+************* Module engine.component.dialogue
+engine\component\dialogue.py:6:0: C0411: standard import "from typing import Optional" should be placed before "from .character import Character" (wrong-import-order)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+------------------------------------------------------------------
+Your code has been rated at 9.38/10 (previous run: 9.38/10, +0.00)
 
 check ./module
 
@@ -18,8 +37,8 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 check server.py
 
--------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 9.76/10, +0.24)
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 COVERAGE REPORT
 
@@ -33,18 +52,18 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1678751691.13021          12
+1679277022.99736          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1678751691.13021          12
+1679277022.99736          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1678751691.13021          12
+1679277022.99736          12
 ----------------------------------------
 Name                                                        Stmts   Miss  Cover   Missing
 -----------------------------------------------------------------------------------------
@@ -54,11 +73,10 @@ C:\Users\Twisl\Desktop\YuiEngine\module\db_manager.py          57      3    95% 
 C:\Users\Twisl\Desktop\YuiEngine\module\exception.py            6      0   100%
 C:\Users\Twisl\Desktop\YuiEngine\module\game_slot.py           56      1    98%   132
 C:\Users\Twisl\Desktop\YuiEngine\utils\__init__.py              0      0   100%
-C:\Users\Twisl\Desktop\YuiEngine\utils\args_utils.py            8      0   100%
-C:\Users\Twisl\Desktop\YuiEngine\utils\file_utils.py           43      0   100%
+C:\Users\Twisl\Desktop\YuiEngine\utils\file_utils.py           45      1    98%   142
 test_config_manager.py                                         35      0   100%
 test_db_manager.py                                             63      0   100%
 test_file_utils.py                                             35      0   100%
 test_game_slot.py                                              39      0   100%
 -----------------------------------------------------------------------------------------
-TOTAL                                                         367      4    99%
+TOTAL                                                         361      5    99%
