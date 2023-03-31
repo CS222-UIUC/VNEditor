@@ -5,7 +5,7 @@ sys.path.append("..")
 from unittest import TestCase
 from module.game_slot import GameSlot, get_cur_time, parse_data
 from utils import file_utils
-from module.exception import *
+from utils.exception import *
 
 
 class TestGameSlot(TestCase):

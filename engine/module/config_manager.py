@@ -3,7 +3,7 @@ Config Manager
 """
 import configparser
 from utils.file_utils import check_file_valid
-from .exception import ConfigLoaderError
+from utils.exception import ConfigLoaderError
 
 
 class ConfigLoader:

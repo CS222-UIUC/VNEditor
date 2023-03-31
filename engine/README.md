@@ -8,6 +8,9 @@ run `code_report.bat` to generate code report, this script will automatically fo
 
 **dependence:**
 
++ python 3.10+
+
 + fastapi
 + uvicorn
 + python-multipart
++ packaging

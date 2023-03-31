@@ -12,7 +12,7 @@ from typing import Optional
 from functools import wraps
 from packaging import version
 
-from module.exception import EngineError
+from utils.exception import EngineError
 from module.config_manager import ConfigLoader
 from utils.file_utils import check_file_valid, check_folder_valid, abs_dir
 from utils.status import StatusCode
