@@ -37,3 +37,9 @@ class RouterError(Exception):
     """
     exception class for router
     """
+
+
+class ControllerException(Exception):
+    """
+    exception class for controllers
+    """

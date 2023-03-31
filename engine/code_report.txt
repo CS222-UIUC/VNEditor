@@ -1,10 +1,10 @@
-Generated In: 2023/03/24 周五 16:47:42.90
+Generated In: 2023/03/31 周五 15:54:38.79
 LINTER REPORT
 
 check ./engine
 
--------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 9.45/10, +0.55)
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 check ./module
 
@@ -12,14 +12,19 @@ check ./module
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 check ./utils
+************* Module utils.return_type
+utils\return_type.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+utils\return_type.py:2:0: C0411: standard import "from typing import Optional" should be placed before "from pydantic import BaseModel" (wrong-import-order)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+-------------------------------------------------------------------
+Your code has been rated at 9.66/10 (previous run: 10.00/10, -0.34)
 
 check server.py
+************* Module server
+server.py:14:0: C0412: Imports from package utils are not grouped (ungrouped-imports)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+-------------------------------------------------------------------
+Your code has been rated at 9.85/10 (previous run: 10.00/10, -0.15)
 
 COVERAGE REPORT
 
@@ -33,52 +38,48 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1679694467.89639          12
+1680296084.30194          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1679694467.89639          12
+1680296084.30194          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1679694467.89639          12
+1680296084.30194          12
 ----------------------------------------
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1679693770.4351969, 'total_frame_len': 6, 'last_fid': 122, 'head': 92, 'tail': 122}
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1679702477.269149, 'total_frame_len': 3, 'last_fid': 138, 'head': 127, 'tail': 138}
 {1: 'choice 1'}
-add frame:  123
-add frame:  124
-add frame:  125
-add frame:  126
-add frame:  127
-add frame:  128
-add frame:  129
-add frame:  130
-add frame:  131
-add frame:  132
-head id: 92
-remove id: 128
-remove id: 130
-remove id: 131
-remove id: 132
-remove id: 124
-remove id: 120
-remove id: 122
-remove id: 92
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1679694468.0669732, 'total_frame_len': 8, 'last_fid': 129, 'head': 110, 'tail': 129}
-129 <engine.frame.Frame object at 0x000001AA5AEA43D0>
-110 <engine.frame.Frame object at 0x000001AA5AE86950>
-114 <engine.frame.Frame object at 0x000001AA5AE87110>
-115 <engine.frame.Frame object at 0x000001AA5AE878D0>
-123 <engine.frame.Frame object at 0x000001AA5AEA4210>
-125 <engine.frame.Frame object at 0x000001AA5AEA4310>
-126 <engine.frame.Frame object at 0x000001AA5AEA42D0>
-127 <engine.frame.Frame object at 0x000001AA5AEA4410>
-remove id: 110
-remove id: 123
-remove id: 125
+add frame:  139
+add frame:  140
+add frame:  141
+add frame:  142
+add frame:  143
+add frame:  144
+add frame:  145
+add frame:  146
+add frame:  147
+add frame:  148
+head id: 127
+remove id: 138
+remove id: 144
+remove id: 145
+remove id: 146
+remove id: 148
+remove id: 127
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680296084.4494684, 'total_frame_len': 7, 'last_fid': 147, 'head': 134, 'tail': 147}
+134 <engine.frame.Frame object at 0x000001A8C3A22B10>
+139 <engine.frame.Frame object at 0x000001A8C3A23850>
+140 <engine.frame.Frame object at 0x000001A8C3A23990>
+141 <engine.frame.Frame object at 0x000001A8C3A239D0>
+142 <engine.frame.Frame object at 0x000001A8C3A23A90>
+143 <engine.frame.Frame object at 0x000001A8C3A23B10>
+147 <engine.frame.Frame object at 0x000001A8C3A23D10>
+remove id: 140
+remove id: 147
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
 C:\Users\Twisl\Desktop\VNEditor Service\engine\__init__.py                   0      0   100%
@@ -97,7 +98,7 @@ C:\Users\Twisl\Desktop\VNEditor Service\engine\frame_maker.py               16  
 C:\Users\Twisl\Desktop\VNEditor Service\module\__init__.py                   0      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\config_manager.py            25      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\db_manager.py                57      3    95%   147-148, 158
-C:\Users\Twisl\Desktop\VNEditor Service\module\exception.py                  6      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\module\exception.py                  7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\game_slot.py                 56      1    98%   132
 C:\Users\Twisl\Desktop\VNEditor Service\utils\__init__.py                    0      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\utils\file_utils.py                 45      0   100%
@@ -108,4 +109,4 @@ test_engine.py                                                              55  
 test_file_utils.py                                                          35      0   100%
 test_game_slot.py                                                           39      0   100%
 ------------------------------------------------------------------------------------------------------
-TOTAL                                                                      765     62    92%
+TOTAL                                                                      766     62    92%

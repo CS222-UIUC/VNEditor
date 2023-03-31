@@ -4,7 +4,7 @@ Manage Project, provide service to manage project, include add, remove, edit
 
 import os.path
 from enum import Enum
-from module.exception import ProjectManagerError
+from utils.exception import ProjectManagerError
 from utils import file_utils
 from .config_manager import ConfigLoader
 

@@ -4,7 +4,7 @@ sys.path.append("..")
 from unittest import TestCase
 
 from module.db_manager import DBManager
-from module.exception import DBManagerError
+from utils.exception import DBManagerError
 
 
 class TestDBManager(TestCase):
