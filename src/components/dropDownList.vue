@@ -18,7 +18,9 @@ defineProps({
 
 <template>
     <div class="dropdown-list" v-show="displayControl">
-        <div @click="itemClick" v-for="items in itemList" :key="items">{{ items }}</div>
+        <div class="dropdown-item" @click="itemClick" v-for="items in itemList" :key="items">
+            {{ items }}
+        </div>
     </div>
 </template>
 
@@ -29,5 +31,10 @@ defineProps({
     background-color: deeppink;
     width: 100%;
     padding: 5%;
+}
+.dropdown-item {
+}
+.dropdown-item:hover {
+    background-color: rgb(164, 5, 89);
 }
 </style>

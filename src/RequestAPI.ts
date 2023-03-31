@@ -40,13 +40,14 @@ export function getUrl(api: string, params: { [key: string]: string | number }):
  */
 export async function initProject(name: string): Promise<string | undefined> {
     let projectID: string;
+    console.log(name);
     if (name.length < 4) throw new Error("project name must at least have 4 characters");
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `init_project/?base_dir=${name}`
             getUrl("init_project", { base_dir: name })
         );
-        // console.log(response.data.content["task_id"]);
+        console.log(response.data.content["task_id"]);
         projectID = response.data.content["task_id"];
         return projectID;
     } catch (err: any) {
@@ -116,15 +117,15 @@ export async function getProjects(): Promise<string[]> {
 
 /**
  * delete a projet that has initilized before
- * @param id
+ * @param name
  * @returns true if success, false if failed
  */
-export async function removeProject(id: string): Promise<boolean> {
+export async function removeProject(name: string): Promise<boolean> {
     //TO TEST;
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("remove_project", { task_id: id })
+            getUrl("remove_project", { project_name: name })
         );
         console.log(response);
         return response.data["status"] === 1;

@@ -22,9 +22,9 @@ const props = defineProps({
 const projectID = inject(projectIDKey) as Ref<string>;
 
 watchEffect(() => {
-    if (projectID.value && fileDisplay)
+    if (projectID.value)
         getResources(projectID.value, props.fileType).then((res: string[]) => {
-            if (res) files.value.push(...res);
+            if (res) files.value = res;
         });
 });
 

@@ -2,38 +2,67 @@
 import item from "../components/NavbarItem.vue";
 import drop from "../components/dropDownList.vue";
 import { getProjects, removeProject, initProject } from "../RequestAPI";
-import { projectIDKey } from "../InjectionKeys";
-import { inject, ref } from "vue";
+import { projectIDKey, projectNameKey } from "../InjectionKeys";
+import { inject, ref, watch, watchEffect } from "vue";
 import type { Ref } from "vue";
 
-const id = inject(projectIDKey) as Ref<string>;
+const projectID = inject(projectIDKey) as Ref<string | undefined>;
+const projectName = inject(projectNameKey) as Ref<string | undefined>;
 let projectsOpenDisplay = ref(false);
 let projectsRemoveDisplay = ref(false);
 let projectsCreateDisplay = ref(false);
-let s: string = "testing_name";
-let projectNames: Ref<string[]>;
+const projectNames: Ref<string[]> = ref([]);
 
 function handleRemove(event: MouseEvent) {
     console.log("aaa");
-    const el = event.target as Element;
-    const id = el.getAttribute("project-name");
-    console.log(id);
-    if (id) {
-        removeProject(id); // stupid backend is working on this
-    }
+    const el = event.target as HTMLElement;
+    const name = el.innerHTML;
+    console.log(name);
+
+    removeProject(name).then((res: boolean) => {
+        if (res) updateProject(undefined, undefined);
+        const idx = projectNames.value.indexOf(name);
+        projectNames.value.splice(idx, 1);
+    });
 }
+
+function updateProject(newID: string | undefined, newName: string | undefined): void {
+    projectID.value = newID;
+    projectName.value = newName;
+}
+
+watch(projectID, () => {
+    console.log("change");
+    getProjects().then((res: string[]) => {
+        projectNames.value = res;
+    });
+});
 </script>
 
 <template>
     <div>
-        <div class="navbar-section" id="header-left"></div>
+        <div class="navbar-section" id="header-left">
+            <item>
+                <template #el>
+                    <div id="project-title">
+                        {{ projectName ? projectName : "No project has been opened" }}
+                    </div>
+                    <div v-show="false">{{ projectID }}</div>
+                </template>
+            </item>
+        </div>
         <div class="navbar-section" id="header-mid" style="">
             <item>
                 <template #el>
                     <button
                         class="navbar-button"
                         v-show="!projectsCreateDisplay"
-                        @click="projectsCreateDisplay = !projectsCreateDisplay"
+                        @click="
+                            async () => {
+                                projectNames = await getProjects();
+                                projectsCreateDisplay = !projectsCreateDisplay;
+                            }
+                        "
                     >
                         Create Project
                     </button>
@@ -46,7 +75,11 @@ function handleRemove(event: MouseEvent) {
                         @keyup.enter="
                             (event) => {
                                 projectsCreateDisplay = !projectsCreateDisplay;
-                                initProject((event.target as HTMLInputElement).value as string);
+                                initProject((event.target as HTMLInputElement).value as string).then((res: string | undefined)=> {
+                                    if (res)
+                                    projectID = res;
+                     
+                                });
                             }
                         "
                         class="navbar-button"
@@ -60,10 +93,10 @@ function handleRemove(event: MouseEvent) {
                         <button
                             class="navbar-button"
                             @click="
-                                getProjects().then((res: string[]) => {
-                                    projectNames = res;
-                                });
-                                projectsRemoveDisplay = !projectsRemoveDisplay;
+                                async () => {
+                                    projectNames = await getProjects();
+                                    projectsRemoveDisplay = !projectsRemoveDisplay;
+                                }
                             "
                         >
                             Remove Project
@@ -93,6 +126,15 @@ function handleRemove(event: MouseEvent) {
                         <drop
                             :display-control="projectsOpenDisplay"
                             :item-list="projectNames"
+                            :item-click="($event) => {
+                                initProject(($event.target as HTMLElement).innerHTML).then((res: string | undefined)=>{
+                                    if (res) {
+                                        updateProject(res, ($event.target as HTMLElement).innerHTML);
+                                    }
+                                    
+                                });
+                                
+                            }"
                         ></drop>
                     </div>
                 </template>
@@ -104,6 +146,10 @@ function handleRemove(event: MouseEvent) {
 </template>
 
 <style>
+#project-title:hover + div {
+    display: block;
+}
+
 .navbar-button {
     background: transparent;
     width: 6rem;
