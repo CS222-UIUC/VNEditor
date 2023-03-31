@@ -93,40 +93,70 @@ export async function uploadFiles(id: string, rtype: string, formData: FormData)
     }
 }
 /**
- * @todo
- * @returns
+ * return all the project name that user had initilized before
+ * @param none
+ * @returns return a list of string
  */
 export async function getProjects(): Promise<string[]> {
-    throw new Error("To to implemented");
+    // TO TEST;
+    try {
+        // fetch the name
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("list_projects", {})
+        );
+
+        const project_names: string[] = response.data.content;
+        return project_names;
+    } catch (err: any) {
+        console.log(err);
+    }
     return [];
 }
 
 /**
- * @todo
+ * delete a projet that has initilized before
  * @param id
- * @returns
+ * @returns true if success, false if failed
  */
 export async function removeProject(id: string): Promise<boolean> {
-    throw new Error("To to implemented");
-    return false;
+    //TO TEST;
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("remove_project", { task_id: id })
+        );
+        console.log(response);
+        return response.data["status"] === 1;
+    } catch (err: any) {
+        throw new Error("error happend in removeProject");
+    }
 }
 /**
- * @todo
- * @param id
- * @param rtype
- * @param name
- * @returns
+ * delete a fioe that has uploaded before
+ * @param id: project_id
+ * @param rtype: the enum class rtype. Should be one of "background" "music" "character"
+ * @param name: the file to be delete
+ * @returns true if success, false otherwise
  */
 export async function removeResource(id: string, rtype: Rtype, name: string): Promise<boolean> {
-    throw new Error("To to implemented");
-    return false;
+    // TO TEST
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("remove_res", { task_id: id, rtype: rtype, item_name: name })
+        );
+        console.log(response);
+        return response.data["status"] === 1;
+    } catch (err: any) {
+        throw new Error("error happend in removeResource");
+    }
 }
 /**
- * @todo
- * @param id
- * @param rtype
- * @param old_name
- * @param new_name
+ * @param id: project_id
+ * @param rtype: the enum class rtype. Should be one of "background" "music" "character"
+ * @param old_name: the old file name to be changed
+ * @param new_name: the new file name to be set
  * @returns
  */
 export async function renameResource(
@@ -135,6 +165,20 @@ export async function renameResource(
     old_name: string,
     new_name: string
 ): Promise<boolean> {
-    throw new Error("To to implemented");
-    return false;
+    // TO TEST
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("rename_res", {
+                task_id: id,
+                rtype: rtype,
+                item_name: old_name,
+                new_name: new_name,
+            })
+        );
+        console.log(response);
+        return response.data["status"] === 1;
+    } catch (err: any) {
+        throw new Error("error happend in removeResource");
+    }
 }

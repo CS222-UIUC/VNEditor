@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import type { Ref } from "vue";
+import type { Ref, PropType } from "vue";
 defineProps({
     displayControl: {
         type: Boolean,
         default: false,
+    },
+    itemList: {
+        type: Array<string>,
+        default: [],
+    },
+    itemClick: {
+        type: Function as PropType<(event: MouseEvent) => void>,
+        default: () => {},
     },
 });
 </script>
 
 <template>
     <div class="dropdown-list" v-show="displayControl">
-        <div class="dropdown-item">aa</div>
-        <div class="dropdown-item">aa</div>
-        <div class="dropdown-item">aa</div>
+        <div @click="itemClick" v-for="items in itemList" :key="items">{{ items }}</div>
     </div>
 </template>
 

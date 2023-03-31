@@ -151,7 +151,7 @@ class ProjectManager:
         raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 
     def rename_resources_by_rtype(
-            self, rtype: ResourcesType, file_name: str, new_name: str
+        self, rtype: ResourcesType, file_name: str, new_name: str
     ) -> bool:
         """
         rename the resources by new_name

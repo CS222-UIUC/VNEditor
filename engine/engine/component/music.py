@@ -37,7 +37,7 @@ class Music:
         self.signal: MusicSignal = signal
 
     def set_music(
-        self, res_name: str = Optional[str], signal: MusicSignal = MusicSignal.KEEP
+        self, res_name: Optional[str] = None, signal: MusicSignal = MusicSignal.KEEP
     ):
         """
         setter for music resources

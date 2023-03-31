@@ -5,25 +5,23 @@ import { getProjects, removeProject, initProject } from "../RequestAPI";
 import { projectIDKey } from "../InjectionKeys";
 import { inject, ref } from "vue";
 import type { Ref } from "vue";
-// let counta: number = 0;
-// let countb: number = 0;
-// let countc: number = 0;
-// let countd: number = 0;
-// function botA() {
-//     counta++;
-// }
-// function botB() {
-//     countb++;
-// }
-// function botC() {
-//     countc++;
-// }
-// function botD() {
-//     countd++;
-// }
+
 const id = inject(projectIDKey) as Ref<string>;
-let projectsDropDisplay = ref(false);
+let projectsOpenDisplay = ref(false);
+let projectsRemoveDisplay = ref(false);
+let projectsCreateDisplay = ref(false);
 let s: string = "testing_name";
+let projectNames: Ref<string[]>;
+
+function handleRemove(event: MouseEvent) {
+    console.log("aaa");
+    const el = event.target as Element;
+    const id = el.getAttribute("project-name");
+    console.log(id);
+    if (id) {
+        removeProject(id); // stupid backend is working on this
+    }
+}
 </script>
 
 <template>
@@ -32,12 +30,28 @@ let s: string = "testing_name";
         <div class="navbar-section" id="header-mid" style="">
             <item>
                 <template #el>
-                    <button class="navbar-button" @click="initProject(s)">Create Project</button>
+                    <button
+                        class="navbar-button"
+                        v-show="!projectsCreateDisplay"
+                        @click="projectsCreateDisplay = !projectsCreateDisplay"
+                    >
+                        Create Project
+                    </button>
                 </template>
             </item>
             <item>
                 <template #el>
-                    <button class="navbar-button" @click="removeProject(id)">Delete Project</button>
+                    <input
+                        v-show="projectsCreateDisplay"
+                        @keyup.enter="
+                            (event) => {
+                                projectsCreateDisplay = !projectsCreateDisplay;
+                                initProject((event.target as HTMLInputElement).value as string);
+                            }
+                        "
+                        class="navbar-button"
+                        style="background-color: white; color: black; height: 2rem"
+                    />
                 </template>
             </item>
             <item>
@@ -45,13 +59,41 @@ let s: string = "testing_name";
                     <div style="dispay: flex">
                         <button
                             class="navbar-button"
-                            @focus="projectsDropDisplay = true"
-                            @blur="projectsDropDisplay = false"
-                            @click="getProjects"
+                            @click="
+                                getProjects().then((res: string[]) => {
+                                    projectNames = res;
+                                });
+                                projectsRemoveDisplay = !projectsRemoveDisplay;
+                            "
+                        >
+                            Remove Project
+                        </button>
+                        <drop
+                            :display-control="projectsRemoveDisplay"
+                            :item-list="projectNames"
+                            :item-click="handleRemove"
+                        ></drop>
+                    </div>
+                </template>
+            </item>
+            <item>
+                <template #el>
+                    <div style="dispay: flex">
+                        <button
+                            class="navbar-button"
+                            @click="
+                                getProjects().then((res: string[]) => {
+                                    projectNames = res;
+                                });
+                                projectsOpenDisplay = !projectsOpenDisplay;
+                            "
                         >
                             Open Project
                         </button>
-                        <drop :display-control="projectsDropDisplay"></drop>
+                        <drop
+                            :display-control="projectsOpenDisplay"
+                            :item-list="projectNames"
+                        ></drop>
                     </div>
                 </template>
             </item>
