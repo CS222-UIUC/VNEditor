@@ -11,13 +11,15 @@ import engine
 
 from controller.project_controller import ProjectController
 from controller.resource_controller import ResourceController
-from utils.return_type import ReturnList, ReturnDict
+from controller.server_controller import ServerController
+from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
 CONFIG_DIR = "./service.ini"
 
 # register controllers
 project_utils = ProjectController(config_dir=CONFIG_DIR)
 resources_utils = ResourceController(config_dir=CONFIG_DIR)
+server_utils = ServerController(config_dir=CONFIG_DIR)
 # end register controllers
 
 origins = project_utils.cors_info["origins"].split(",")
@@ -103,7 +105,7 @@ async def list_project() -> ReturnList:
     return project_utils.list_projects()
 
 
-@app.post("/remove_project", tags=["project"])
+@app.post("/remove_project_by_id", tags=["project"])
 async def remove_project(task_id: str) -> ReturnDict:
     """
     remove the project
@@ -113,9 +115,19 @@ async def remove_project(task_id: str) -> ReturnDict:
     return project_utils.remove_project_dir(task_id=task_id)
 
 
+@app.post("/remove_project", tags=["project"])
+async def remove_project(project_name: str) -> ReturnStatus:
+    """
+    remove the project
+
+    @param project_name: the name of the project
+    """
+    return server_utils.delete_project(project_name=project_name)
+
+
 @app.get("/resources/{rtype}/{item_name}", tags=["resources"])
 async def get_resources(
-    task_id: str, rtype: ResourcesType, item_name: str
+        task_id: str, rtype: ResourcesType, item_name: str
 ) -> FileResponse:
     """
     get resources file
@@ -125,22 +137,22 @@ async def get_resources(
     @param item_name: resource name
 
     """
-    project_manager = project_utils.get_task(task_id).project_manager
-    if project_manager is None:
-        raise HTTPException(status_code=404, detail="Item not found")
+    task = project_utils.get_task(task_id)
+    if task is None:
+        raise HTTPException(status_code=400, detail="task id invalid")
 
     resource_at = resources_utils.get_resources(
-        project_manager=project_manager, rtype=rtype, item_name=item_name
+        task=task, rtype=rtype, item_name=item_name
     )
     if resource_at.status == StatusCode.FAIL:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="item not found")
 
     return FileResponse(resource_at.content[0])
 
 
 @app.post("/get_res", tags=["resources"])
 async def get_resources_name(
-    task_id: str, rtype: ResourcesType, filter_by: str = ""
+        task_id: str, rtype: ResourcesType, filter_by: str = ""
 ) -> ReturnList:
     """
     get background resources, need to initialize project before use
@@ -150,19 +162,19 @@ async def get_resources_name(
     @param filter_by: filter by specific string
 
     """
-    project_manager = project_utils.get_task(task_id).project_manager
-    if project_manager is None:
-        return ReturnList(status=False, msg="no such task id")
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
 
     result = resources_utils.get_resource_name(
-        project_manager=project_manager, rtype=rtype, filter_str=filter_by
+        task=task, rtype=rtype, filter_str=filter_by
     )
     return result
 
 
 @app.post("/remove_res", tags=["resources"])
 async def remove_resource(
-    task_id: str, rtype: ResourcesType, item_name: str
+        task_id: str, rtype: ResourcesType, item_name: str
 ) -> ReturnList:
     """
     remove resources by resources name
@@ -171,18 +183,18 @@ async def remove_resource(
     @param rtype: resource type
     @param task_id: id for task
     """
-    project_manager = project_utils.get_task(task_id).project_manager
-    if project_manager is None:
-        return ReturnList(status=False, msg="no such task id")
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
 
     return resources_utils.remove_resource(
-        project_manager=project_manager, rtype=rtype, item_name=item_name
+        task=task, rtype=rtype, item_name=item_name
     )
 
 
 @app.post("/rename_res", tags=["resources"])
 async def rename_project(
-    task_id: str, rtype: ResourcesType, item_name: str, new_name: str
+        task_id: str, rtype: ResourcesType, item_name: str, new_name: str
 ) -> ReturnDict:
     """
     rename resources by resources name
@@ -192,12 +204,12 @@ async def rename_project(
     @param rtype: resource type
     @param task_id: id for task
     """
-    project_manager = project_utils.get_task(task_id).project_manager
-    if project_manager is None:
-        return ReturnDict(status=False, msg="no such task id")
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
 
     return resources_utils.rename_resource(
-        project_manager=project_manager,
+        task=task,
         rtype=rtype,
         item_name=item_name,
         new_name=new_name,
@@ -206,7 +218,7 @@ async def rename_project(
 
 @app.post("/upload", tags=["resources"])
 async def upload_file(
-    task_id: str, rtype: ResourcesType, file: UploadFile
+        task_id: str, rtype: ResourcesType, file: UploadFile
 ) -> ReturnDict:
     """
     update resources to rtype
@@ -216,18 +228,18 @@ async def upload_file(
     @param file: file steam
 
     """
-    project_manager = project_utils.get_task(task_id).project_manager
-    if project_manager is None:
-        return ReturnDict(status=False, msg="no such task id")
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
 
     return resources_utils.upload_file(
-        project_manager=project_manager, rtype=rtype, file=file
+        task=task, rtype=rtype, file=file
     )
 
 
 @app.post("/upload_files", tags=["resources"])
 async def upload_files(
-    task_id: str, rtype: ResourcesType, files: list[UploadFile]
+        task_id: str, rtype: ResourcesType, files: list[UploadFile]
 ) -> ReturnList:
     """
     update multi resources to rtype
@@ -237,10 +249,10 @@ async def upload_files(
     @param files: files steam
 
     """
-    project_manager = project_utils.get_task(task_id).project_manager
-    if project_manager is None:
-        return ReturnList(status=False, msg="no such task id")
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
 
     return resources_utils.upload_files(
-        project_manager=project_manager, rtype=rtype, files=files
+        task=task, rtype=rtype, files=files
     )

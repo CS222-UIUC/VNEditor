@@ -11,6 +11,8 @@ from utils.file_utils import check_file_valid
 
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
+from .project_controller import Task
+
 
 def resource_controller_exception_handler(func):
     """
@@ -48,20 +50,21 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def get_resource_name(
-        self,
-        project_manager: ProjectManager,
-        rtype: ResourcesType,
-        filter_str: str = "",
+            self,
+            task: Task,
+            rtype: ResourcesType,
+            filter_str: str = "",
     ) -> ReturnList:
         """
         get resources name
 
-        @param project_manager: project manager for current task
+        @param task: current task information
         @param rtype: type of resources to fetch
         @param filter_str: filter resources by a specific string
         @return: status code
 
         """
+        project_manager = task.project_manager
         resources = project_manager.get_resources_by_rtype(
             rtype=rtype, filter_by=filter_str
         )
@@ -69,17 +72,18 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def upload_file(
-        self, project_manager: ProjectManager, rtype: ResourcesType, file: UploadFile
+            self, task: Task, rtype: ResourcesType, file: UploadFile
     ) -> ReturnDict:
         """
         upload a single file into the rtype directory
 
-        @param project_manager: project manager for current task
+        @param task: current task information
         @param rtype: resources type
         @param file: file to be uploaded
         @return: diction contain upload file information
 
         """
+        project_manager = task.project_manager
         max_file_size = int(self.__resources_config["max_size"])
         suffix = os.path.splitext(file.filename)[-1].lower()
         to_path = project_manager.get_dir_by_rtype(rtype)
@@ -114,21 +118,22 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def upload_files(
-        self,
-        project_manager: ProjectManager,
-        rtype: ResourcesType,
-        files: list[UploadFile],
+            self,
+            task: Task,
+            rtype: ResourcesType,
+            files: list[UploadFile],
     ) -> ReturnList:
         """
         upload a lot of files
 
-        @param project_manager: project manager for current task
+        @param task: current task information
         @param rtype: resources type
         @param files: file to be uploaded
         @return:
         """
         to_return = []
         status: StatusCode = StatusCode.FAIL  # at least one mission succeed
+        project_manager = task.project_manager
 
         for file in files:
             mission_status = self.upload_file(
@@ -147,17 +152,18 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def get_resources(
-        self, project_manager: ProjectManager, rtype: ResourcesType, item_name: str
+            self, task: Task, rtype: ResourcesType, item_name: str
     ) -> ReturnList:
         """
         get the resources absolute address
 
-        @param project_manager: project manager for current task
+        @param task: current task information
         @param rtype: resource type
         @param item_name: resource name
         @return: list contain status information
 
         """
+        project_manager = task.project_manager
         resource_dir = project_manager.get_dir_by_rtype(rtype)
         resources_at = os.path.join(resource_dir, item_name)
 
@@ -171,17 +177,18 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def remove_resource(
-        self, project_manager: ProjectManager, rtype: ResourcesType, item_name: str
+            self, task: Task, rtype: ResourcesType, item_name: str
     ) -> ReturnList:
         """
         remove resources
 
-        @param project_manager: project manager for current task
+        @param task: current task information
         @param rtype: resources type
         @param item_name: resource name
         @return: list contain status information
 
         """
+        project_manager = task.project_manager
         status = project_manager.delete_resources_by_rtype(
             rtype=rtype, file_name=item_name
         )
@@ -194,22 +201,23 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def rename_resource(
-        self,
-        project_manager: ProjectManager,
-        rtype: ResourcesType,
-        item_name: str,
-        new_name: str,
+            self,
+            task: Task,
+            rtype: ResourcesType,
+            item_name: str,
+            new_name: str,
     ) -> ReturnDict:
         """
         rename the resource
 
-        @param project_manager: project manager for current task
+        @param task: current task information
         @param rtype: resources type
         @param item_name: resource name
         @param new_name: new name
         @return: dictionary contain status information
 
         """
+        project_manager = task.project_manager
         status = project_manager.rename_resources_by_rtype(
             rtype=rtype, file_name=item_name, new_name=new_name
         )
