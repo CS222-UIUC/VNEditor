@@ -4,7 +4,7 @@ A general database key-value PDO
 
 import os
 import sqlite3
-from .exception import DBManagerError
+from utils.exception import DBManagerError
 
 
 class DBManager:

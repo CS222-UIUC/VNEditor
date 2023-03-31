@@ -4,7 +4,7 @@ sys.path.append("..")
 
 from unittest import TestCase
 from module.config_manager import ConfigLoader
-from module.exception import ConfigLoaderError
+from utils.exception import ConfigLoaderError
 
 
 class TestConfigLoader(TestCase):
