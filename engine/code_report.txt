@@ -1,34 +1,44 @@
-Generated In: 2023/03/31 周五 15:54:38.79
+Generated In: 2023/03/31 周五 19:02:31.46
 LINTER REPORT
 
 check ./engine
+************* Module engine.engine
+engine\engine.py:17:0: C0412: Imports from package utils are not grouped (ungrouped-imports)
+************* Module engine.frame_model
+engine\frame_model.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+engine\frame_model.py:12:0: C0115: Missing class docstring (missing-class-docstring)
+engine\frame_model.py:20:4: C0116: Missing function or method docstring (missing-function-docstring)
+engine\frame_model.py:31:15: E1120: No value for argument 'self' in unbound method call (no-value-for-parameter)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+------------------------------------------------------------------
+Your code has been rated at 9.75/10 (previous run: 9.75/10, +0.00)
 
 check ./module
+************* Module module.project_manager
+module\project_manager.py:198:4: C0116: Missing function or method docstring (missing-function-docstring)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+------------------------------------------------------------------
+Your code has been rated at 9.96/10 (previous run: 9.96/10, +0.00)
 
 check ./utils
 ************* Module utils.return_type
 utils\return_type.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 utils\return_type.py:2:0: C0411: standard import "from typing import Optional" should be placed before "from pydantic import BaseModel" (wrong-import-order)
 
--------------------------------------------------------------------
-Your code has been rated at 9.66/10 (previous run: 10.00/10, -0.34)
+------------------------------------------------------------------
+Your code has been rated at 9.70/10 (previous run: 9.70/10, +0.00)
 
 check server.py
 ************* Module server
-server.py:14:0: C0412: Imports from package utils are not grouped (ungrouped-imports)
+server.py:122:0: E0102: function already defined line 112 (function-redefined)
+server.py:17:0: C0412: Imports from package utils are not grouped (ungrouped-imports)
 
--------------------------------------------------------------------
-Your code has been rated at 9.85/10 (previous run: 10.00/10, -0.15)
+------------------------------------------------------------------
+Your code has been rated at 9.35/10 (previous run: 9.35/10, +0.00)
 
 COVERAGE REPORT
 
-connect to db: test.db
+create new db: test.db in: 
 connect to db: test.db
 ----------------------------------------
        time              progress
@@ -38,48 +48,47 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1680296084.30194          12
+1680307356.92427          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1680296084.30194          12
+1680307356.92427          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1680296084.30194          12
+1680307356.92427          12
 ----------------------------------------
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1679702477.269149, 'total_frame_len': 3, 'last_fid': 138, 'head': 127, 'tail': 138}
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680307321.8285735, 'total_frame_len': 3, 'last_fid': 28, 'head': 20, 'tail': 28}
 {1: 'choice 1'}
-add frame:  139
-add frame:  140
-add frame:  141
-add frame:  142
-add frame:  143
-add frame:  144
-add frame:  145
-add frame:  146
-add frame:  147
-add frame:  148
-head id: 127
-remove id: 138
-remove id: 144
-remove id: 145
-remove id: 146
-remove id: 148
-remove id: 127
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680296084.4494684, 'total_frame_len': 7, 'last_fid': 147, 'head': 134, 'tail': 147}
-134 <engine.frame.Frame object at 0x000001A8C3A22B10>
-139 <engine.frame.Frame object at 0x000001A8C3A23850>
-140 <engine.frame.Frame object at 0x000001A8C3A23990>
-141 <engine.frame.Frame object at 0x000001A8C3A239D0>
-142 <engine.frame.Frame object at 0x000001A8C3A23A90>
-143 <engine.frame.Frame object at 0x000001A8C3A23B10>
-147 <engine.frame.Frame object at 0x000001A8C3A23D10>
-remove id: 140
-remove id: 147
+add frame:  29
+add frame:  30
+add frame:  31
+add frame:  32
+add frame:  33
+add frame:  34
+add frame:  35
+add frame:  36
+add frame:  37
+add frame:  38
+head id: 20
+remove id: 33
+remove id: 34
+remove id: 35
+remove id: 36
+remove id: 37
+remove id: 38
+remove id: 22
+remove id: 28
+remove id: 30
+remove id: 31
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680307357.0925398, 'total_frame_len': 3, 'last_fid': 32, 'head': 20, 'tail': 32}
+32 <engine.frame.Frame object at 0x00000226137A3690>
+20 <engine.frame.Frame object at 0x00000226136DA2D0>
+29 <engine.frame.Frame object at 0x00000226137A35D0>
+remove id: 32
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
 C:\Users\Twisl\Desktop\VNEditor Service\engine\__init__.py                   0      0   100%
@@ -90,17 +99,17 @@ C:\Users\Twisl\Desktop\VNEditor Service\engine\component\branch.py          15  
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\character.py       11      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\dialogue.py        11      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\music.py           16      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   194     50    74%   48-49, 87, 111, 115-116, 123, 131, 138, 178, 196, 200, 219, 233-253, 266-287, 298, 319, 331, 349, 361, 372, 392, 404, 415, 429-430
+C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   206     66    68%   45-49, 87, 111, 115-116, 123, 131, 138, 178, 194-196, 200, 219, 233-244, 254-274, 287-308, 319, 327, 340, 352, 370, 382, 393, 413, 425, 436, 453-454
 C:\Users\Twisl\Desktop\VNEditor Service\engine\engine_io.py                  7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\frame.py                     20      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\frame_checker.py             45      8    82%   72, 76, 85-86, 89-90, 93-96
-C:\Users\Twisl\Desktop\VNEditor Service\engine\frame_maker.py               16      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\engine\frame_checker.py             45     31    31%   40-45, 55-101
+C:\Users\Twisl\Desktop\VNEditor Service\engine\frame_maker.py               16      1    94%   31
 C:\Users\Twisl\Desktop\VNEditor Service\module\__init__.py                   0      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\config_manager.py            25      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\module\db_manager.py                57      3    95%   147-148, 158
-C:\Users\Twisl\Desktop\VNEditor Service\module\exception.py                  7      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\module\db_manager.py                57      2    96%   147-148
 C:\Users\Twisl\Desktop\VNEditor Service\module\game_slot.py                 56      1    98%   132
 C:\Users\Twisl\Desktop\VNEditor Service\utils\__init__.py                    0      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\utils\exception.py                   7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\utils\file_utils.py                 45      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\utils\status.py                      4      0   100%
 test_config_manager.py                                                      35      0   100%
@@ -109,4 +118,4 @@ test_engine.py                                                              55  
 test_file_utils.py                                                          35      0   100%
 test_game_slot.py                                                           39      0   100%
 ------------------------------------------------------------------------------------------------------
-TOTAL                                                                      766     62    92%
+TOTAL                                                                      778    101    87%

@@ -5,8 +5,8 @@ The Best Visual Novel Engine
 ----------------------------
 
 contain all basic information to build a visual novel
-"""
 
+"""
 import time
 from typing import Optional
 from functools import wraps
@@ -16,10 +16,9 @@ from utils.exception import EngineError
 from module.config_manager import ConfigLoader
 from utils.file_utils import check_file_valid, check_folder_valid, abs_dir
 from utils.status import StatusCode
-from engine.frame import BasicFrame
-from engine.frame_checker import FrameChecker
-from engine.frame_maker import FrameMaker
+from engine.frame import BasicFrame, Frame, FrameChecker
 import engine.engine_io as eng_io
+from engine.component import *
 
 # the version of the engine
 ENGINE_NAME = "YuiEngine"
@@ -70,10 +69,10 @@ class Engine:
     __all_fids: set[int] = set()  # all fids in set
 
     def __init__(
-        self,
-        project_dir: str,
-        config_dir: str,
-        game_file_name: Optional[str] = None,
+            self,
+            project_dir: str,
+            config_dir: str,
+            game_file_name: Optional[str] = None,
     ):
         """
         constructor for engine
@@ -100,7 +99,6 @@ class Engine:
         if not game_file_name:
             game_file_name = self.__config.engine()["default_game_file"]
         self.__game_file_dir = abs_dir(project_dir, game_file_name)
-        self.__frame_maker = FrameMaker()
 
         loader = self.__engine_config["loader"]
         dumper = self.__engine_config["dumper"]
@@ -126,7 +124,7 @@ class Engine:
                 )
 
             if version.parse(cur_engine_version) < version.parse(
-                ENGINE_MINIMAL_COMPATIBLE
+                    ENGINE_MINIMAL_COMPATIBLE
             ):
                 raise EngineError(
                     f"detect version incompatible! "
@@ -163,20 +161,19 @@ class Engine:
         self.__metadata_buffer["tail"] = self.__tail
 
     @engine_exception_handler
-    def make_frame(self, _type: type, **kwargs) -> BasicFrame:
+    def make_frame(self, background: Background, chara: list[Character], music: Music,
+                   dialog: Dialogue, ) -> BasicFrame:
         """
         make a frame
 
-        @param _type: the Frame Type
-        @param kwargs: parameters to construct the frame
+        @param background: background
+        @param chara: character
+        @param music: music
+        @param dialog: dialog
         @return: result frame
 
         """
-        frame = self.__frame_maker.make(_type, **kwargs)
-
-        if frame is None:
-            raise EngineError("make frame failed")
-
+        frame = Frame(Frame.VOID_FRAME_ID, background, chara, music, dialog)
         return frame
 
     @engine_exception_handler
@@ -193,7 +190,7 @@ class Engine:
         if not force:
             check_output = self.__frame_checker.check(frame)
             if not check_output[0]:
-                raise EngineError(check_output[1])
+                raise EngineError(f"Frame invalid: {check_output[1]}")
 
         # generate the fid
         if self.__last_fid == BasicFrame.VOID_FRAME_ID:
@@ -221,6 +218,27 @@ class Engine:
         self.__tail = fid
 
         return fid
+
+    @engine_exception_handler
+    def get_ordered_fid(self) -> list:
+        """
+        return a ordered frame id
+
+        @return: ordered fid
+
+        """
+        if self.__head == BasicFrame.VOID_FRAME_ID:
+            return []
+
+        ordered_id = [self.__head]
+        while 1:
+            cur = ordered_id[-1]
+            next_fid = self.get_frame(cur).action.next_f
+            if next_fid == BasicFrame.VOID_FRAME_ID:
+                break
+            ordered_id.append(next_fid)
+
+        return ordered_id
 
     @engine_exception_handler
     def prepend_frame(self, from_frame_id: int):
@@ -349,7 +367,7 @@ class Engine:
         return self.__tail
 
     @engine_exception_handler
-    def get_frame(self, fid: int):
+    def get_frame(self, fid: int) -> BasicFrame | None:
         """
         get frame by frame id, return none if nothing find
 
@@ -392,9 +410,9 @@ class Engine:
         return len(self.__game_content)
 
     @engine_exception_handler
-    def get_metadata_buffer(self):
+    def get_metadata_buffer(self) -> dict[dict, dict] | None:
         """
-        get the current meta buffer, WARNING, this method
+        get the current meta buffer, WARNING: this method
         return the buffered metadata, might not be up-to-date
 
         @return: metadata in buffer
@@ -405,17 +423,20 @@ class Engine:
         return self.__metadata_buffer
 
     @engine_exception_handler
-    def get_engine_version(self) -> str:
+    def get_engine_meta(self) -> dict:
         """
         get version of current engine
 
-        @return: version of engine
+        @return: metadata of engine
 
         """
-        return ENGINE_VERSION
+        return {
+            "version": ENGINE_VERSION,
+            "name": ENGINE_NAME,
+        }
 
     @engine_exception_handler
-    def commit(self):
+    def commit(self) -> StatusCode:
         """
         commit all the change to the local game file
 
@@ -428,3 +449,4 @@ class Engine:
             self.__dumper(game_content_raw, self.__game_file_dir)
         except Exception as e:
             raise EngineError(f"fail to dump game file due to: {str(e)}") from e
+        return StatusCode.OK

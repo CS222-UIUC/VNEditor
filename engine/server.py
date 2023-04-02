@@ -7,11 +7,14 @@ from fastapi.responses import FileResponse
 
 from module.project_manager import ResourcesType
 from utils.status import StatusCode
-import engine
+
+from engine.engine import ENGINE_NAME, ENGINE_VERSION
+from engine.frame import FrameModel
 
 from controller.project_controller import ProjectController
 from controller.resource_controller import ResourceController
 from controller.server_controller import ServerController
+from controller.engine_controller import EngineController
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
 CONFIG_DIR = "./service.ini"
@@ -20,6 +23,7 @@ CONFIG_DIR = "./service.ini"
 project_utils = ProjectController(config_dir=CONFIG_DIR)
 resources_utils = ResourceController(config_dir=CONFIG_DIR)
 server_utils = ServerController(config_dir=CONFIG_DIR)
+engine_utils = EngineController(config_dir=CONFIG_DIR)
 # end register controllers
 
 origins = project_utils.cors_info["origins"].split(",")
@@ -45,7 +49,7 @@ with open("static/ascii_logo", "r", encoding="UTF-8") as f_stream:
         "\n"
         f"{project_utils.version_info['name']}\n"
         f"Version: {project_utils.version_info['version']}\n"
-        f"{engine.engine.ENGINE_NAME}: {engine.engine.ENGINE_VERSION}\n"
+        f"{ENGINE_NAME}: {ENGINE_VERSION}\n"
     )
 
 
@@ -122,6 +126,9 @@ async def remove_project(project_name: str) -> ReturnStatus:
 
     @param project_name: the name of the project
     """
+    task_id = project_utils.get_task_id_by_project_name(project_name)
+    if task_id is not None:
+        project_utils.remove_task(task_id=task_id)
     return server_utils.delete_project(project_name=project_name)
 
 
@@ -187,9 +194,7 @@ async def remove_resource(
     if task is None:
         return ReturnList(status=StatusCode.FAIL, msg="no such task id")
 
-    return resources_utils.remove_resource(
-        task=task, rtype=rtype, item_name=item_name
-    )
+    return resources_utils.remove_resource(task=task, rtype=rtype, item_name=item_name)
 
 
 @app.post("/rename_res", tags=["resources"])
@@ -232,9 +237,7 @@ async def upload_file(
     if task is None:
         return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
 
-    return resources_utils.upload_file(
-        task=task, rtype=rtype, file=file
-    )
+    return resources_utils.upload_file(task=task, rtype=rtype, file=file)
 
 
 @app.post("/upload_files", tags=["resources"])
@@ -253,6 +256,69 @@ async def upload_files(
     if task is None:
         return ReturnList(status=StatusCode.FAIL, msg="no such task id")
 
-    return resources_utils.upload_files(
-        task=task, rtype=rtype, files=files
-    )
+    return resources_utils.upload_files(task=task, rtype=rtype, files=files)
+
+
+@app.post("/engine/get_fids", tags=["engine"])
+async def get_fids(task_id: str) -> ReturnList:
+    """
+    get fids corresponding to the task id
+
+    @param task_id: id for task
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.get_frame_id(task)
+
+
+@app.post("/engine/engine_meta", tags=["engine"])
+async def engine_meta(task_id: str) -> ReturnDict:
+    """
+    get fids corresponding to the task id
+
+    @param task_id: id for task
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.get_engine_meta(task)
+
+
+@app.post("/engine/append_frame", tags=["engine"])
+async def append_frame(task_id: str, frame_component_raw: FrameModel, force: bool = False) -> ReturnList:
+    """
+    get fids corresponding to the task id
+
+    @param force: force appending frame without check frame valid
+    @param frame_component_raw: raw frane component
+    @param task_id: id for task
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.append_frame(task, frame_component_raw, force)
+
+
+@app.post("/engine/commit", tags=["engine"])
+async def commit(task_id: str) -> ReturnStatus:
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnStatus(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.commit(task)
+
+
+@app.post("/engine/meta", tags=["engine"])
+async def commit(task_id: str) -> ReturnDict:
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.get_metadata(task)

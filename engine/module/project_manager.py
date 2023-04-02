@@ -40,18 +40,19 @@ class ProjectManager:
     project manager class
     """
 
-    def __init__(self, base_dir: str, config_dir: str):
+    def __init__(self, project_name: str, config_dir: str):
         """
         constructor for project manager
 
-        @param base_dir: the base directory of the project
+        @param project_name: the name of the project
         @param config_dir: directory of config
         """
 
         config = ConfigLoader(config_dir)
+        self.__project_name = project_name
         self.__config_res = config.resources()
         project_base_dir = config.project()["projects_base"]
-        self.__base = os.path.join(project_base_dir, base_dir)
+        self.__base = os.path.join(project_base_dir, project_name)
 
         if not file_utils.check_folder_valid(self.__base):
             os.makedirs(self.__base)
@@ -193,3 +194,6 @@ class ProjectManager:
         @return: the base directory for the project
         """
         return self.__base
+
+    def get_project_name(self) -> str:
+        return self.__project_name
