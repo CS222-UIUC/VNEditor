@@ -99,8 +99,8 @@ export async function uploadFiles(id: string, rtype: string, formData: FormData)
  */
 export async function getProjects(): Promise<string[]> {
     // TO TEST;
-    let project_names : string[];
-    try  {
+    let project_names: string[];
+    try {
         // fetch the name
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
@@ -125,7 +125,7 @@ export async function removeProject(id: string): Promise<boolean> {
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("remove_project", {task_id: id})
+            getUrl("remove_project", { task_id: id })
         );
         console.log(response);
         return response.data["status"] === 1;
@@ -147,7 +147,7 @@ export async function removeResource(id: string, rtype: Rtype, name: string): Pr
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("remove_res", {task_id: id, rtype: rtype, item_name: name})
+            getUrl("remove_res", { task_id: id, rtype: rtype, item_name: name })
         );
         console.log(response);
         return response.data["status"] === 1;
@@ -174,7 +174,12 @@ export async function renameResource(
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("rename_res", {task_id: id, rtype: rtype, item_name: old_name, new_name:new_name})
+            getUrl("rename_res", {
+                task_id: id,
+                rtype: rtype,
+                item_name: old_name,
+                new_name: new_name,
+            })
         );
         console.log(response);
         return response.data["status"] === 1;
