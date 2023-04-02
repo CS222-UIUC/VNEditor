@@ -1,25 +1,44 @@
 <script setup lang="ts">
-import FrameItem from "./FrameItem.vue";
+import ChapterItem from "./ChapterDir.vue";
 import type { Ref } from "vue";
-import { ref } from "vue";
-import type { IFrame } from "@/FrameDef";
-const FrameList: Ref<IFrame[]> = ref([]);
-const currBranch: Ref<IFrame[]> = ref([]);
-function addFrame(idx: Number): boolean {
-    return false;
-}
+import { ref, watchEffect,inject,type PropType } from "vue";
+import { projectIDKey } from "../InjectionKeys";
 
-function removeFrame(idx: Number): boolean {
-    return false;
-}
+import { getChapters } from "../RequestAPI";
 
-function switchBranch(id: FrameID): boolean {
-    return false;
-}
+
+var ChapetrsDisplay = ref(false); // control display the scene of the corresopnding chapter, used once current project deleted
+const ChapterList = ref<string[]>([]);
+
+const prop = defineProps({
+    itemCallBack: {
+        type: Function as PropType<(event: MouseEvent) => void>,
+        default: () => console.log("CallBack undefined"),
+    },
+});
+
+const projectID = inject(projectIDKey) as Ref<string | undefined>;
+watchEffect(() => {
+    // call back method update the chapter to display once projectID received
+    if (projectID.value)
+        getChapters(projectID.value).then((res: string[]) => {
+            if (res) ChapterList.value = res;
+        });
+});
+
+
+
 </script>
 
 <template>
     <div>
-        <FrameItem v-for="item in FrameList" :key="item.id">{{ item }}</FrameItem>
+        <ChapterItem 
+            v-for="item in ChapterList" 
+            :key="item"
+            :name="item"
+            :item-call-back= "prop.itemCallBack"
+            :chaptername="item"
+        >{{ item }}
+        </ChapterItem>
     </div>
 </template>

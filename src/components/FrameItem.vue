@@ -1,12 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
+
 
 <template>
-    <div class="frame-item">aaaa</div>
+    <div class="frame-item">
+        <slot>unknown scene</slot>
+    </div>
 </template>
 
 <style>
 .frame-item {
+    text-align: center;
     width: 100%;
-    height: 7.5%;
 }
 </style>
