@@ -19,13 +19,12 @@ const props = defineProps({
         default: () => console.log("CallBack undefined"),
     },
 });
-const projectID = inject(projectIDKey) as Ref<string>;
+const projectID = inject(projectIDKey) as Ref<string | undefined>;
 
 watchEffect(() => {
-    if (projectID.value)
-        getResources(projectID.value, props.fileType).then((res: string[]) => {
-            if (res) files.value = res;
-        });
+    getResources(projectID.value, props.fileType).then((res: string[]) => {
+        if (res) files.value = res;
+    });
 });
 
 function handleFilesDrop(event: DragEvent): void {

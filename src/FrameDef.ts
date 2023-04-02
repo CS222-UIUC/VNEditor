@@ -4,6 +4,7 @@ export interface IChar {
 }
 
 export interface IFrame {
+    id: string;
     backgroundName: string; // url
     characters: IChar[];
     branch?: IFrame[];

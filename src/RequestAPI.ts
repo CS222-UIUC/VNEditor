@@ -60,7 +60,8 @@ export async function initProject(name: string): Promise<string | undefined> {
  * @param rtype the enum class rtype. Should be one of "background" "music" "character"
  * @returns the list of names of the resources
  */
-export async function getResources(id: string, rtype: Rtype): Promise<Array<string>> {
+export async function getResources(id: string | undefined, rtype: Rtype): Promise<Array<string>> {
+    if (!id) return [];
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
@@ -79,7 +80,13 @@ export async function getResources(id: string, rtype: Rtype): Promise<Array<stri
  * @param formData FormData object containing files to be uploaded
  * @returns return true of upload is successful
  */
-export async function uploadFiles(id: string, rtype: string, formData: FormData): Promise<boolean> {
+export async function uploadFiles(
+    id: string | undefined,
+    rtype: string,
+    formData: FormData
+): Promise<boolean> {
+    if (!id) return false;
+
     try {
         const response = await axios({
             method: "post",
@@ -182,4 +189,8 @@ export async function renameResource(
     } catch (err: any) {
         throw new Error("error happend in removeResource");
     }
+}
+
+export async function getFrame(idx: Number): Promise<boolean> {
+    return false;
 }

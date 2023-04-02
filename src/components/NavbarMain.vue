@@ -52,26 +52,19 @@ watch(projectID, () => {
             </item>
         </div>
         <div class="navbar-section" id="header-mid" style="">
-            <item>
+            <item v-show="!projectsCreateDisplay">
                 <template #el>
                     <button
                         class="navbar-button"
-                        v-show="!projectsCreateDisplay"
-                        @click="
-                            async () => {
-                                projectNames = await getProjects();
-                                projectsCreateDisplay = !projectsCreateDisplay;
-                            }
-                        "
+                        @click="projectsCreateDisplay = !projectsCreateDisplay"
                     >
                         Create Project
                     </button>
                 </template>
             </item>
-            <item>
+            <item v-show="projectsCreateDisplay">
                 <template #el>
                     <input
-                        v-show="projectsCreateDisplay"
                         @keyup.enter="
                             (event) => {
                                 projectsCreateDisplay = !projectsCreateDisplay;
@@ -82,6 +75,7 @@ watch(projectID, () => {
                                 });
                             }
                         "
+                        placeholder="project name"
                         class="navbar-button"
                         style="background-color: white; color: black; height: 2rem"
                     />
