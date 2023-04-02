@@ -69,10 +69,10 @@ class Engine:
     __all_fids: set[int] = set()  # all fids in set
 
     def __init__(
-            self,
-            project_dir: str,
-            config_dir: str,
-            game_file_name: Optional[str] = None,
+        self,
+        project_dir: str,
+        config_dir: str,
+        game_file_name: Optional[str] = None,
     ):
         """
         constructor for engine
@@ -124,7 +124,7 @@ class Engine:
                 )
 
             if version.parse(cur_engine_version) < version.parse(
-                    ENGINE_MINIMAL_COMPATIBLE
+                ENGINE_MINIMAL_COMPATIBLE
             ):
                 raise EngineError(
                     f"detect version incompatible! "
@@ -161,8 +161,13 @@ class Engine:
         self.__metadata_buffer["tail"] = self.__tail
 
     @engine_exception_handler
-    def make_frame(self, background: Background, chara: list[Character], music: Music,
-                   dialog: Dialogue, ) -> BasicFrame:
+    def make_frame(
+        self,
+        background: Background,
+        chara: list[Character],
+        music: Music,
+        dialog: Dialogue,
+    ) -> BasicFrame:
         """
         make a frame
 

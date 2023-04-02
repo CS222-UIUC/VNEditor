@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 from unittest import TestCase
 
-from module.db_manager import DBManager
+from utils.db_utils import DBManager
 from utils.exception import DBManagerError
 
 

@@ -134,7 +134,7 @@ async def remove_project(project_name: str) -> ReturnStatus:
 
 @app.get("/resources/{rtype}/{item_name}", tags=["resources"])
 async def get_resources(
-        task_id: str, rtype: ResourcesType, item_name: str
+    task_id: str, rtype: ResourcesType, item_name: str
 ) -> FileResponse:
     """
     get resources file
@@ -159,7 +159,7 @@ async def get_resources(
 
 @app.post("/get_res", tags=["resources"])
 async def get_resources_name(
-        task_id: str, rtype: ResourcesType, filter_by: str = ""
+    task_id: str, rtype: ResourcesType, filter_by: str = ""
 ) -> ReturnList:
     """
     get background resources, need to initialize project before use
@@ -181,7 +181,7 @@ async def get_resources_name(
 
 @app.post("/remove_res", tags=["resources"])
 async def remove_resource(
-        task_id: str, rtype: ResourcesType, item_name: str
+    task_id: str, rtype: ResourcesType, item_name: str
 ) -> ReturnList:
     """
     remove resources by resources name
@@ -199,7 +199,7 @@ async def remove_resource(
 
 @app.post("/rename_res", tags=["resources"])
 async def rename_project(
-        task_id: str, rtype: ResourcesType, item_name: str, new_name: str
+    task_id: str, rtype: ResourcesType, item_name: str, new_name: str
 ) -> ReturnDict:
     """
     rename resources by resources name
@@ -223,7 +223,7 @@ async def rename_project(
 
 @app.post("/upload", tags=["resources"])
 async def upload_file(
-        task_id: str, rtype: ResourcesType, file: UploadFile
+    task_id: str, rtype: ResourcesType, file: UploadFile
 ) -> ReturnDict:
     """
     update resources to rtype
@@ -242,7 +242,7 @@ async def upload_file(
 
 @app.post("/upload_files", tags=["resources"])
 async def upload_files(
-        task_id: str, rtype: ResourcesType, files: list[UploadFile]
+    task_id: str, rtype: ResourcesType, files: list[UploadFile]
 ) -> ReturnList:
     """
     update multi resources to rtype
@@ -290,7 +290,9 @@ async def engine_meta(task_id: str) -> ReturnDict:
 
 
 @app.post("/engine/append_frame", tags=["engine"])
-async def append_frame(task_id: str, frame_component_raw: FrameModel, force: bool = False) -> ReturnList:
+async def append_frame(
+    task_id: str, frame_component_raw: FrameModel, force: bool = False
+) -> ReturnList:
     """
     get fids corresponding to the task id
 

@@ -46,7 +46,6 @@ class TestEngine(TestCase):
 
         for i in range(100):
             frame = engine.make_frame(
-                _type=Frame,
                 background=background,
                 chara=characters,
                 music=music,

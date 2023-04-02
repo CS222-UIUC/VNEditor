@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 
 from unittest import TestCase
-from module.game_slot import GameSlot, get_cur_time, parse_data
+from module.gamesave_manager import GameSave, get_cur_time, parse_data
 from utils import file_utils
 from utils.exception import *
 
@@ -11,7 +11,7 @@ from utils.exception import *
 class TestGameSlot(TestCase):
     CONFIG_DIR = "../service.ini"
     GAME_DB_NAME = "test.db"
-    game_slot = GameSlot(db_dir=GAME_DB_NAME, config_dir=CONFIG_DIR)
+    game_slot = GameSave(db_dir=GAME_DB_NAME, config_dir=CONFIG_DIR)
 
     def test_reset(self):
         self.game_slot.reset()

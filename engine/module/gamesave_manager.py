@@ -4,7 +4,7 @@ API module for game slot control
 import time
 from typing import Optional
 
-from .db_manager import DBManager
+from utils.db_utils import DBManager
 from .config_manager import ConfigLoader
 
 
@@ -27,7 +27,7 @@ def parse_data(data: dict):
     return str(data)
 
 
-class GameSlot:
+class GameSave:
     """
     Game slot control service
     """

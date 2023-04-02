@@ -8,10 +8,6 @@ from utils.exception import ProjectManagerError
 from utils import file_utils
 from .config_manager import ConfigLoader
 
-BACKGROUND_CAT = "background_dir"
-CHARACTER_CAT = "character_dir"
-MUSIC_CAT = "music_dir"
-
 
 class ResourcesType(str, Enum):
     """
@@ -22,18 +18,6 @@ class ResourcesType(str, Enum):
     Background = "background"
     Music = "music"
     Character = "character"
-
-
-def delete_project(folder_dir: str) -> bool:
-    """
-    @param folder_dir: project directory to be deleted
-    @return: status of delete action
-    """
-    if not file_utils.check_folder_valid(folder_dir):
-        return False
-
-    return file_utils.delete_folder(folder_dir=folder_dir)
-
 
 class ProjectManager:
     """
@@ -114,7 +98,10 @@ class ProjectManager:
 
         @return: status of delete action
         """
-        return delete_project(self.__base)
+        if not file_utils.check_folder_valid(self.__base):
+            return False
+
+        return file_utils.delete_folder(folder_dir=self.__base)
 
     def get_resources_by_rtype(self, rtype: ResourcesType, filter_by="") -> list:
         """
@@ -126,11 +113,11 @@ class ProjectManager:
 
         """
         if rtype == ResourcesType.Background:
-            return self.__get_general_res(BACKGROUND_CAT, filter_by)
+            return self.__get_general_res("background_dir", filter_by)
         if rtype == ResourcesType.Music:
-            return self.__get_general_res(MUSIC_CAT, filter_by)
+            return self.__get_general_res("music_dir", filter_by)
         if rtype == ResourcesType.Character:
-            return self.__get_general_res(CHARACTER_CAT, filter_by)
+            return self.__get_general_res("character_dir", filter_by)
 
         raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 
@@ -143,11 +130,11 @@ class ProjectManager:
         @return: ok or not
         """
         if rtype == ResourcesType.Background:
-            return self.__delete_general_res(BACKGROUND_CAT, file_name)
+            return self.__delete_general_res("background_dir", file_name)
         if rtype == ResourcesType.Music:
-            return self.__delete_general_res(MUSIC_CAT, file_name)
+            return self.__delete_general_res("music_dir", file_name)
         if rtype == ResourcesType.Character:
-            return self.__delete_general_res(CHARACTER_CAT, file_name)
+            return self.__delete_general_res("character_dir", file_name)
 
         raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 
@@ -163,11 +150,11 @@ class ProjectManager:
         @return: ok or not
         """
         if rtype == ResourcesType.Background:
-            return self.__rename_general_res(BACKGROUND_CAT, file_name, new_name)
+            return self.__rename_general_res("background_dir", file_name, new_name)
         if rtype == ResourcesType.Music:
-            return self.__rename_general_res(MUSIC_CAT, file_name, new_name)
+            return self.__rename_general_res("music_dir", file_name, new_name)
         if rtype == ResourcesType.Character:
-            return self.__rename_general_res(CHARACTER_CAT, file_name, new_name)
+            return self.__rename_general_res("character_dir", file_name, new_name)
 
         raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 
@@ -179,11 +166,11 @@ class ProjectManager:
         @return: corresponding directory
         """
         if rtype is ResourcesType.Background:
-            return self.__config_res[BACKGROUND_CAT]
+            return self.__config_res["background_dir"]
         if rtype is ResourcesType.Music:
-            return self.__config_res[MUSIC_CAT]
+            return self.__config_res["music_dir"]
         if rtype is ResourcesType.Character:
-            return self.__config_res[CHARACTER_CAT]
+            return self.__config_res["character_dir"]
 
         raise ProjectManagerError(f"cannot find rtype: '{rtype}'")
 

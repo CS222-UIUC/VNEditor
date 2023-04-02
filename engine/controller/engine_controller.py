@@ -85,7 +85,9 @@ class EngineController:
         return ReturnDict(status=StatusCode.OK, content=engine.get_engine_meta())
 
     @engine_controller_exception_handler
-    def append_frame(self, task: Task, frame_component_raw: FrameModel, force=False) -> ReturnList:
+    def append_frame(
+        self, task: Task, frame_component_raw: FrameModel, force=False
+    ) -> ReturnList:
         """
         append frame: Frame into game content
 
@@ -94,8 +96,8 @@ class EngineController:
         """
         engine = task.project_engine
         frame_component = frame_component_raw.to_frame().__dict__
-        frame_component.pop('fid')
-        frame_component.pop('action')
+        frame_component.pop("fid")
+        frame_component.pop("action")
         frame = engine.make_frame(**frame_component)
         fid = engine.append_frame(frame, force)
         if fid == StatusCode.FAIL:
@@ -115,7 +117,7 @@ class EngineController:
         engine = task.project_engine
         status = engine.commit()
         if status == StatusCode.FAIL:
-            return ReturnStatus(status=StatusCode.FAIL, msg='fail to commit changes')
+            return ReturnStatus(status=StatusCode.FAIL, msg="fail to commit changes")
 
         return ReturnStatus(status=StatusCode.OK)
 

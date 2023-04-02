@@ -10,7 +10,7 @@ class ReturnStatus(BaseModel):
     """
 
     status: StatusCode = StatusCode.OK
-    msg: Optional[str] = 'ok'
+    msg: Optional[str] = "ok"
 
 
 class ReturnList(ReturnStatus):
