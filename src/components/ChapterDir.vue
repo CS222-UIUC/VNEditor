@@ -5,11 +5,11 @@ import type { Ref } from "vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
 import type { IFrame } from "@/FrameDef";
 import { projectIDKey } from "../InjectionKeys";
-import { getFrames, Frametype } from "../RequestAPI"; // need to change to needed function
+import { getFrames } from "../RequestAPI"; // need to change to needed function
 
 var FramesDisplay = ref(false); // control display the scene of the corresopnding chapter
 const FrameList: Ref<IFrame[]> = ref([]);
-const chapname: Ref<string> = ref("");
+const chapName: Ref<string> = ref("");
 // function addFrame(idx: Number): boolean {
 //     return false;
 // }
@@ -23,7 +23,7 @@ const chapname: Ref<string> = ref("");
 // }
 
 const props = defineProps({
-    Chaptername: {
+    ChapterName: {
         type: String,
         default: "wtf? should be the name of the chapter"
     },
@@ -38,7 +38,7 @@ function updateChapName(event: MouseEvent) {
     const el = event.target as HTMLElement;
     const name = el.textContent;
     if (name)
-        chapname.value = name;
+        chapName.value = name;
     FramesDisplay.value = !FramesDisplay.value;
 }
 
@@ -46,10 +46,11 @@ function updateChapName(event: MouseEvent) {
 watchEffect(() => {
     // call back method update the chapter to display once projectID received
     if (projectID.value)
-        getFrames(projectID.value, chapname.value).then((res: IFrame[]) => {
+        getFrames(projectID.value, chapName.value).then((res: IFrame[]) => {
             if (res) FrameList.value = res;
             console.log("nextline is chapter name")
-            console.log(chapname.value);
+            console.log(chapName.value);
+            console.log(props.ChapterName); // sth wrong with here
         });
 });
 </script>
