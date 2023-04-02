@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import item from "../components/NavbarItem.vue";
-import drop from "../components/dropDownList.vue";
+import drop from "./DropDownList.vue";
 import { getProjects, removeProject, initProject } from "../RequestAPI";
 import { projectIDKey, projectNameKey } from "../InjectionKeys";
 import { inject, ref, watch, watchEffect } from "vue";
