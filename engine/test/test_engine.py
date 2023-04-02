@@ -53,7 +53,7 @@ class TestEngine(TestCase):
                 dialog=dialogue,
             )
             if i % 10 == 0:
-                nid = engine.append_frame(frame)
+                nid = engine.append_frame(frame, force=True)
                 print("add frame: ", nid)
 
         head_id = engine.get_head_id()

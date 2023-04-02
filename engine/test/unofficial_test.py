@@ -56,9 +56,5 @@
 #         engine.remove_frame(frame_id=i)
 #
 # engine.commit()
-
-from engine.component.branch import BranchTree
-
-branch = BranchTree()
-print(branch.add_branch(1, "choice 1"))
-print(branch.get_all_branch())
+#
+#

@@ -22,6 +22,7 @@ class Task:
     def __init__(
         self, project_manager: ProjectManager, project_engine: Engine, base_dir: str
     ):
+        self.project_name: str = project_manager.get_project_name()
         self.project_manager: ProjectManager = project_manager
         self.project_engine: Engine = project_engine
         self.time_start: float = time.time()
@@ -86,7 +87,7 @@ class ProjectController:
             token = secrets.token_urlsafe(token_length)
 
         project_manager = ProjectManager(
-            base_dir=base_dir, config_dir=self.__config_dir
+            project_name=base_dir, config_dir=self.__config_dir
         )
         project_engine = Engine(
             project_dir=project_manager.get_project_dir(), config_dir=self.__config_dir
@@ -136,7 +137,7 @@ class ProjectController:
         remove the task from task list
 
         @param task_id: if for task
-        @return: diction contain status information
+        @return: dictionary contain status information
 
         """
         if task_id not in self.__tasks:
@@ -203,7 +204,7 @@ class ProjectController:
         """
         return task_id in self.__tasks
 
-    def get_task(self, task_id: str):
+    def get_task(self, task_id: str) -> Task | None:
         """
         return the task corresponded to the task id,
         return None if not find
@@ -216,3 +217,20 @@ class ProjectController:
             return None
 
         return self.__tasks[task_id]
+
+    def get_task_id_by_project_name(self, project_name: str):
+        """
+        get task id by project name
+
+        @param project_name: the name of project to query
+        @return: the task id corresponding
+
+        """
+        print(self.__tasks)
+        task_id = list(
+            filter(lambda x: self.__tasks[x].project_name == project_name, self.__tasks)
+        )
+        if len(task_id) == 0:
+            return None
+        else:
+            return task_id[0]

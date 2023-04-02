@@ -9,8 +9,8 @@ class ReturnStatus(BaseModel):
 
     """
 
-    status: StatusCode = StatusCode.FAIL
-    msg: Optional[str]
+    status: StatusCode = StatusCode.OK
+    msg: Optional[str] = 'ok'
 
 
 class ReturnList(ReturnStatus):
