@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import ChapterItem from "./ChapterDir.vue";
 import type { Ref } from "vue";
-import { ref, watchEffect,inject,type PropType } from "vue";
+import { ref, watchEffect, inject, type PropType } from "vue";
 import { projectIDKey } from "../InjectionKeys";
 
 import { getChapters } from "../RequestAPI";
-
 
 var ChapetrsDisplay = ref(false); // control display the scene of the corresopnding chapter, used once current project deleted
 const ChapterList = ref<string[]>([]);
@@ -25,20 +24,17 @@ watchEffect(() => {
             if (res) ChapterList.value = res;
         });
 });
-
-
-
 </script>
 
 <template>
     <div>
-        <ChapterItem 
-            v-for="item in ChapterList" 
+        <ChapterItem
+            v-for="item in ChapterList"
             :key="item"
             :name="item"
-            :item-call-back= "prop.itemCallBack"
+            :item-call-back="prop.itemCallBack"
             :chaptername="item"
-        >{{ item }}
+            >{{ item }}
         </ChapterItem>
     </div>
 </template>

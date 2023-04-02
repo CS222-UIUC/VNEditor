@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 export const baseUrl: string = "http://127.0.0.1:8000/"; // This is provided with a backslash '/' at the end
 
-import type { IFrame,IChar } from "@/FrameDef";
+import type { IFrame, IChar } from "@/FrameDef";
 // interface Params {
 //     [index: string]: string;
 // }
@@ -196,7 +196,6 @@ export async function renameResource(
     }
 }
 
-
 /**
  * get all the chapters of the corresponding project
  * @param name: project_name
@@ -204,7 +203,7 @@ export async function renameResource(
  */
 export async function getChapters(name: string): Promise<string[]> {
     // need to update to correct function
-    return ["test chapter","next is chapter name",name, "end of chapter" ];
+    return ["test chapter", "next is chapter name", name, "end of chapter"];
 }
 
 /**
@@ -214,8 +213,7 @@ export async function getChapters(name: string): Promise<string[]> {
  * @returns
  */
 export async function getFrames(name: string, chapter_name: string): Promise<IFrame[]> {
-    
-    let a,c: IFrame;
+    let a, c: IFrame;
     let b: IChar;
     b = {
         imageName: "",
@@ -232,9 +230,6 @@ export async function getFrames(name: string, chapter_name: string): Promise<IFr
         id: 0, // index
         backgroundName: "", // url
         characters: [b],
-    }
-    return [a,c,a,a];
+    };
+    return [a, c, a, a];
 }
-
-
-
