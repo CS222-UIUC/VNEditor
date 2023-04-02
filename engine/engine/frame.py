@@ -2,26 +2,42 @@
 frame component for frame
 """
 
-from .background import Background
-from .character import Character
-from .dialogue import Dialogue
-from .music import Music
-from .action import Action
+from typing import Optional
+from engine.component.background import Background
+from engine.component.character import Character
+from engine.component.dialogue import Dialogue
+from engine.component.music import Music
+from engine.component.action import Action
 
 
-class Frame:
+class BasicFrame:
     """
-    Frame
+    base modal for frame
+    """
+
+    VOID_FRAME_ID = -1  # indicate no frame
+
+    def __init__(self, fid: int, action: Optional[Action] = None):
+        self.fid: int = fid
+
+        if action is None:
+            action = Action(self.VOID_FRAME_ID, self.VOID_FRAME_ID)
+        self.action = action
+
+
+class Frame(BasicFrame):
+    """
+    a normal frame
     """
 
     def __init__(
         self,
         fid: int,
         background: Background,
-        chara: Character,
+        chara: list[Character],
         music: Music,
         dialog: Dialogue,
-        action: Action,
+        action: Optional[Action] = None,
     ):
         """
         constructor for frame class
@@ -33,26 +49,8 @@ class Frame:
         @param dialog: dialogue
         @param action: action
         """
-        self.background = background
-        self.chara = chara
-        self.music = music
-        self.dialog = dialog
-        self.action = action
-        self.fid = fid
-
-    def set_id(self, fid: int) -> None:
-        """
-        set frame id for current frame
-
-        @param fid: new fid
-        @return:
-        """
-        self.fid = fid
-
-    def get_id(self) -> int:
-        """
-        get the id for current frame
-
-        @return: frame id
-        """
-        return self.fid
+        super().__init__(fid, action)
+        self.background: Background = background
+        self.chara: list[Character] = chara
+        self.music: Music = music
+        self.dialog: Dialogue = dialog

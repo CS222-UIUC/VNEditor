@@ -3,7 +3,7 @@ Config Manager
 """
 import configparser
 from utils.file_utils import check_file_valid
-from .exception import ConfigLoaderError
+from utils.exception import ConfigLoaderError
 
 
 class ConfigLoader:
@@ -57,14 +57,6 @@ class ConfigLoader:
         @return: project config
         """
         return dict(self.config["Project"])
-
-    def register_service(self) -> dict:
-        """
-        get register_service config
-
-        @return: register_service config
-        """
-        return dict(self.config["RegisterService"])
 
     def version(self) -> dict:
         """

@@ -1,0 +1,13 @@
+[MESSAGES CONTROL]
+# disable some pylinter error
+disable=W0718,R0902,R0913,C0103,R0903,R0912,E0611,R0911
+
+# Reason to disable
+
+# R0903: enum class will cause is happen
+# C0103: argument cannot been reduced
+# R0902,R0913: engine argument cannot be reduced
+# W0718: upper case naming ignore
+# R0912: upload router need those branches
+# E0611: see https://github.com/pydantic/pydantic/issues/1961#issuecomment-729288794
+# R0911: checker need to have that much return statement
