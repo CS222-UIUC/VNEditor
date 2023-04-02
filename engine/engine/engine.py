@@ -349,7 +349,7 @@ class Engine:
         return self.__tail
 
     @engine_exception_handler
-    def get_frame(self, fid: int) -> BasicFrame | None:
+    def get_frame(self, fid: int):
         """
         get frame by frame id, return none if nothing find
 
@@ -392,7 +392,7 @@ class Engine:
         return len(self.__game_content)
 
     @engine_exception_handler
-    def get_metadata_buffer(self) -> dict[dict, dict] | None:
+    def get_metadata_buffer(self):
         """
         get the current meta buffer, WARNING, this method
         return the buffered metadata, might not be up-to-date

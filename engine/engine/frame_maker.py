@@ -7,7 +7,7 @@ from engine.component.character import Character
 from engine.component.dialogue import Dialogue
 from engine.component.music import Music
 from engine.frame import Frame
-
+# from typing import Options
 
 class FrameMaker:
     """
@@ -15,7 +15,7 @@ class FrameMaker:
 
     """
 
-    def make(self, _type: type, **kwargs) -> Frame | None:
+    def make(self, _type: type, **kwargs):
         """
         entry for frame check, register your own checker there,
         initialize frame id and action with VOID_FRAME_ID and

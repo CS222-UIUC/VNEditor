@@ -56,3 +56,15 @@ describe("getResources", () => {
         });
     });
 });
+
+describe("removeProject", () => {
+    test("empty resources on init", () => {});
+});
+
+describe("getProjects", () => {
+    test("empty resources on init", () => {});
+});
+
+describe("getProjects", () => {
+    test("empty resources on init", () => {});
+});

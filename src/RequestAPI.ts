@@ -40,13 +40,14 @@ export function getUrl(api: string, params: { [key: string]: string | number }):
  */
 export async function initProject(name: string): Promise<string | undefined> {
     let projectID: string;
+    console.log(name);
     if (name.length < 4) throw new Error("project name must at least have 4 characters");
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `init_project/?base_dir=${name}`
             getUrl("init_project", { base_dir: name })
         );
-        // console.log(response.data.content["task_id"]);
+        console.log(response.data.content["task_id"]);
         projectID = response.data.content["task_id"];
         return projectID;
     } catch (err: any) {
@@ -59,7 +60,8 @@ export async function initProject(name: string): Promise<string | undefined> {
  * @param rtype the enum class rtype. Should be one of "background" "music" "character"
  * @returns the list of names of the resources
  */
-export async function getResources(id: string, rtype: Rtype): Promise<Array<string>> {
+export async function getResources(id: string | undefined, rtype: Rtype): Promise<Array<string>> {
+    if (!id) return [];
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
@@ -78,7 +80,13 @@ export async function getResources(id: string, rtype: Rtype): Promise<Array<stri
  * @param formData FormData object containing files to be uploaded
  * @returns return true of upload is successful
  */
-export async function uploadFiles(id: string, rtype: string, formData: FormData): Promise<boolean> {
+export async function uploadFiles(
+    id: string | undefined,
+    rtype: string,
+    formData: FormData
+): Promise<boolean> {
+    if (!id) return false;
+
     try {
         const response = await axios({
             method: "post",
@@ -99,41 +107,38 @@ export async function uploadFiles(id: string, rtype: string, formData: FormData)
  */
 export async function getProjects(): Promise<string[]> {
     // TO TEST;
-    let project_names: string[];
     try {
         // fetch the name
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
             getUrl("list_projects", {})
         );
-        project_names = response.data.content;
+
+        const project_names: string[] = response.data.content;
         return project_names;
     } catch (err: any) {
-        throw new Error("error happend in getProject");
-        return project_names;
+        console.log(err);
     }
-    return project_names;
+    return [];
 }
 
 /**
  * delete a projet that has initilized before
- * @param id
+ * @param name
  * @returns true if success, false if failed
  */
-export async function removeProject(id: string): Promise<boolean> {
+export async function removeProject(name: string): Promise<boolean> {
     //TO TEST;
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("remove_project", { task_id: id })
+            getUrl("remove_project", { project_name: name })
         );
         console.log(response);
         return response.data["status"] === 1;
     } catch (err: any) {
         throw new Error("error happend in removeProject");
-        return false;
     }
-    return false;
 }
 /**
  * delete a fioe that has uploaded before
@@ -153,9 +158,7 @@ export async function removeResource(id: string, rtype: Rtype, name: string): Pr
         return response.data["status"] === 1;
     } catch (err: any) {
         throw new Error("error happend in removeResource");
-        return false;
     }
-    return false;
 }
 /**
  * @param id: project_id
@@ -185,7 +188,9 @@ export async function renameResource(
         return response.data["status"] === 1;
     } catch (err: any) {
         throw new Error("error happend in removeResource");
-        return false;
     }
+}
+
+export async function getFrame(idx: Number): Promise<boolean> {
     return false;
 }

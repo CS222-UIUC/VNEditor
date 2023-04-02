@@ -1,29 +1,21 @@
 <script setup lang="ts">
 import { ref, provide } from "vue";
 import { getUrl } from "./RequestAPI";
-import { initProject } from "./RequestAPI";
 import Toolbar from "./components/ToolbarMain.vue";
 import Navbar from "./components/NavbarMain.vue";
 import FileUploadArea from "./components/UploadArea.vue";
-import { hostNameKey, projectIDKey } from "./InjectionKeys";
+import Framebar from "./components/FrameMain.vue";
+import { hostNameKey, projectIDKey, projectNameKey } from "./InjectionKeys";
 import EditorMain from "./components/EditorMain.vue";
 
 const fileUploadAreaDisplay = ref(false);
 const editorBackground = ref("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg");
 const editorMusic = ref("");
 const projectID = ref<string | undefined>(undefined);
-
+const projectName = ref<string | undefined>(undefined);
 provide(hostNameKey, "http://127.0.0.1:8000/");
 provide(projectIDKey, projectID);
-
-initProject("test_1").then((res: string | undefined) => {
-    if (res) {
-        projectID.value = res;
-        console.log(projectID.value);
-    } else {
-        console.log("project init failed");
-    }
-});
+provide(projectNameKey, projectName);
 
 function setEditorBackground(event: MouseEvent) {
     const el: Element = event.target as Element;
@@ -54,7 +46,7 @@ function setEditorMusic(event: MouseEvent) {
     >
         <FileUploadArea :display="fileUploadAreaDisplay" />
     </EditorMain>
-    <div id="preview-sidebar" class="grid-item">this is sidebar 1 {{ fileUploadAreaDisplay }}</div>
+    <Framebar id="preview-sidebar" class="grid-item"> </Framebar>
     <Toolbar
         id="toolbar-sidebar"
         class="grid-item"
@@ -81,6 +73,8 @@ function setEditorMusic(event: MouseEvent) {
 
 #preview-sidebar {
     background-color: cadetblue;
+    display: flex;
+    flex-direction: column;
 }
 
 #toolbar-sidebar {

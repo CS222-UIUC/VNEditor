@@ -203,7 +203,7 @@ class ProjectController:
         """
         return task_id in self.__tasks
 
-    def get_task(self, task_id: str) -> Task | None:
+    def get_task(self, task_id: str):
         """
         return the task corresponded to the task id,
         return None if not find
