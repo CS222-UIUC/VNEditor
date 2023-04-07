@@ -24,7 +24,7 @@ const chapName: Ref<string> = ref("");
 
 const props = defineProps({
     ChapterName: {
-        type: String,
+        type: ref<String>,
         default: "wtf? should be the name of the chapter"
     },
     itemCallBack: {
