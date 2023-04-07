@@ -7,13 +7,11 @@ from engine.engine import Engine
 
 import random
 from engine.component.branch import BranchTree
-from engine.component.character import CharacterPosition
-from engine.component.music import MusicSignal
 from engine.frame import *
 
 
 class TestEngine(TestCase):
-    engine = Engine(project_dir="../projects/aaa", config_dir="../service.ini")
+    engine = Engine(project_dir="../projects/aa", config_dir="../service.ini")
 
     def test_make_frame(self):
         engine = self.engine
@@ -33,6 +31,7 @@ class TestEngine(TestCase):
         branch.add_branch(1, "choice 1")
         print(branch.get_all_branch())
         self.assertTrue(branch.get_all_branch()[1] == "choice 1")
+        meta = FrameMeta()
 
         branch.delete_branch(1)
         branch.delete_branch(111)
@@ -46,19 +45,41 @@ class TestEngine(TestCase):
 
         for i in range(100):
             frame = engine.make_frame(
-                _type=Frame,
                 background=background,
                 chara=characters,
                 music=music,
                 dialog=dialogue,
+                meta=meta,
             )
             if i % 10 == 0:
-                nid = engine.append_frame(frame)
+                nid = engine.append_frame(frame, force=True)
                 print("add frame: ", nid)
 
         head_id = engine.get_head_id()
         print(f"head id: {head_id}")
+        frame = engine.make_frame(
+            background=background,
+            chara=characters,
+            music=music,
+            dialog=dialogue,
+            meta=meta,
+        )
+        checker = FrameChecker("../projects/aa", ConfigLoader("../service.ini"))
+        self.assertFalse(checker.check(frame)[0])
 
+        print(engine.render_struct())
+        meta = FrameMeta("", "test")
+        frame = engine.make_frame(
+            background=background,
+            chara=characters,
+            music=music,
+            dialog=dialogue,
+            meta=meta,
+        )
+        print(engine.render_struct())
+
+        with self.assertRaises(Exception):
+            engine.remove_frame(10000)
         frame_keys = engine.get_all_frame_id()
 
         for i in frame_keys:

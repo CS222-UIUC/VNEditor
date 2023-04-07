@@ -56,6 +56,8 @@ class ServerController:
             return ReturnStatus(status=False, msg=f"fail remove project '{folder_dir}'")
 
         if delete_folder(folder_dir=folder_dir):
-            return ReturnStatus(status=True, msg=f"successfully remove project '{folder_dir}'")
+            return ReturnStatus(
+                status=True, msg=f"successfully remove project '{folder_dir}'"
+            )
 
         return ReturnStatus(status=False, msg=f"fail remove project '{folder_dir}'")
