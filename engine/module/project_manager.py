@@ -19,6 +19,7 @@ class ResourcesType(str, Enum):
     Music = "music"
     Character = "character"
 
+
 class ProjectManager:
     """
     project manager class

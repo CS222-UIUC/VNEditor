@@ -44,21 +44,7 @@ class EngineController:
         self.__engine_config: dict = config_loader.engine()
 
     @engine_controller_exception_handler
-    def get_frame(self, task: Task, fid: int) -> ReturnDict:
-        """
-        get frame by frame id
-
-        @param task: current task
-        @param fid: frame id
-        @return: dictionary contain frame information
-
-        """
-        engine = task.project_engine
-        frame = engine.get_frame(fid)
-        return ReturnDict(status=StatusCode.OK, content=frame.__dict__)
-
-    @engine_controller_exception_handler
-    def get_frame_id(self, task: Task) -> ReturnList:
+    def get_frames_id(self, task: Task) -> ReturnList:
         """
         get all frame id
 
@@ -86,7 +72,7 @@ class EngineController:
 
     @engine_controller_exception_handler
     def append_frame(
-        self, task: Task, frame_component_raw: FrameModel, force=False
+            self, task: Task, frame_component_raw: FrameModel, force=False
     ) -> ReturnList:
         """
         append frame: Frame into game content
@@ -104,6 +90,38 @@ class EngineController:
             return ReturnList(status=StatusCode.FAIL)
         else:
             return ReturnList(status=StatusCode.OK, content=[fid])
+
+    def get_frame(self, task: Task, fid: int) -> ReturnDict:
+        """
+        get the frame information
+
+        @return: content of frame with given id
+
+        """
+        engine = task.project_engine
+        frame_raw = engine.get_frame(fid=fid)
+        if frame_raw is None:
+            return ReturnDict(status=StatusCode.FAIL, msg=f"No such frame id '{fid}'")
+        background = frame_raw.background.res_name
+        chara = [i.res_name for i in frame_raw.chara]
+        chara_pos = [[i.position.x, i.position.y] for i in frame_raw.chara]
+        music = frame_raw.music.res_name
+        dialog = frame_raw.dialog.dialogue
+        if frame_raw.dialog.character is None:
+            dialog_character = None
+        else:
+            dialog_character = frame_raw.dialog.character.res_name
+        if background is None:
+            background = ""
+        if music is None:
+            music = ""
+        if dialog is None:
+            dialog = ""
+        if dialog_character is None:
+            dialog_character = ""
+        to_return = FrameModel(background=background, chara=chara, chara_pos=chara_pos, music=music,
+                               dialog=dialog, dialog_character=dialog_character)
+        return ReturnDict(content=to_return.__dict__)
 
     @engine_controller_exception_handler
     def commit(self, task: Task) -> ReturnStatus:

@@ -16,7 +16,7 @@ from utils.exception import EngineError
 from module.config_manager import ConfigLoader
 from utils.file_utils import check_file_valid, check_folder_valid, abs_dir
 from utils.status import StatusCode
-from engine.frame import BasicFrame, Frame, FrameChecker
+from engine.frame import Frame, FrameChecker
 import engine.engine_io as eng_io
 from engine.component import *
 
@@ -62,10 +62,10 @@ class Engine:
 
     # activated variables, initialized after class construct,
     # should be UPDATED ON TIME every time they changed
-    __game_content: dict[int, BasicFrame] = {}
-    __head: int = BasicFrame.VOID_FRAME_ID  # the head of the frame list
-    __tail: int = BasicFrame.VOID_FRAME_ID  # the tail of the frame list
-    __last_fid: int = BasicFrame.VOID_FRAME_ID  # the last used fid (frame id)
+    __game_content: dict[int, Frame] = {}
+    __head: int = Frame.VOID_FRAME_ID  # the head of the frame list
+    __tail: int = Frame.VOID_FRAME_ID  # the tail of the frame list
+    __last_fid: int = Frame.VOID_FRAME_ID  # the last used fid (frame id)
     __all_fids: set[int] = set()  # all fids in set
 
     def __init__(
@@ -167,7 +167,7 @@ class Engine:
         chara: list[Character],
         music: Music,
         dialog: Dialogue,
-    ) -> BasicFrame:
+    ) -> Frame:
         """
         make a frame
 
@@ -182,7 +182,7 @@ class Engine:
         return frame
 
     @engine_exception_handler
-    def append_frame(self, frame: BasicFrame, force: bool = False) -> int:
+    def append_frame(self, frame: Frame, force: bool = False) -> int:
         """
         add frame to the end of the frame list
 
@@ -198,14 +198,14 @@ class Engine:
                 raise EngineError(f"Frame invalid: {check_output[1]}")
 
         # generate the fid
-        if self.__last_fid == BasicFrame.VOID_FRAME_ID:
+        if self.__last_fid == Frame.VOID_FRAME_ID:
             fid = 0
         else:
             fid = self.__last_fid + 1
         frame.fid = fid
 
         # change the current last frame's next frame pointer
-        if self.__last_fid != BasicFrame.VOID_FRAME_ID:
+        if self.__last_fid != Frame.VOID_FRAME_ID:
             self.__game_content[self.__last_fid].action.next_f = fid
 
         # update the current frame
@@ -217,7 +217,7 @@ class Engine:
         self.__all_fids.add(fid)
 
         # update head and tail
-        if self.__head == BasicFrame.VOID_FRAME_ID:
+        if self.__head == Frame.VOID_FRAME_ID:
             self.__head = fid
 
         self.__tail = fid
@@ -232,82 +232,82 @@ class Engine:
         @return: ordered fid
 
         """
-        if self.__head == BasicFrame.VOID_FRAME_ID:
+        if self.__head == Frame.VOID_FRAME_ID:
             return []
 
         ordered_id = [self.__head]
         while 1:
             cur = ordered_id[-1]
             next_fid = self.get_frame(cur).action.next_f
-            if next_fid == BasicFrame.VOID_FRAME_ID:
+            if next_fid == Frame.VOID_FRAME_ID:
                 break
             ordered_id.append(next_fid)
 
         return ordered_id
 
-    @engine_exception_handler
-    def prepend_frame(self, from_frame_id: int):
-        """
-        prepend frame to the beginning of the list
-
-        @param from_frame_id: append what frame
-
-        """
-        if from_frame_id not in self.__all_fids:
-            raise EngineError("prepend fail, frame not exist")
-
-        if self.__head == from_frame_id:
-            return
-
-        from_frame = self.__game_content[from_frame_id]
-
-        if from_frame_id != self.__tail:
-            self.__game_content[
-                from_frame.action.next_f
-            ].action.prev_f = from_frame.action.prev_f
-        else:
-            self.__tail = from_frame.action.prev_f
-
-        self.__game_content[
-            from_frame.action.prev_f
-        ].action.next_f = from_frame.action.next_f
-
-        from_frame.action.prev_f = BasicFrame.VOID_FRAME_ID
-        from_frame.action.next_f = self.__head
-
-    @engine_exception_handler
-    def insert_frame(self, dest_frame_id: int, from_frame_id: int):
-        """
-        move the from_frame to the next of the dest_frame_id,
-        if dest frame is VOID_FRAME_ID, then move to the head
-
-        @param dest_frame_id: distinct frame id
-        @param from_frame_id: from which frame
-
-        """
-        # edge case, prepend a frame to the beginning of the frame list
-        if dest_frame_id == BasicFrame.VOID_FRAME_ID:
-            self.prepend_frame(from_frame_id)
-            return
-
-        if dest_frame_id not in self.__all_fids or from_frame_id not in self.__all_fids:
-            raise EngineError("insert fail, frame not exist")
-
-        from_frame = self.__game_content[from_frame_id]
-        dest_frame = self.__game_content[dest_frame_id]
-
-        if from_frame == self.__head:
-            self.__head = from_frame.action.next_f
-
-        from_frame.action.next_f = dest_frame.action.next_f
-        from_frame.action.prev_f = dest_frame_id
-
-        if dest_frame_id != self.__tail:
-            self.__game_content[dest_frame.action.next_f].action.prev_f = from_frame_id
-        else:
-            self.__tail = from_frame_id
-
-        dest_frame.action.next_f = from_frame_id
+    # @engine_exception_handler
+    # def prepend_frame(self, from_frame_id: int):
+    #     """
+    #     prepend frame to the beginning of the list
+    #
+    #     @param from_frame_id: append what frame
+    #
+    #     """
+    #     if from_frame_id not in self.__all_fids:
+    #         raise EngineError("prepend fail, frame not exist")
+    #
+    #     if self.__head == from_frame_id:
+    #         return
+    #
+    #     from_frame = self.__game_content[from_frame_id]
+    #
+    #     if from_frame_id != self.__tail:
+    #         self.__game_content[
+    #             from_frame.action.next_f
+    #         ].action.prev_f = from_frame.action.prev_f
+    #     else:
+    #         self.__tail = from_frame.action.prev_f
+    #
+    #     self.__game_content[
+    #         from_frame.action.prev_f
+    #     ].action.next_f = from_frame.action.next_f
+    #
+    #     from_frame.action.prev_f = BasicFrame.VOID_FRAME_ID
+    #     from_frame.action.next_f = self.__head
+    #
+    # @engine_exception_handler
+    # def insert_frame(self, dest_frame_id: int, from_frame_id: int):
+    #     """
+    #     move the from_frame to the next of the dest_frame_id,
+    #     if dest frame is VOID_FRAME_ID, then move to the head
+    #
+    #     @param dest_frame_id: distinct frame id
+    #     @param from_frame_id: from which frame
+    #
+    #     """
+    #     # edge case, prepend a frame to the beginning of the frame list
+    #     if dest_frame_id == BasicFrame.VOID_FRAME_ID:
+    #         self.prepend_frame(from_frame_id)
+    #         return
+    #
+    #     if dest_frame_id not in self.__all_fids or from_frame_id not in self.__all_fids:
+    #         raise EngineError("insert fail, frame not exist")
+    #
+    #     from_frame = self.__game_content[from_frame_id]
+    #     dest_frame = self.__game_content[dest_frame_id]
+    #
+    #     if from_frame == self.__head:
+    #         self.__head = from_frame.action.next_f
+    #
+    #     from_frame.action.next_f = dest_frame.action.next_f
+    #     from_frame.action.prev_f = dest_frame_id
+    #
+    #     if dest_frame_id != self.__tail:
+    #         self.__game_content[dest_frame.action.next_f].action.prev_f = from_frame_id
+    #     else:
+    #         self.__tail = from_frame_id
+    #
+    #     dest_frame.action.next_f = from_frame_id
 
     @engine_exception_handler
     def remove_frame(self, frame_id: int):
@@ -339,11 +339,11 @@ class Engine:
         # update game content and metadata
         self.__game_content.pop(frame_id)
         if len(self.__game_content) == 0:
-            self.__last_fid = BasicFrame.VOID_FRAME_ID
+            self.__last_fid = Frame.VOID_FRAME_ID
         self.__all_fids.remove(frame_id)
 
     @engine_exception_handler
-    def change_frame(self, frame_id: int, frame: BasicFrame):
+    def change_frame(self, frame_id: int, frame: Frame):
         """
         change the frame id by new frame
 
@@ -372,7 +372,7 @@ class Engine:
         return self.__tail
 
     @engine_exception_handler
-    def get_frame(self, fid: int) -> BasicFrame | None:
+    def get_frame(self, fid: int) -> Frame | None:
         """
         get frame by frame id, return none if nothing find
 
@@ -385,7 +385,7 @@ class Engine:
         return self.__game_content[fid]
 
     @engine_exception_handler
-    def get_all_frames(self) -> dict[int, BasicFrame]:
+    def get_all_frames(self) -> dict[int, Frame]:
         """
         get all frames
 

@@ -1,4 +1,4 @@
-Generated In: 2023/04/02 周日 16:37:18.08
+Generated In: 2023/04/07 周五 14:25:46.60
 LINTER REPORT
 
 check ./engine
@@ -15,11 +15,11 @@ engine\frame.py:163:4: C0116: Missing function or method docstring (missing-func
 engine\component\__init__.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.53/10 (previous run: 9.53/10, +0.00)
+Your code has been rated at 9.49/10 (previous run: 9.49/10, +0.00)
 
 check ./module
 ************* Module module.project_manager
-module\project_manager.py:194:4: C0116: Missing function or method docstring (missing-function-docstring)
+module\project_manager.py:186:4: C0116: Missing function or method docstring (missing-function-docstring)
 
 ------------------------------------------------------------------
 Your code has been rated at 9.94/10 (previous run: 9.94/10, +0.00)
@@ -55,50 +55,49 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1680471443.04506          12
+1680895551.90595          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1680471443.04506          12
+1680895551.90595          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1680471443.04506          12
+1680895551.90595          12
 ----------------------------------------
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680471309.09104, 'total_frame_len': 5, 'last_fid': 20, 'head': 12, 'tail': 20}
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680895402.0041482, 'total_frame_len': 3, 'last_fid': 16, 'head': 11, 'tail': 16}
 {1: 'choice 1'}
+add frame:  17
+add frame:  18
+add frame:  19
+add frame:  20
 add frame:  21
 add frame:  22
 add frame:  23
 add frame:  24
 add frame:  25
 add frame:  26
-add frame:  27
-add frame:  28
-add frame:  29
-add frame:  30
-head id: 12
-remove id: 12
-remove id: 14
+head id: 11
+remove id: 11
 remove id: 15
+remove id: 16
 remove id: 17
+remove id: 18
+remove id: 19
 remove id: 20
-remove id: 21
-remove id: 22
+remove id: 23
+remove id: 24
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680895552.110174, 'total_frame_len': 4, 'last_fid': 26, 'head': 21, 'tail': 26}
+25 <engine.frame.Frame object at 0x0000025F40E80190>
+26 <engine.frame.Frame object at 0x0000025F40E80210>
+21 <engine.frame.Frame object at 0x0000025F40D8FE90>
+22 <engine.frame.Frame object at 0x0000025F40E80050>
 remove id: 25
 remove id: 26
-remove id: 27
-remove id: 28
-remove id: 29
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680471443.2354896, 'total_frame_len': 3, 'last_fid': 30, 'head': 23, 'tail': 30}
-24 <engine.frame.Frame object at 0x000001C4CCCA1790>
-30 <engine.frame.Frame object at 0x000001C4CCCA1AD0>
-23 <engine.frame.Frame object at 0x000001C4CCCA0310>
-remove id: 30
-remove id: 23
+remove id: 21
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
 C:\Users\Twisl\Desktop\VNEditor Service\engine\__init__.py                   0      0   100%
@@ -109,7 +108,7 @@ C:\Users\Twisl\Desktop\VNEditor Service\engine\component\branch.py          15  
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\character.py       11      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\dialogue.py        11      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\music.py           16      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   203     64    68%   44-48, 86, 109, 113-114, 121, 129, 136, 196-198, 202, 221, 235-246, 256-276, 289-310, 321, 342, 354, 372, 384, 395, 415, 427, 438, 455-456
+C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   173     34    80%   47-48, 86, 109, 113-114, 121, 129, 136, 196-198, 202, 221, 235-246, 342, 354, 372, 384, 395, 415, 427, 438, 455-456
 C:\Users\Twisl\Desktop\VNEditor Service\engine\engine_io.py                  7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\frame.py                     78     38    51%   91-96, 106-152, 164-176
 C:\Users\Twisl\Desktop\VNEditor Service\module\__init__.py                   0      0   100%
@@ -122,8 +121,8 @@ C:\Users\Twisl\Desktop\VNEditor Service\utils\file_utils.py                 45  
 C:\Users\Twisl\Desktop\VNEditor Service\utils\status.py                      4      0   100%
 test_config_manager.py                                                      35      0   100%
 test_db_manager.py                                                          63      0   100%
-test_engine.py                                                              55      0   100%
+test_engine.py                                                              57      0   100%
 test_file_utils.py                                                          35      0   100%
 test_game_slot.py                                                           39      0   100%
 ------------------------------------------------------------------------------------------------------
-TOTAL                                                                      779    105    87%
+TOTAL                                                                      751     75    90%

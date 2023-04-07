@@ -13,7 +13,7 @@ from engine.frame import *
 
 
 class TestEngine(TestCase):
-    engine = Engine(project_dir="../projects/aaa", config_dir="../service.ini")
+    engine = Engine(project_dir="../projects/aa", config_dir="../service.ini")
 
     def test_make_frame(self):
         engine = self.engine
@@ -58,6 +58,8 @@ class TestEngine(TestCase):
         head_id = engine.get_head_id()
         print(f"head id: {head_id}")
 
+        with self.assertRaises(Exception):
+            engine.remove_frame(10000)
         frame_keys = engine.get_all_frame_id()
 
         for i in frame_keys:
