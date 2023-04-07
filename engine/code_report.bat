@@ -24,5 +24,10 @@ echo generating linter and coverage report...
   coverage run -m -a unittest test_engine.py
   coverage report -m
 )
+echo clean directory...
+del test.db
+del .coverage
 echo code result been pushed into 'code_report.txt'
+
+
 pause

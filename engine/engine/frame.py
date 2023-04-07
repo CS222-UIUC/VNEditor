@@ -10,8 +10,9 @@ from module.config_manager import ConfigLoader
 from engine.component.background import Background
 from engine.component.character import Character, CharacterPosition
 from engine.component.dialogue import Dialogue
-from engine.component.music import Music
+from engine.component.music import Music, MusicSignal
 from engine.component.action import Action
+from engine.component.meta import FrameMeta
 
 from utils.file_utils import check_file_valid, abs_dir
 
@@ -37,13 +38,14 @@ class Frame(BasicFrame):
     """
 
     def __init__(
-            self,
-            fid: int,
-            background: Background,
-            chara: list[Character],
-            music: Music,
-            dialog: Dialogue,
-            action: Optional[Action] = None,
+        self,
+        fid: int,
+        background: Background,
+        chara: list[Character],
+        music: Music,
+        dialog: Dialogue,
+        action: Optional[Action] = None,
+        meta: FrameMeta = None,
     ):
         """
         constructor for frame class
@@ -54,12 +56,15 @@ class Frame(BasicFrame):
         @param music: music
         @param dialog: dialogue
         @param action: action
+        @param meta: meta
+
         """
         super().__init__(fid, action)
         self.background: Background = background
         self.chara: list[Character] = chara
         self.music: Music = music
         self.dialog: Dialogue = dialog
+        self.meta: FrameMeta = meta
 
 
 class FrameChecker:
@@ -142,7 +147,7 @@ class FrameChecker:
 
         if dialogue_character is not None:
             if not check_file_valid(
-                    abs_dir(self.__chara_base_dir, dialogue_character.res_name)
+                abs_dir(self.__chara_base_dir, dialogue_character.res_name)
             ):
                 return [
                     False,
@@ -153,14 +158,28 @@ class FrameChecker:
 
 
 class FrameModel(BaseModel):
+    """
+    class for frame model
+
+    """
+
     background: str
     chara: list
     chara_pos: list[list]
     music: str
+    music_signal: MusicSignal
     dialog: str
     dialog_character: str
+    chapter: str
+    description: str
 
     def to_frame(self) -> Frame:
+        """
+        convert the frame model to frame instance
+
+        @return: frame instance
+
+        """
         background = Background(res_name=self.background)
         chara = []
         dialogue = Dialogue(
@@ -168,13 +187,60 @@ class FrameModel(BaseModel):
         )
         for idx, cur in enumerate(self.chara):
             chara.append(
-                Character(res_name=cur, position=CharacterPosition(*self.chara_pos[idx]))
+                Character(
+                    res_name=cur, position=CharacterPosition(*self.chara_pos[idx])
+                )
             )
-        music = Music(self.music)
+        music = Music(res_name=self.music, signal=self.music_signal)
+        meta = FrameMeta(self.chapter, self.description)
         return Frame(
             fid=BasicFrame.VOID_FRAME_ID,
             background=background,
             chara=chara,
             dialog=dialogue,
-            music=music
+            music=music,
+            meta=meta,
         )
+
+
+def frame_to_model(frame: Frame):
+    """
+    convert frame to frame model
+
+    @param frame: the frame to be convert
+    @return: frame model instance
+
+    """
+    background = frame.background.res_name
+    chara = [i.res_name for i in frame.chara]
+    chara_pos = [[i.position.x, i.position.y] for i in frame.chara]
+    music_signal = frame.music.signal
+    music = frame.music.res_name
+    dialog = frame.dialog.dialogue
+    chapter = frame.meta.chapter
+    description = frame.meta.description
+
+    if frame.dialog.character is None:
+        dialog_character = None
+    else:
+        dialog_character = frame.dialog.character.res_name
+
+    if background is None:
+        background = ""
+    if music is None:
+        music = ""
+    if dialog is None:
+        dialog = ""
+    if dialog_character is None:
+        dialog_character = ""
+    return FrameModel(
+        background=background,
+        chara=chara,
+        chara_pos=chara_pos,
+        music=music,
+        music_signal=music_signal,
+        dialog=dialog,
+        dialog_character=dialog_character,
+        chapter=chapter,
+        description=description,
+    )
