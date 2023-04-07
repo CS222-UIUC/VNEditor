@@ -1,5 +1,9 @@
-from pydantic import BaseModel
+"""
+define the return type for fastapi
+
+"""
 from typing import Optional
+from pydantic import BaseModel
 from utils.status import StatusCode
 
 

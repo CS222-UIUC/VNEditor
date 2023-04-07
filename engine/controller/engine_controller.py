@@ -6,7 +6,7 @@ from utils.status import StatusCode
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
 from .project_controller import Task
-from engine.frame import Frame, FrameModel
+from engine.frame import FrameModel, frame_to_model
 
 
 def engine_controller_exception_handler(func):
@@ -72,7 +72,7 @@ class EngineController:
 
     @engine_controller_exception_handler
     def append_frame(
-            self, task: Task, frame_component_raw: FrameModel, force=False
+        self, task: Task, frame_component_raw: FrameModel, force=False
     ) -> ReturnList:
         """
         append frame: Frame into game content
@@ -91,6 +91,7 @@ class EngineController:
         else:
             return ReturnList(status=StatusCode.OK, content=[fid])
 
+    @engine_controller_exception_handler
     def get_frame(self, task: Task, fid: int) -> ReturnDict:
         """
         get the frame information
@@ -102,26 +103,8 @@ class EngineController:
         frame_raw = engine.get_frame(fid=fid)
         if frame_raw is None:
             return ReturnDict(status=StatusCode.FAIL, msg=f"No such frame id '{fid}'")
-        background = frame_raw.background.res_name
-        chara = [i.res_name for i in frame_raw.chara]
-        chara_pos = [[i.position.x, i.position.y] for i in frame_raw.chara]
-        music = frame_raw.music.res_name
-        dialog = frame_raw.dialog.dialogue
-        if frame_raw.dialog.character is None:
-            dialog_character = None
-        else:
-            dialog_character = frame_raw.dialog.character.res_name
-        if background is None:
-            background = ""
-        if music is None:
-            music = ""
-        if dialog is None:
-            dialog = ""
-        if dialog_character is None:
-            dialog_character = ""
-        to_return = FrameModel(background=background, chara=chara, chara_pos=chara_pos, music=music,
-                               dialog=dialog, dialog_character=dialog_character)
-        return ReturnDict(content=to_return.__dict__)
+        frame_model = frame_to_model(frame_raw)
+        return ReturnDict(content=frame_model.__dict__)
 
     @engine_controller_exception_handler
     def commit(self, task: Task) -> ReturnStatus:
@@ -154,3 +137,16 @@ class EngineController:
             return ReturnDict(status=StatusCode.OK, content=[])
 
         return ReturnDict(status=StatusCode.OK, content=meta_buffer)
+
+    @engine_controller_exception_handler
+    def render_struct(self, task: Task) -> ReturnDict:
+        """
+        Render and return the project struct
+
+        @param task: current task
+        @return: struct
+
+        """
+        engine = task.project_engine
+        struct = engine.render_struct()
+        return ReturnDict(status=StatusCode.OK, content=struct)

@@ -31,6 +31,7 @@ class ProjectManager:
 
         @param project_name: the name of the project
         @param config_dir: directory of config
+
         """
 
         config = ConfigLoader(config_dir)
@@ -55,6 +56,7 @@ class ProjectManager:
         @param filter_by: fetch resources which contain filter string
         @param cat: specified category
         @return: get all resources in specified category
+
         """
         res = file_utils.get_files_in_folder(self.__config_res[cat])
         if len(filter_by) != 0:
@@ -68,6 +70,7 @@ class ProjectManager:
         @param cat: specified category
         @param res_name: resources name
         @return: ok or not
+
         """
         base = self.__config_res[cat]
         res_abs_dir = os.path.join(base, res_name)
@@ -83,6 +86,7 @@ class ProjectManager:
         @param cat: specified category
         @param res_name: resources name
         @return: ok or not
+
         """
         base = self.__config_res[cat]
         res_abs_dir = os.path.join(base, res_name)
@@ -98,6 +102,7 @@ class ProjectManager:
         delete the whole project
 
         @return: status of delete action
+
         """
         if not file_utils.check_folder_valid(self.__base):
             return False
@@ -129,6 +134,7 @@ class ProjectManager:
         @param rtype: resources type
         @param file_name: file name
         @return: ok or not
+
         """
         if rtype == ResourcesType.Background:
             return self.__delete_general_res("background_dir", file_name)
@@ -149,6 +155,7 @@ class ProjectManager:
         @param file_name: origin file name
         @param new_name: new file name
         @return: ok or not
+
         """
         if rtype == ResourcesType.Background:
             return self.__rename_general_res("background_dir", file_name, new_name)
@@ -165,6 +172,7 @@ class ProjectManager:
 
         @param rtype: resources type
         @return: corresponding directory
+
         """
         if rtype is ResourcesType.Background:
             return self.__config_res["background_dir"]
@@ -180,8 +188,15 @@ class ProjectManager:
         get the base directory of current project
 
         @return: the base directory for the project
+
         """
         return self.__base
 
     def get_project_name(self) -> str:
+        """
+        get the current project name
+
+        @return: name of project
+
+        """
         return self.__project_name

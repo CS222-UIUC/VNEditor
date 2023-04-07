@@ -12,13 +12,13 @@ from typing import Optional
 from functools import wraps
 from packaging import version
 
-from utils.exception import EngineError
 from module.config_manager import ConfigLoader
 from utils.file_utils import check_file_valid, check_folder_valid, abs_dir
 from utils.status import StatusCode
+from utils.exception import EngineError
 from engine.frame import Frame, FrameChecker
 import engine.engine_io as eng_io
-from engine.component import *
+from engine.component import Background, Character, Dialogue, Music, FrameMeta
 
 # the version of the engine
 ENGINE_NAME = "YuiEngine"
@@ -138,8 +138,10 @@ class Engine:
                     f"mismatched with game file ({cur_engine_version})"
                 )
 
-            # load metadata
+            # load game content and frame description
             self.__game_content = game_content_raw[1]
+
+            # load metadata
             self.__last_fid = self.__metadata_buffer["last_fid"]
             self.__head = self.__metadata_buffer["head"]
             self.__tail = self.__metadata_buffer["tail"]
@@ -167,10 +169,12 @@ class Engine:
         chara: list[Character],
         music: Music,
         dialog: Dialogue,
+        meta: FrameMeta,
     ) -> Frame:
         """
         make a frame
 
+        @param meta: frame meta
         @param background: background
         @param chara: character
         @param music: music
@@ -178,7 +182,7 @@ class Engine:
         @return: result frame
 
         """
-        frame = Frame(Frame.VOID_FRAME_ID, background, chara, music, dialog)
+        frame = Frame(Frame.VOID_FRAME_ID, background, chara, music, dialog, None, meta)
         return frame
 
     @engine_exception_handler
@@ -455,3 +459,20 @@ class Engine:
         except Exception as e:
             raise EngineError(f"fail to dump game file due to: {str(e)}") from e
         return StatusCode.OK
+
+    @engine_exception_handler
+    def render_struct(self):
+        """
+        render the game content struct
+
+        @return: the struct for game content
+
+        """
+        chapter_tree: dict[str, list] = {}
+        for fid, cur_frame in self.__game_content.items():
+            frame_meta = [fid, cur_frame.meta.description]
+            if cur_frame.meta.chapter not in chapter_tree:
+                chapter_tree[cur_frame.meta.chapter] = [frame_meta]
+            else:
+                chapter_tree[cur_frame.meta.chapter].append(frame_meta)
+        return chapter_tree
