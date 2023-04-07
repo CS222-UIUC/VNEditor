@@ -218,19 +218,18 @@ export async function getFrames(
     chapter_name: string | undefined
 ): Promise<IFrame[]> {
     if (!name || !chapter_name) return [];
-    let a, c: IFrame;
-    let b: IChar;
-    b = {
+
+    const b: IChar = {
         imageName: "",
         position: [0, 0],
     };
-    a = {
+    const a: IFrame = {
         name: name, // name of the frame
         id: 0, // index
         backgroundName: "", // url
         characters: [b],
     };
-    c = {
+    const c: IFrame = {
         name: chapter_name, // name of the frame
         id: 0, // index
         backgroundName: "", // url
