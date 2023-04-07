@@ -201,8 +201,9 @@ export async function renameResource(
  * @param name: project_name
  * @returns
  */
-export async function getChapters(name: string): Promise<string[]> {
+export async function getChapters(name: string | undefined): Promise<string[]> {
     // need to update to correct function
+    if (!name) return [];
     return ["test chapter", "next is chapter name", name, "end of chapter"];
 }
 
@@ -212,7 +213,11 @@ export async function getChapters(name: string): Promise<string[]> {
  * @param chapter_name: chapter_name
  * @returns
  */
-export async function getFrames(name: string, chapter_name: string): Promise<IFrame[]> {
+export async function getFrames(
+    name: string | undefined,
+    chapter_name: string | undefined
+): Promise<IFrame[]> {
+    if (!name || !chapter_name) return [];
     let a, c: IFrame;
     let b: IChar;
     b = {
