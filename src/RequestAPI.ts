@@ -1,6 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 export const baseUrl: string = "http://127.0.0.1:8000/"; // This is provided with a backslash '/' at the end
 
+import type { IFrame, IChar } from "@/FrameDef";
 // interface Params {
 //     [index: string]: string;
 // }
@@ -10,6 +11,10 @@ export enum Rtype {
     music = "music",
     character = "character",
 }
+// export enum Frametype {
+//     normal = "noraml", // normal frame, nothing special
+//     divergence = "divergence", // divergence frame, may apper choice , used for further development
+// }
 /**
  *
  * @param api the name of api, would be attached to base_url
@@ -191,6 +196,45 @@ export async function renameResource(
     }
 }
 
-export async function getFrame(idx: Number): Promise<boolean> {
-    return false;
+/**
+ * get all the chapters of the corresponding project
+ * @param name: project_name
+ * @returns
+ */
+export async function getChapters(name: string | undefined): Promise<string[]> {
+    // need to update to correct function
+    if (!name) return [];
+    return ["test chapter", "next is chapter name", name, "end of chapter"];
+}
+
+/**
+ * get all the frames of the corresponding chapter
+ * @param name: project_name
+ * @param chapter_name: chapter_name
+ * @returns
+ */
+export async function getFrames(
+    name: string | undefined,
+    chapter_name: string | undefined
+): Promise<IFrame[]> {
+    if (!name || !chapter_name) return [];
+    let a, c: IFrame;
+    let b: IChar;
+    b = {
+        imageName: "",
+        position: [0, 0],
+    };
+    a = {
+        name: name, // name of the frame
+        id: 0, // index
+        backgroundName: "", // url
+        characters: [b],
+    };
+    c = {
+        name: chapter_name, // name of the frame
+        id: 0, // index
+        backgroundName: "", // url
+        characters: [b],
+    };
+    return [a, c, a, a];
 }
