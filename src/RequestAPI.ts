@@ -11,10 +11,10 @@ export enum Rtype {
     music = "music",
     character = "character",
 }
-export enum Frametype {
-    normal = "noraml", // normal frame, nothing special
-    divergence = "divergence", // divergence frame, may apper choice , used for further development
-}
+// export enum Frametype {
+//     normal = "noraml", // normal frame, nothing special
+//     divergence = "divergence", // divergence frame, may apper choice , used for further development
+// }
 /**
  *
  * @param api the name of api, would be attached to base_url

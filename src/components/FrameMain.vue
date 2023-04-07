@@ -33,7 +33,7 @@ watchEffect(() => {
             :key="item"
             :name="item"
             :item-call-back="prop.itemCallBack"
-            :chaptername="item"
+            :chapter-name="item"
             >{{ item }}
         </ChapterItem>
     </div>
