@@ -38,7 +38,6 @@ class TestEngine(TestCase):
 
         dialogue.set_dialogue("hello world")
         self.assertEqual(dialogue.get_dialogue()[0], "hello world")
-
         music = Music(signal=MusicSignal.KEEP)
         music.set_music()
         music.get_music()
@@ -51,10 +50,10 @@ class TestEngine(TestCase):
                 dialog=dialogue,
                 meta=meta,
             )
+            self.assertNotEqual(frame_to_model(frame), None)
             if i % 10 == 0:
                 nid = engine.append_frame(frame, force=True)
                 print("add frame: ", nid)
-
         head_id = engine.get_head_id()
         print(f"head id: {head_id}")
         frame = engine.make_frame(

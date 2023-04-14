@@ -1,4 +1,4 @@
-Generated In: 2023/04/14 周五 14:31:50.76
+Generated In: 2023/04/14 周五 15:28:37.35
 LINTER REPORT
 
 check ./engine
@@ -33,51 +33,53 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1681500716.30459          12
+1681504122.95207          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1681500716.30459          12
+1681504122.95207          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1681500716.30459          12
+1681504122.95207          12
 ----------------------------------------
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.1', 'engine_minimal_compatible': '1.0.1', 'update_at': 1681500705.8916032, 'total_frame_len': 3, 'last_fid': 23, 'head': 18, 'tail': 23}
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.2', 'engine_minimal_compatible': '1.0.2', 'update_at': 1681503980.1142154, 'total_frame_len': 5, 'last_fid': 46, 'head': 39, 'tail': 46}
 {1: 'choice 1'}
-add frame:  24
-add frame:  25
-add frame:  26
-add frame:  27
-add frame:  28
-add frame:  29
-add frame:  30
-add frame:  31
-add frame:  32
-add frame:  33
-head id: 18
-{'default': [(18, 'default'), (20, 'default'), (23, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (28, 'default'), (29, 'default'), (30, 'default'), (31, 'default'), (32, 'default'), (33, 'default')]}
-{'default': [(18, 'default'), (20, 'default'), (23, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (28, 'default'), (29, 'default'), (30, 'default'), (31, 'default'), (32, 'default'), (33, 'default')]}
-remove id: 32
-remove id: 18
-remove id: 25
-remove id: 30
-remove id: 31
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.1', 'engine_minimal_compatible': '1.0.1', 'update_at': 1681500716.5427597, 'total_frame_len': 8, 'last_fid': 33, 'head': 20, 'tail': 33}
-33 <engine.frame.Frame object at 0x00000147366A9A10>
-20 <engine.frame.Frame object at 0x00000147366A91D0>
-23 <engine.frame.Frame object at 0x00000147366A9350>
-24 <engine.frame.Frame object at 0x00000147366A9610>
-26 <engine.frame.Frame object at 0x00000147366A95D0>
-27 <engine.frame.Frame object at 0x00000147366A9690>
-28 <engine.frame.Frame object at 0x00000147366A9810>
-29 <engine.frame.Frame object at 0x00000147366A9850>
-remove id: 33
-remove id: 24
-remove id: 27
+add frame:  47
+add frame:  48
+add frame:  49
+add frame:  50
+add frame:  51
+add frame:  52
+add frame:  53
+add frame:  54
+add frame:  55
+add frame:  56
+head id: 39
+{'default': [(39, 'default'), (41, 'default'), (44, 'default'), (45, 'default'), (46, 'default'), (47, 'default'), (48, 'default'), (49, 'default'), (50, 'default'), (51, 'default'), (52, 'default'), (53, 'default'), (54, 'default'), (55, 'default'), (56, 'default')]}
+{'default': [(39, 'default'), (41, 'default'), (44, 'default'), (45, 'default'), (46, 'default'), (47, 'default'), (48, 'default'), (49, 'default'), (50, 'default'), (51, 'default'), (52, 'default'), (53, 'default'), (54, 'default'), (55, 'default'), (56, 'default')]}
+remove id: 39
+remove id: 44
+remove id: 45
+remove id: 46
+remove id: 47
+remove id: 50
+remove id: 52
+remove id: 53
+remove id: 56
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.2', 'engine_minimal_compatible': '1.0.2', 'update_at': 1681504123.2050486, 'total_frame_len': 6, 'last_fid': 55, 'head': 41, 'tail': 55}
+41 <engine.frame.Frame object at 0x0000025FA7C549D0>
+48 <engine.frame.Frame object at 0x0000025FA7937590>
+49 <engine.frame.Frame object at 0x0000025FA7C55510>
+51 <engine.frame.Frame object at 0x0000025FA7C56690>
+54 <engine.frame.Frame object at 0x0000025FA7C54190>
+55 <engine.frame.Frame object at 0x0000025FA7C565D0>
+remove id: 49
+remove id: 51
+remove id: 54
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
 C:\Users\Twisl\Desktop\VNEditor Service\engine\__init__.py                   0      0   100%
@@ -85,13 +87,13 @@ C:\Users\Twisl\Desktop\VNEditor Service\engine\component\__init__.py         8  
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\action.py           7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\background.py       3      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\branch.py          15      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\character.py       11      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\engine\component\character.py       15      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\dialogue.py        11      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\meta.py             4      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\music.py           16      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   186     27    85%   47-48, 87, 110, 114-115, 122, 130, 137, 202-204, 208, 224, 233, 248, 293, 305, 323, 335, 346, 366, 378, 389, 410-411, 429
+C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   159     25    84%   61, 84, 88-89, 96, 104, 111, 173-175, 179, 195, 204, 218, 262, 273, 289, 299, 318, 336, 347, 358, 378-379, 396
 C:\Users\Twisl\Desktop\VNEditor Service\engine\engine_io.py                  7      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\frame.py                    105     46    56%   101, 122, 128, 134-157, 183-196, 214-236
+C:\Users\Twisl\Desktop\VNEditor Service\engine\frame.py                    110     29    74%   105, 126, 132, 138-161, 187-203, 238, 241, 245
 C:\Users\Twisl\Desktop\VNEditor Service\module\__init__.py                   0      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\config_manager.py            25      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\gamesave_manager.py          56      1    98%   132
@@ -102,8 +104,8 @@ C:\Users\Twisl\Desktop\VNEditor Service\utils\file_utils.py                 45  
 C:\Users\Twisl\Desktop\VNEditor Service\utils\status.py                      4      0   100%
 test_config_manager.py                                                      35      0   100%
 test_db_manager.py                                                          63      0   100%
-test_engine.py                                                              65      0   100%
+test_engine.py                                                              66      0   100%
 test_file_utils.py                                                          35      0   100%
 test_game_slot.py                                                           39      0   100%
 ------------------------------------------------------------------------------------------------------
-TOTAL                                                                      804     76    91%
+TOTAL                                                                      787     57    93%
