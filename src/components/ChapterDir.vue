@@ -40,7 +40,6 @@ function updateChapName(event: MouseEvent) {
     FramesDisplay.value = !FramesDisplay.value;
 }
 
-
 watchEffect(() => {
     // call back method update the chapter to display once projectID received
     if (projectID.value)
@@ -54,13 +53,14 @@ watchEffect(() => {
 });
 </script>
 
-
 <template>
     <div class="chapter-item">
         <div class="chap-icon-wrapper" @click="updateChapName">
             <!-- <slot dir-icon="dir-icon"></slot> -->
             <slot>No chapter exist</slot>
-            <IconDownArrow :class="{ 'down-rotated': !FramesDisplay, 'up-rotated': FramesDisplay }" />
+            <IconDownArrow
+                :class="{ 'down-rotated': !FramesDisplay, 'up-rotated': FramesDisplay }"
+            />
         </div>
         <Transition name="drop">
             <div class="file-content-wrapper" v-show="FramesDisplay">
@@ -114,4 +114,3 @@ watchEffect(() => {
     transition: transform 0.1s;
 }
 </style>
-

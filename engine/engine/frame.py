@@ -8,7 +8,11 @@ from pydantic import BaseModel
 from module.config_manager import ConfigLoader
 
 from engine.component.background import Background
-from engine.component.character import Character, CharacterPosition
+from engine.component.character import (
+    Character,
+    CharacterPosition,
+    CharacterPositionModal,
+)
 from engine.component.dialogue import Dialogue
 from engine.component.music import Music, MusicSignal
 from engine.component.action import Action
@@ -165,13 +169,13 @@ class FrameModel(BaseModel):
 
     background: str
     chara: list
-    chara_pos: list[list]
+    chara_pos: list[CharacterPositionModal]
     music: str
     music_signal: MusicSignal
     dialog: str
     dialog_character: str
     chapter: str
-    description: str
+    name: str
 
     def to_frame(self) -> Frame:
         """
@@ -188,11 +192,14 @@ class FrameModel(BaseModel):
         for idx, cur in enumerate(self.chara):
             chara.append(
                 Character(
-                    res_name=cur, position=CharacterPosition(*self.chara_pos[idx])
+                    res_name=cur,
+                    position=CharacterPosition(
+                        self.chara_pos[idx].x, self.chara_pos[idx].y
+                    ),
                 )
             )
         music = Music(res_name=self.music, signal=self.music_signal)
-        meta = FrameMeta(self.chapter, self.description)
+        meta = FrameMeta(self.chapter, self.name)
         return Frame(
             fid=BasicFrame.VOID_FRAME_ID,
             background=background,
@@ -213,12 +220,17 @@ def frame_to_model(frame: Frame):
     """
     background = frame.background.res_name
     chara = [i.res_name for i in frame.chara]
-    chara_pos = [[i.position.x, i.position.y] for i in frame.chara]
+    chara_pos = []
+    for cur_chara in frame.chara:
+        cur_chara_position_modal = CharacterPositionModal()
+        cur_chara_position_modal.x = cur_chara.position.x
+        cur_chara_position_modal.y = cur_chara.position.y
+        chara_pos.append(cur_chara_position_modal)
     music_signal = frame.music.signal
     music = frame.music.res_name
     dialog = frame.dialog.dialogue
     chapter = frame.meta.chapter
-    description = frame.meta.description
+    name = frame.meta.name
 
     if frame.dialog.character is None:
         dialog_character = None
@@ -242,5 +254,5 @@ def frame_to_model(frame: Frame):
         dialog=dialog,
         dialog_character=dialog_character,
         chapter=chapter,
-        description=description,
+        name=name,
     )

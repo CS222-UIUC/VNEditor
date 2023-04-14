@@ -21,9 +21,10 @@ def engine_controller_exception_handler(func):
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except Exception as e_msg:
-            print(f"Project Controller Error ({type(e_msg).__name__}): ", str(e_msg))
-            return ReturnStatus(status=StatusCode.FAIL, msg=str(e_msg))
+        except Exception as e:
+            e_msg = f"Engine Controller Error ({type(e).__name__}): {str(e)}"
+            print(e_msg)
+            return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
 
     wrapper: func
     return wrapper
@@ -54,8 +55,6 @@ class EngineController:
         """
         engine = task.project_engine
         fids = engine.get_ordered_fid()
-        if fids == StatusCode.FAIL:
-            raise ControllerException("get frame id fails")
 
         return ReturnList(status=StatusCode.OK, content=fids)
 
@@ -86,10 +85,7 @@ class EngineController:
         frame_component.pop("action")
         frame = engine.make_frame(**frame_component)
         fid = engine.append_frame(frame, force)
-        if fid == StatusCode.FAIL:
-            return ReturnList(status=StatusCode.FAIL)
-        else:
-            return ReturnList(status=StatusCode.OK, content=[fid])
+        return ReturnList(status=StatusCode.OK, content=[fid])
 
     @engine_controller_exception_handler
     def get_frame(self, task: Task, fid: int) -> ReturnDict:
@@ -100,11 +96,30 @@ class EngineController:
 
         """
         engine = task.project_engine
-        frame_raw = engine.get_frame(fid=fid)
-        if frame_raw is None:
+        if engine.check_frame_exist(fid) is None:
             return ReturnDict(status=StatusCode.FAIL, msg=f"No such frame id '{fid}'")
+
+        frame_raw = engine.get_frame(fid=fid)
         frame_model = frame_to_model(frame_raw)
         return ReturnDict(content=frame_model.__dict__)
+
+    @engine_controller_exception_handler
+    def remove_frame(self, task: Task, fid: int) -> ReturnList:
+        """
+        remove the frame with given fid
+
+        @return: the removed fid
+        """
+        engine = task.project_engine
+        if engine.check_frame_exist(fid) is None:
+            return ReturnList(status=StatusCode.FAIL, msg=f"No such frame id '{fid}'")
+
+        engine.remove_frame(fid)
+        return ReturnList(
+            status=StatusCode.OK,
+            msg=f"successfully remove frame with id '{fid}'",
+            content=[fid],
+        )
 
     @engine_controller_exception_handler
     def commit(self, task: Task) -> ReturnStatus:
@@ -116,10 +131,7 @@ class EngineController:
 
         """
         engine = task.project_engine
-        status = engine.commit()
-        if status == StatusCode.FAIL:
-            return ReturnStatus(status=StatusCode.FAIL, msg="fail to commit changes")
-
+        engine.commit()
         return ReturnStatus(status=StatusCode.OK)
 
     @engine_controller_exception_handler
@@ -133,20 +145,18 @@ class EngineController:
         """
         engine = task.project_engine
         meta_buffer = engine.get_metadata_buffer()
-        if meta_buffer is None:
-            return ReturnDict(status=StatusCode.OK, content=[])
-
         return ReturnDict(status=StatusCode.OK, content=meta_buffer)
 
     @engine_controller_exception_handler
-    def render_struct(self, task: Task) -> ReturnDict:
+    def render_struct(self, task: Task, chapter=None) -> ReturnDict:
         """
         Render and return the project struct
 
+        @param chapter: filter by specific chapter
         @param task: current task
         @return: struct
 
         """
         engine = task.project_engine
-        struct = engine.render_struct()
+        struct = engine.render_struct(chapter=chapter)
         return ReturnDict(status=StatusCode.OK, content=struct)

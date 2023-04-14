@@ -11,7 +11,7 @@ from engine.frame import *
 
 
 class TestEngine(TestCase):
-    engine = Engine(project_dir="../projects/aa", config_dir="../service.ini")
+    engine = Engine(project_dir="../projects/test", config_dir="../service.ini")
 
     def test_make_frame(self):
         engine = self.engine
@@ -38,7 +38,6 @@ class TestEngine(TestCase):
 
         dialogue.set_dialogue("hello world")
         self.assertEqual(dialogue.get_dialogue()[0], "hello world")
-
         music = Music(signal=MusicSignal.KEEP)
         music.set_music()
         music.get_music()
@@ -51,10 +50,10 @@ class TestEngine(TestCase):
                 dialog=dialogue,
                 meta=meta,
             )
+            self.assertNotEqual(frame_to_model(frame), None)
             if i % 10 == 0:
                 nid = engine.append_frame(frame, force=True)
                 print("add frame: ", nid)
-
         head_id = engine.get_head_id()
         print(f"head id: {head_id}")
         frame = engine.make_frame(
@@ -64,7 +63,7 @@ class TestEngine(TestCase):
             dialog=dialogue,
             meta=meta,
         )
-        checker = FrameChecker("../projects/aa", ConfigLoader("../service.ini"))
+        checker = FrameChecker("../projects/test", ConfigLoader("../service.ini"))
         self.assertFalse(checker.check(frame)[0])
 
         print(engine.render_struct())
@@ -101,5 +100,6 @@ class TestEngine(TestCase):
             if random.getrandbits(1):
                 print(f"remove id: {i}")
                 engine.remove_frame(frame_id=i)
-
+        self.assertNotEqual(len(engine.get_ordered_fid()), 0)
+        self.assertEqual(engine.render_struct("not exist chapter"), {})
         engine.commit()

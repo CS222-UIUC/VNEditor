@@ -2,6 +2,7 @@
 character component for frame
 """
 from typing import Optional
+from pydantic import BaseModel
 
 
 class CharacterPosition:
@@ -16,6 +17,16 @@ class CharacterPosition:
     def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
+
+
+class CharacterPositionModal(BaseModel):
+    """
+    coordinate of character
+
+    """
+
+    x: float = 0
+    y: float = 0
 
 
 class Character:
