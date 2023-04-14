@@ -5,11 +5,13 @@ import type { Ref } from "vue";
 import IconDownArrow from "./icons/IconDownArrow.vue";
 import type { IFrame } from "@/FrameDef";
 import { projectIDKey } from "../InjectionKeys";
-import { getFrames } from "../RequestAPI"; // need to change to needed function
+import { getFrames, addFrame } from "../RequestAPI"; // need to change to needed function
 
 var FramesDisplay = ref(false); // control display the scene of the corresopnding chapter
+var FrameCreateDisplay = ref(false);
 const FrameList: Ref<IFrame[]> = ref([]);
 const chapName: Ref<string> = ref("");
+var frameNametoAdd = "";
 // function addFrame(idx: Number): boolean {
 //     return false;
 // }
@@ -22,15 +24,6 @@ const chapName: Ref<string> = ref("");
 //     return false;
 // }
 
-const props = defineProps({
-    ChapterName: {
-        type: ref<String>,
-    },
-    itemCallBack: {
-        type: Function as PropType<(event: MouseEvent) => void>,
-        default: () => console.log("CallBack in frames undefined"),
-    },
-});
 const projectID = inject(projectIDKey) as Ref<string | undefined>;
 
 function updateChapName(event: MouseEvent) {
@@ -38,6 +31,14 @@ function updateChapName(event: MouseEvent) {
     const name = el.textContent;
     if (name) chapName.value = name;
     FramesDisplay.value = !FramesDisplay.value;
+    FrameCreateDisplay.value = false;
+}
+
+async function appendNewFrame(chap_name: string, frame_name: string) {
+    let result = await addFrame(projectID.value, chap_name, frame_name);
+    if (result != "") {
+        FrameCreateDisplay.value = !FrameCreateDisplay.value;
+    }
 }
 
 watchEffect(() => {
@@ -46,10 +47,10 @@ watchEffect(() => {
         getFrames(projectID.value, chapName.value).then((res: IFrame[]) => {
             if (res) FrameList.value = res;
             console.log("nextline is chapter name");
-            // console.log(chapName.value);
-            console.log(props.ChapterName); // sth wrong with here
+            console.log(chapName.value);
             // console.log(" ");
         });
+    frameNametoAdd;
 });
 </script>
 
@@ -64,13 +65,36 @@ watchEffect(() => {
         </div>
         <Transition name="drop">
             <div class="file-content-wrapper" v-show="FramesDisplay">
-                <FrameItem
-                    @click="itemCallBack($event)"
-                    v-for="item in FrameList"
-                    :key="item.name"
-                    :name="item.name"
-                    >{{ item.name }}</FrameItem
-                >
+                <div v-show="!FrameCreateDisplay">
+                    <button
+                        class="chapter-button"
+                        @click="FrameCreateDisplay = !FrameCreateDisplay"
+                    >
+                        New Frame
+                    </button>
+                </div>
+                <div class="addframe-wrapper" v-show="FrameCreateDisplay">
+                    <input
+                        class="add-frame-text"
+                        v-model="frameNametoAdd"
+                        placeholder="enter chapter name"
+                    />
+                    <button
+                        class="add-frame-button"
+                        @click="appendNewFrame(chapName, frameNametoAdd)"
+                    >
+                        Done
+                    </button>
+                    <button
+                        class="add-frame-button"
+                        @click="FrameCreateDisplay = !FrameCreateDisplay"
+                    >
+                        Cancle
+                    </button>
+                </div>
+                <FrameItem v-for="item in FrameList" :key="item.name" :name="item.name"
+                    >{{ item.name }}
+                </FrameItem>
             </div>
         </Transition>
     </div>
@@ -113,5 +137,33 @@ watchEffect(() => {
 .down-rotated {
     transform: rotate(0deg);
     transition: transform 0.1s;
+}
+
+.addframe-wrapper {
+    flex-direction: row;
+    text-align: left;
+}
+
+.chapter-button {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    border-bottom: 5px solid rgba(0, 90, 27, 0.507);
+    width: 100%;
+}
+
+.add-frame-text {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5rem;
+    border-bottom: 5px solid rgba(0, 90, 27, 0.507);
+    width: 100%;
+}
+.add-frame-button {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5rem;
+    border-bottom: 5px solid rgba(0, 90, 27, 0.507);
+    width: 100%;
 }
 </style>

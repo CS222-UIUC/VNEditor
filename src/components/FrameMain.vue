@@ -33,13 +33,13 @@ watchEffect(() => {
 <template>
     <div>
         <input
-            class="chapter-button"
+            class="leftnav-button"
             v-model="chapNametoAdd"
             v-show="ChapetrsDisplay"
             placeholder="enter chapter name"
         />
         <button
-            class="chapter-button"
+            class="leftnav-button"
             v-show="ChapetrsDisplay"
             @click="
                 async () => {
@@ -66,7 +66,7 @@ watchEffect(() => {
 </template>
 
 <style>
-.chapter-button {
+.leftnav-button {
     display: flex;
     flex-direction: column;
     padding: 0.5rem;
