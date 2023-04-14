@@ -25,7 +25,6 @@ const chapName: Ref<string> = ref("");
 const props = defineProps({
     ChapterName: {
         type: ref<String>,
-        default: "wtf? should be the name of the chapter"
     },
     itemCallBack: {
         type: Function as PropType<(event: MouseEvent) => void>,
@@ -37,8 +36,7 @@ const projectID = inject(projectIDKey) as Ref<string | undefined>;
 function updateChapName(event: MouseEvent) {
     const el = event.target as HTMLElement;
     const name = el.textContent;
-    if (name)
-        chapName.value = name;
+    if (name) chapName.value = name;
     FramesDisplay.value = !FramesDisplay.value;
 }
 
@@ -48,9 +46,10 @@ watchEffect(() => {
     if (projectID.value)
         getFrames(projectID.value, chapName.value).then((res: IFrame[]) => {
             if (res) FrameList.value = res;
-            console.log("nextline is chapter name")
-            console.log(chapName.value);
+            console.log("nextline is chapter name");
+            // console.log(chapName.value);
             console.log(props.ChapterName); // sth wrong with here
+            // console.log(" ");
         });
 });
 </script>
