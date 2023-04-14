@@ -78,7 +78,6 @@ async def initialize_project(base_dir: str) -> ReturnDict:
     """
     initialize project, create new if given directory not exist
 
-    @param base_dir: where is the project
     """
     result = project_utils.init_project(base_dir=base_dir)
     return result
@@ -116,7 +115,6 @@ async def remove_project_by_id(task_id: str) -> ReturnDict:
     """
     remove the project
 
-    @param task_id: if for task
     """
     return project_utils.remove_project_dir(task_id=task_id)
 
@@ -126,7 +124,6 @@ async def remove_project(project_name: str) -> ReturnStatus:
     """
     remove the project
 
-    @param project_name: the name of the project
     """
     task_id = project_utils.get_task_id_by_project_name(project_name)
     if task_id is not None:
@@ -140,10 +137,6 @@ async def get_resources(
 ) -> FileResponse:
     """
     get resources file
-
-    @param task_id: if for task
-    @param rtype: resource type
-    @param item_name: resource name
 
     """
     task = project_utils.get_task(task_id)
@@ -164,11 +157,7 @@ async def get_resources_name(
     task_id: str, rtype: ResourcesType, filter_by: str = ""
 ) -> ReturnList:
     """
-    get background resources, need to initialize project before use
-
-    @param task_id: id for task
-    @param rtype: type of resources to get
-    @param filter_by: filter by specific string
+    get resources
 
     """
     task = project_utils.get_task(task_id)
@@ -188,9 +177,6 @@ async def remove_resource(
     """
     remove resources by resources name
 
-    @param item_name: resource to be removed (name not directory)
-    @param rtype: resource type
-    @param task_id: id for task
     """
     task = project_utils.get_task(task_id)
     if task is None:
@@ -206,10 +192,6 @@ async def rename_project(
     """
     rename resources by resources name
 
-    @param new_name: new name for item
-    @param item_name: resource to be renamed (name not directory)
-    @param rtype: resource type
-    @param task_id: id for task
     """
     task = project_utils.get_task(task_id)
     if task is None:
@@ -230,10 +212,6 @@ async def upload_file(
     """
     update resources to rtype
 
-    @param task_id: id for task
-    @param rtype: resource type
-    @param file: file steam
-
     """
     task = project_utils.get_task(task_id)
     if task is None:
@@ -249,10 +227,6 @@ async def upload_files(
     """
     update multi resources to rtype
 
-    @param task_id: id for task
-    @param rtype: resource type
-    @param files: files steam
-
     """
     task = project_utils.get_task(task_id)
     if task is None:
@@ -266,8 +240,6 @@ async def get_fids(task_id: str) -> ReturnList:
     """
     get fids corresponding to the task id
 
-    @param task_id: id for task
-
     """
     task = project_utils.get_task(task_id)
     if task is None:
@@ -280,8 +252,6 @@ async def get_fids(task_id: str) -> ReturnList:
 async def engine_meta(task_id: str) -> ReturnDict:
     """
     get fids corresponding to the task id
-
-    @param task_id: id for task
 
     """
     task = project_utils.get_task(task_id)
@@ -297,7 +267,9 @@ async def append_frame(
 ) -> ReturnList:
     """
     get fids corresponding to the task id
-    music_signal define:
+
+    **music_signal define:**
+
     --------------------
     KEEP = 1
     PAUSE = 2
@@ -305,9 +277,7 @@ async def append_frame(
     PLAY = 4
     --------------------
 
-    @param force: force appending frame without check frame valid
-    @param frame_component_raw: raw frane component
-    @param task_id: id for task
+    if `force` set to be true, the program will skip checking if frame is valid or not
 
     """
     task = project_utils.get_task(task_id)
@@ -317,12 +287,23 @@ async def append_frame(
     return engine_utils.append_frame(task, frame_component_raw, force)
 
 
+@app.post("/engine/remove_frame", tags=["engine"])
+async def remove_frame(task_id: str, fid: int) -> ReturnList:
+    """
+    remove the frame with given fid
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.remove_frame(task, fid)
+
+
 @app.post("/engine/commit", tags=["engine"])
 async def commit(task_id: str) -> ReturnStatus:
     """
     commit all the change in buffer
-
-    @param task_id: the id for task
 
     """
     task = project_utils.get_task(task_id)
@@ -337,9 +318,6 @@ async def get_engine_meta(task_id: str) -> ReturnDict:
     """
     get the metadata for current used engine
 
-    @param task_id: current task id
-    @return: metadata for engine
-
     """
     task = project_utils.get_task(task_id)
     if task is None:
@@ -353,10 +331,6 @@ async def get_frame(task_id: str, fid: int) -> ReturnDict:
     """
     get frame by frame id
 
-    @param task_id: the id for current task
-    @param fid: frame id
-    @return: the frame information
-
     """
     task = project_utils.get_task(task_id)
     if task is None:
@@ -369,10 +343,6 @@ async def get_frame(task_id: str, fid: int) -> ReturnDict:
 async def get_struct(task_id: str, chapter=None) -> ReturnDict:
     """
     get struct of current project
-
-    @param chapter: filter by chapter
-    @param task_id: the id for current task
-    @return: struct of the project
 
     """
     task = project_utils.get_task(task_id)

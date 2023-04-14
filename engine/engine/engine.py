@@ -9,7 +9,6 @@ contain all basic information to build a visual novel
 """
 import time
 from typing import Optional
-from functools import wraps
 from packaging import version
 
 from module.config_manager import ConfigLoader
@@ -22,33 +21,8 @@ from engine.component import Background, Character, Dialogue, Music, FrameMeta
 
 # the version of the engine
 ENGINE_NAME = "YuiEngine"
-ENGINE_VERSION = "1.0.1"
-ENGINE_MINIMAL_COMPATIBLE = "1.0.1"
-
-# debug mode
-DEBUG_MODE = True
-
-
-def engine_exception_handler(func):
-    """
-    exception decorator for engine
-
-    @param func: function to be decorated
-
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e_msg:
-            if DEBUG_MODE:
-                raise e_msg
-            print(f"Engine Error ({type(e_msg).__name__}): ", str(e_msg))
-            return StatusCode.FAIL
-
-    wrapper: func
-    return wrapper
+ENGINE_VERSION = "1.0.2"
+ENGINE_MINIMAL_COMPATIBLE = "1.0.2"
 
 
 class Engine:
@@ -149,7 +123,6 @@ class Engine:
             self.__tail = self.__metadata_buffer["tail"]
             self.__all_fids = set(self.__game_content.keys())
 
-    @engine_exception_handler
     def __update_metadata(self):
         """
         update the metadata by global variable
@@ -164,9 +137,8 @@ class Engine:
         self.__metadata_buffer["head"] = self.__head
         self.__metadata_buffer["tail"] = self.__tail
 
-    @engine_exception_handler
+    @staticmethod
     def make_frame(
-        self,
         background: Background,
         chara: list[Character],
         music: Music,
@@ -187,7 +159,6 @@ class Engine:
         frame = Frame(Frame.VOID_FRAME_ID, background, chara, music, dialog, None, meta)
         return frame
 
-    @engine_exception_handler
     def append_frame(self, frame: Frame, force: bool = False) -> int:
         """
         add frame to the end of the frame list
@@ -236,7 +207,6 @@ class Engine:
 
         return fid
 
-    @engine_exception_handler
     def get_ordered_fid(self) -> list:
         """
         return a ordered frame id
@@ -257,7 +227,6 @@ class Engine:
 
         return ordered_id
 
-    @engine_exception_handler
     def remove_frame(self, frame_id: int):
         """
         remove the frame from game content
@@ -293,7 +262,6 @@ class Engine:
             self.__last_fid = Frame.VOID_FRAME_ID
         self.__all_fids.remove(frame_id)
 
-    @engine_exception_handler
     def change_frame(self, frame_id: int, frame: Frame):
         """
         change the frame id by new frame
@@ -304,7 +272,6 @@ class Engine:
         """
         self.__game_content[frame_id] = frame
 
-    @engine_exception_handler
     def get_head_id(self) -> int:
         """
         get the head frame id
@@ -313,7 +280,6 @@ class Engine:
         """
         return self.__head
 
-    @engine_exception_handler
     def get_tail_id(self) -> int:
         """
         get the tail frame id
@@ -322,8 +288,17 @@ class Engine:
         """
         return self.__tail
 
-    @engine_exception_handler
-    def get_frame(self, fid: int) -> Frame | None:
+    def check_frame_exist(self, fid: int) -> bool:
+        """
+        check if the frame with fid in the game content
+
+        @param fid: frame id
+        @return: exist or not
+
+        """
+        return fid in self.__game_content
+
+    def get_frame(self, fid: int) -> Frame:
         """
         get frame by frame id, return none if nothing find
 
@@ -331,11 +306,8 @@ class Engine:
         @return: shallow copy of frame with such fid
 
         """
-        if fid not in self.__game_content:
-            return None
         return self.__game_content[fid]
 
-    @engine_exception_handler
     def get_all_frames(self) -> dict[int, Frame]:
         """
         get all frames
@@ -345,7 +317,6 @@ class Engine:
         """
         return self.__game_content
 
-    @engine_exception_handler
     def get_all_frame_id(self) -> set:
         """
         get all frame id
@@ -355,7 +326,6 @@ class Engine:
         """
         return set(self.__game_content.keys())
 
-    @engine_exception_handler
     def get_length(self) -> int:
         """
         get the total length of the game content
@@ -365,8 +335,7 @@ class Engine:
         """
         return len(self.__game_content)
 
-    @engine_exception_handler
-    def get_metadata_buffer(self) -> dict[dict, dict] | None:
+    def get_metadata_buffer(self) -> dict[dict, dict]:
         """
         get the current meta buffer, WARNING: this method
         return the buffered metadata, might not be up-to-date
@@ -375,11 +344,11 @@ class Engine:
 
         """
         if len(self.__metadata_buffer) == 0:
-            return None
+            return {}
         return self.__metadata_buffer
 
-    @engine_exception_handler
-    def get_engine_meta(self) -> dict:
+    @staticmethod
+    def get_engine_meta() -> dict:
         """
         get version of current engine
 
@@ -391,7 +360,6 @@ class Engine:
             "name": ENGINE_NAME,
         }
 
-    @engine_exception_handler
     def commit(self) -> StatusCode:
         """
         commit all the change to the local game file
@@ -411,7 +379,6 @@ class Engine:
             raise EngineError(f"fail to dump game file due to: {str(e)}") from e
         return StatusCode.OK
 
-    @engine_exception_handler
     def render_struct(self, chapter: Optional[str] = None):
         """
         render the game content struct, if chapter set to be none,

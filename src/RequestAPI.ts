@@ -204,6 +204,7 @@ export async function renameResource(
  */
 export async function getChapters(name: string | undefined): Promise<string[]> {
     // need to update to correct function
+    console.log("get chapter called"); // for debug
     if (!name) return [];
     return ["test chapter", "next is chapter name", name, "end of chapter"];
 }
@@ -238,4 +239,67 @@ export async function getFrames(
         characters: [b],
     };
     return [a, c, a, a];
+}
+
+/**
+ * get all the frames of the corresponding chapter
+ * @param id: project_id
+ * @param chapter_name: chapter_name
+ * @returns
+ */
+export async function addChapters(
+    id: string | undefined,
+    chapter_name: string | undefined
+): Promise<string> {
+    console.log("add chapter called"); // used for debugg
+    console.log(chapter_name); // used for debugg
+    if (!id || !chapter_name) return "invalid chapters";
+
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("add_chapter", {
+                task_id: id,
+                chapter_name: chapter_name,
+            })
+        );
+        console.log(response);
+        return chapter_name;
+    } catch (err: any) {
+        console.log("failed to add cahpter");
+        return "";
+    }
+}
+
+/**
+ * get all the frames of the corresponding chapter
+ * @param id: project_id
+ * @param chapter_name: chapter_name
+ * @param frame_name: frame_name
+ * @returns
+ */
+export async function addFrame(
+    id: string | undefined,
+    chapter_name: string | undefined,
+    frame_name: string | undefined
+): Promise<string> {
+    console.log("add frame called"); // used for debugg
+    console.log(frame_name); // used for debugg
+    if (!id || !chapter_name || !frame_name) return "";
+
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("add_frame", {
+                task_id: id,
+                chapter_name: chapter_name,
+                frame_name: frame_name,
+            })
+        );
+        console.log(response);
+        return chapter_name;
+    } catch (err: any) {
+        console.log("failed to add frame");
+        return "";
+    }
 }
