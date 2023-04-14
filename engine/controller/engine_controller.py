@@ -21,9 +21,10 @@ def engine_controller_exception_handler(func):
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except Exception as e_msg:
-            print(f"Project Controller Error ({type(e_msg).__name__}): ", str(e_msg))
-            return ReturnStatus(status=StatusCode.FAIL, msg=str(e_msg))
+        except Exception as e:
+            e_msg = f"Engine Controller Error ({type(e).__name__}): {str(e)}"
+            print(e_msg)
+            return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
 
     wrapper: func
     return wrapper
@@ -139,14 +140,15 @@ class EngineController:
         return ReturnDict(status=StatusCode.OK, content=meta_buffer)
 
     @engine_controller_exception_handler
-    def render_struct(self, task: Task) -> ReturnDict:
+    def render_struct(self, task: Task, chapter=None) -> ReturnDict:
         """
         Render and return the project struct
 
+        @param chapter: filter by specific chapter
         @param task: current task
         @return: struct
 
         """
         engine = task.project_engine
-        struct = engine.render_struct()
+        struct = engine.render_struct(chapter=chapter)
         return ReturnDict(status=StatusCode.OK, content=struct)

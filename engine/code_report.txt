@@ -1,10 +1,10 @@
-Generated In: 2023/04/07 周五 17:52:07.80
+Generated In: 2023/04/14 周五 14:31:50.76
 LINTER REPORT
 
 check ./engine
 
--------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 9.86/10, +0.14)
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 check ./module
 
@@ -33,49 +33,51 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1680907933.22128          12
+1681500716.30459          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1680907933.22128          12
+1681500716.30459          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1680907933.22128          12
+1681500716.30459          12
 ----------------------------------------
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680907811.555912, 'total_frame_len': 2, 'last_fid': 27, 'head': 20, 'tail': 27}
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.1', 'engine_minimal_compatible': '1.0.1', 'update_at': 1681500705.8916032, 'total_frame_len': 3, 'last_fid': 23, 'head': 18, 'tail': 23}
 {1: 'choice 1'}
+add frame:  24
+add frame:  25
+add frame:  26
+add frame:  27
 add frame:  28
 add frame:  29
 add frame:  30
 add frame:  31
 add frame:  32
 add frame:  33
-add frame:  34
-add frame:  35
-add frame:  36
-add frame:  37
-head id: 20
-{'default': [[20, ''], [27, ''], [28, ''], [29, ''], [30, ''], [31, ''], [32, ''], [33, ''], [34, ''], [35, ''], [36, ''], [37, '']]}
-{'default': [[20, ''], [27, ''], [28, ''], [29, ''], [30, ''], [31, ''], [32, ''], [33, ''], [34, ''], [35, ''], [36, ''], [37, '']]}
+head id: 18
+{'default': [(18, 'default'), (20, 'default'), (23, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (28, 'default'), (29, 'default'), (30, 'default'), (31, 'default'), (32, 'default'), (33, 'default')]}
+{'default': [(18, 'default'), (20, 'default'), (23, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (28, 'default'), (29, 'default'), (30, 'default'), (31, 'default'), (32, 'default'), (33, 'default')]}
 remove id: 32
-remove id: 35
-remove id: 36
-remove id: 37
-remove id: 27
-remove id: 29
+remove id: 18
+remove id: 25
 remove id: 30
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.0', 'engine_minimal_compatible': '1.0.0', 'update_at': 1680907933.42812, 'total_frame_len': 5, 'last_fid': 34, 'head': 20, 'tail': 34}
-33 <engine.frame.Frame object at 0x000001CFDBA74FD0>
-34 <engine.frame.Frame object at 0x000001CFDBA75210>
-20 <engine.frame.Frame object at 0x000001CFDB797BD0>
-28 <engine.frame.Frame object at 0x000001CFDBA74F50>
-31 <engine.frame.Frame object at 0x000001CFDBA74550>
-remove id: 34
-remove id: 28
+remove id: 31
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.1', 'engine_minimal_compatible': '1.0.1', 'update_at': 1681500716.5427597, 'total_frame_len': 8, 'last_fid': 33, 'head': 20, 'tail': 33}
+33 <engine.frame.Frame object at 0x00000147366A9A10>
+20 <engine.frame.Frame object at 0x00000147366A91D0>
+23 <engine.frame.Frame object at 0x00000147366A9350>
+24 <engine.frame.Frame object at 0x00000147366A9610>
+26 <engine.frame.Frame object at 0x00000147366A95D0>
+27 <engine.frame.Frame object at 0x00000147366A9690>
+28 <engine.frame.Frame object at 0x00000147366A9810>
+29 <engine.frame.Frame object at 0x00000147366A9850>
+remove id: 33
+remove id: 24
+remove id: 27
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
 C:\Users\Twisl\Desktop\VNEditor Service\engine\__init__.py                   0      0   100%
@@ -85,9 +87,9 @@ C:\Users\Twisl\Desktop\VNEditor Service\engine\component\background.py       3  
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\branch.py          15      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\character.py       11      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\dialogue.py        11      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\meta.py             6      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\engine\component\meta.py             4      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\music.py           16      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   182     35    81%   47-48, 86, 109, 113-114, 121, 129, 136, 200-202, 206, 225, 239-250, 333, 346, 358, 376, 388, 399, 419, 431, 442, 459-460
+C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   186     27    85%   47-48, 87, 110, 114-115, 122, 130, 137, 202-204, 208, 224, 233, 248, 293, 305, 323, 335, 346, 366, 378, 389, 410-411, 429
 C:\Users\Twisl\Desktop\VNEditor Service\engine\engine_io.py                  7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\frame.py                    105     46    56%   101, 122, 128, 134-157, 183-196, 214-236
 C:\Users\Twisl\Desktop\VNEditor Service\module\__init__.py                   0      0   100%
@@ -100,8 +102,8 @@ C:\Users\Twisl\Desktop\VNEditor Service\utils\file_utils.py                 45  
 C:\Users\Twisl\Desktop\VNEditor Service\utils\status.py                      4      0   100%
 test_config_manager.py                                                      35      0   100%
 test_db_manager.py                                                          63      0   100%
-test_engine.py                                                              63      0   100%
+test_engine.py                                                              65      0   100%
 test_file_utils.py                                                          35      0   100%
 test_game_slot.py                                                           39      0   100%
 ------------------------------------------------------------------------------------------------------
-TOTAL                                                                      800     84    90%
+TOTAL                                                                      804     76    91%
