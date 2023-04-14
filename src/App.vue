@@ -9,8 +9,13 @@ import { hostNameKey, projectIDKey, projectNameKey } from "./InjectionKeys";
 import EditorMain from "./components/EditorMain.vue";
 
 const fileUploadAreaDisplay = ref(false);
+// tool bar display below
 const editorBackground = ref("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg");
 const editorMusic = ref("");
+// edn
+// preview bra const below
+const previewBackground = ref("");
+// end
 const projectID = ref<string | undefined>(undefined);
 const projectName = ref<string | undefined>(undefined);
 provide(hostNameKey, "http://127.0.0.1:8000/");
@@ -31,6 +36,14 @@ function setEditorMusic(event: MouseEvent) {
         editorMusic.value = getUrl(`resources/music/${el.innerHTML}`, {
             task_id: projectID.value,
         });
+}
+
+function update_Preview_bar(event: MouseEvent) {
+    const el: Element = event.target as Element; // wtf this line used for?
+    if (projectID.value)
+        previewBackground.value = getUrl(`resources/music/${el.innerHTML}`, {
+            task_id: projectID.value,
+        }); // wrong thingge, need to update to get the corresponding chapter
 }
 </script>
 
