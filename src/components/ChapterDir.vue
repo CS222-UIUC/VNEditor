@@ -67,6 +67,7 @@ watchEffect(() => {
                 <FrameItem
                     @click="itemCallBack($event)"
                     v-for="item in FrameList"
+                    :key="item.name"
                     :name="item.name"
                     >{{ item.name }}</FrameItem
                 >

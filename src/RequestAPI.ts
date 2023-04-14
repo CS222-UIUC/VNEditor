@@ -237,3 +237,32 @@ export async function getFrames(
     };
     return [a, c, a, a];
 }
+
+/**
+ * get all the frames of the corresponding chapter
+ * @param id: project_id
+ * @param chapter_name: chapter_name
+ * @returns
+ */
+export async function addChapters(
+    id: string | undefined,
+    chapter_name: string | undefined,
+): Promise<string> {
+    console.log("add chapter called"); // used for debugg
+    console.log(chapter_name); // used for debugg
+    if (!id || !chapter_name) return "invalid chapters";
+
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("add_chapter", {
+                task_id: id,
+                chapter_name: chapter_name,
+            })
+        );
+        console.log(response);
+        return chapter_name;
+    } catch (err: any) {
+        throw new Error("error happend in addChapters");
+    }
+}
