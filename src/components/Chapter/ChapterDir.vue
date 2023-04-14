@@ -2,10 +2,10 @@
 import FrameItem from "./FrameItem.vue";
 import { ref, inject, watchEffect, type PropType } from "vue";
 import type { Ref } from "vue";
-import IconDownArrow from "./icons/IconDownArrow.vue";
+import IconDownArrow from "../icons/IconDownArrow.vue";
 import type { IFrame } from "@/FrameDef";
-import { projectIDKey } from "../InjectionKeys";
-import { getFrames } from "../RequestAPI"; // need to change to needed function
+import { projectIDKey } from "../../InjectionKeys";
+import { getFrames } from "../../RequestAPI"; // need to change to needed function
 
 var FramesDisplay = ref(false); // control display the scene of the corresopnding chapter
 const FrameList: Ref<IFrame[]> = ref([]);
@@ -68,6 +68,7 @@ watchEffect(() => {
                     @click="itemCallBack($event)"
                     v-for="item in FrameList"
                     :name="item.name"
+                    :key="item.name"
                     >{{ item.name }}</FrameItem
                 >
             </div>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, provide } from "vue";
 import { getUrl } from "./RequestAPI";
-import Toolbar from "./components/ToolbarMain.vue";
-import Navbar from "./components/NavbarMain.vue";
+import Toolbar from "./components/Toolbar/ToolbarMain.vue";
+import Navbar from "./components/Navbar/NavbarMain.vue";
 import FileUploadArea from "./components/UploadArea.vue";
-import Framebar from "./components/FrameMain.vue";
+import Framebar from "./components/Chapter/FrameMain.vue";
 import { hostNameKey, projectIDKey, projectNameKey } from "./InjectionKeys";
 import EditorMain from "./components/EditorMain.vue";
 

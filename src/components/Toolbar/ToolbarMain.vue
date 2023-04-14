@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ToolbarDir from "./ToolbarDir.vue";
-import IconMusic from "./icons/IconMusic.vue";
-import { Rtype } from "../RequestAPI";
+import IconMusic from "../icons/IconMusic.vue";
+import { Rtype } from "../../RequestAPI";
 import type { PropType } from "vue";
 
 const props = defineProps({
