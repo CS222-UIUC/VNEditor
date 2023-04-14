@@ -10,16 +10,14 @@ class FrameMeta:
 
     """
 
-    def __init__(self, chapter: str = "default", description: str = ""):
+    def __init__(self, chapter: str = "default", name: str = "default"):
         """
-        constructor for meta
+        constructor for meta, if not given, set to default
 
         @param chapter: the chapter of this frame
-        @param description: description of current frame
+        @param name: name of current frame
 
         """
-        if chapter == "":
-            chapter = "default"
 
         self.chapter: str = chapter
-        self.description: str = description
+        self.name: str = name
