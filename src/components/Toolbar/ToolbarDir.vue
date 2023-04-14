@@ -3,7 +3,7 @@ import { ref, inject, watchEffect, type PropType } from "vue";
 import type { Ref } from "vue";
 import FileItem from "./FileItem.vue";
 import IconDownArrow from "../icons/IconDownArrow.vue";
-import { projectIDKey } from "../../InjectionKeys";
+import { editorElementsKey, projectIDKey } from "../../InjectionKeys";
 import { getResources, uploadFiles, Rtype } from "../../RequestAPI";
 
 var fileDisplay = ref(false);

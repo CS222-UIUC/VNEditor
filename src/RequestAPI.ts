@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 export const baseUrl: string = "http://127.0.0.1:8000/"; // This is provided with a backslash '/' at the end
 
-import type { IFrame, IChar } from "@/FrameDef";
+import type { IFrame, EditorElement } from "@/FrameDef";
 // interface Params {
 //     [index: string]: string;
 // }
@@ -120,6 +120,7 @@ export async function getProjects(): Promise<string[]> {
         );
 
         const project_names: string[] = response.data.content;
+        console.log(project_names);
         return project_names;
     } catch (err: any) {
         console.log(err);
@@ -219,9 +220,10 @@ export async function getFrames(
 ): Promise<IFrame[]> {
     if (!name || !chapter_name) return [];
 
-    const b: IChar = {
-        imageName: "",
-        position: [0, 0],
+    const b: EditorElement = {
+        imageUrl: "",
+        xCoord: 0,
+        yCoord: 0,
     };
     const a: IFrame = {
         name: name, // name of the frame

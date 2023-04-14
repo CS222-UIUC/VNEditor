@@ -24,22 +24,27 @@
 }
 #header {
   grid-area: 1 / 1 / 2 / 4;
+  /* z-index: 1; */
 }
 
 #footer {
   grid-area: 3 / 1 / 4 / 4;
+  /* z-index: 1; */
 }
 
 #preview-sidebar {
   grid-area: 2 / 1 / 3 / 2;
+  /* z-index: 1; */
 }
 
 #toolbar-sidebar {
   grid-area: 2 / 3 / 3 / 4;
+  /* z-index: 1; */
 }
 
 #main-editor {
   grid-area: 2 / 2 / 3 / 3;
+  /* z-index: 1; */
 }
 
 

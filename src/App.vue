@@ -1,27 +1,28 @@
 <script setup lang="ts">
-import { ref, provide } from "vue";
+import { ref, provide, inject, reactive } from "vue";
 import { getUrl } from "./RequestAPI";
 import Toolbar from "./components/Toolbar/ToolbarMain.vue";
 import Navbar from "./components/Navbar/NavbarMain.vue";
 import FileUploadArea from "./components/UploadArea.vue";
 import Framebar from "./components/Chapter/FrameMain.vue";
-import { hostNameKey, projectIDKey, projectNameKey } from "./InjectionKeys";
+import { editorElementsKey, hostNameKey, projectIDKey, projectNameKey } from "./InjectionKeys";
 import EditorMain from "./components/EditorMain.vue";
-
+import { Character } from "./FrameDef";
+import type { EditorElement } from "./FrameDef";
 const fileUploadAreaDisplay = ref(false);
 // tool bar display below
 const editorBackground = ref("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg");
 const editorMusic = ref("");
 // edn
 // preview bra const below
-const previewBackground = ref("");
 // end
 const projectID = ref<string | undefined>(undefined);
 const projectName = ref<string | undefined>(undefined);
+const editorElements: EditorElement[] = reactive([]);
 provide(hostNameKey, "http://127.0.0.1:8000/");
 provide(projectIDKey, projectID);
 provide(projectNameKey, projectName);
-
+provide(editorElementsKey, editorElements);
 function setEditorBackground(event: MouseEvent) {
     const el: Element = event.target as Element;
     if (projectID.value)
@@ -37,13 +38,17 @@ function setEditorMusic(event: MouseEvent) {
             task_id: projectID.value,
         });
 }
-
-function update_Preview_bar(event: MouseEvent) {
-    const el: Element = event.target as Element; // wtf this line used for?
-    if (projectID.value)
-        previewBackground.value = getUrl(`resources/music/${el.innerHTML}`, {
+function addNewCharacter(event: MouseEvent) {
+    const el: Element = event.target as Element;
+    if (projectID.value) {
+        let char: Character = new Character();
+        char.imageUrl = getUrl(`resources/character/${el.innerHTML}`, {
             task_id: projectID.value,
-        }); // wrong thingge, need to update to get the corresponding chapter
+        });
+
+        editorElements.push(char);
+        console.log(editorElements);
+    }
 }
 </script>
 
@@ -65,6 +70,7 @@ function update_Preview_bar(event: MouseEvent) {
         class="grid-item"
         :background-call-back="setEditorBackground"
         :music-call-back="setEditorMusic"
+        :character-call-back="addNewCharacter"
     />
     <footer id="footer" class="grid-item">this is footer</footer>
     <audio :src="editorMusic" autoplay loop>

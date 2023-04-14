@@ -10,17 +10,6 @@ import { getFrames } from "../../RequestAPI"; // need to change to needed functi
 var FramesDisplay = ref(false); // control display the scene of the corresopnding chapter
 const FrameList: Ref<IFrame[]> = ref([]);
 const chapName: Ref<string> = ref("");
-// function addFrame(idx: Number): boolean {
-//     return false;
-// }
-
-// function removeFrame(idx: Number): boolean {
-//     return false;
-// }
-
-// function switchBranch(id: FrameID): boolean {
-//     return false;
-// }
 
 const props = defineProps({
     ChapterName: {
