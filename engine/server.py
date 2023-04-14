@@ -366,10 +366,11 @@ async def get_frame(task_id: str, fid: int) -> ReturnDict:
 
 
 @app.post("/engine/get_struct", tags=["engine"])
-async def get_struct(task_id: str) -> ReturnDict:
+async def get_struct(task_id: str, chapter=None) -> ReturnDict:
     """
     get struct of current project
 
+    @param chapter: filter by chapter
     @param task_id: the id for current task
     @return: struct of the project
 
@@ -378,4 +379,4 @@ async def get_struct(task_id: str) -> ReturnDict:
     if task is None:
         return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
 
-    return engine_utils.render_struct(task=task)
+    return engine_utils.render_struct(task=task, chapter=chapter)

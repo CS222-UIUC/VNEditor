@@ -25,9 +25,10 @@ def file_controller_exception_handler(func):
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except Exception as e_msg:
-            print(f"Project Controller Error ({type(e_msg).__name__}): ", str(e_msg))
-            return ReturnStatus(status=StatusCode.FAIL, msg=str(e_msg))
+        except Exception as e:
+            e_msg = f"Server Controller Error ({type(e).__name__}): {str(e)}"
+            print(e_msg)
+            return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
 
     wrapper: func
     return wrapper
