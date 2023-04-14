@@ -38,11 +38,18 @@ watchEffect(() => {
             v-show="ChapetrsDisplay"
             placeholder="enter chapter name"
         />
-        {{ chapNametoAdd }}
         <button
             class="chapter-button"
             v-show="ChapetrsDisplay"
-            @click="addChapters(projectID, chapNametoAdd)"
+            @click="
+                async () => {
+                    await addChapters(projectID, chapNametoAdd);
+                    getChapters(projectID).then((res: string[]) => {
+                        if (res) ChapterList = res;
+                        ChapetrsDisplay = true;
+                    });
+                }
+            "
         >
             New Chapter
         </button>
@@ -56,7 +63,6 @@ watchEffect(() => {
             >{{ item }}
         </ChapterItem>
     </div>
-
 </template>
 
 <style>
@@ -68,4 +74,3 @@ watchEffect(() => {
     width: 100%;
 }
 </style>
-

@@ -203,6 +203,7 @@ export async function renameResource(
  */
 export async function getChapters(name: string | undefined): Promise<string[]> {
     // need to update to correct function
+    console.log("get chapter called"); // for debug
     if (!name) return [];
     return ["test chapter", "next is chapter name", name, "end of chapter"];
 }
@@ -263,6 +264,7 @@ export async function addChapters(
         console.log(response);
         return chapter_name;
     } catch (err: any) {
-        throw new Error("error happend in addChapters");
+        console.log("failed to add");
+        return "";
     }
 }
