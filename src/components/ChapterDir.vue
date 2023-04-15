@@ -153,17 +153,17 @@ watchEffect(() => {
 }
 
 .add-frame-text {
-    display: flex;
+    display: inline;
     flex-direction: row;
     padding: 0.5rem;
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
-    width: 100%;
+    width: 50%;
 }
 .add-frame-button {
-    display: flex;
+    display: inline;
     flex-direction: row;
     padding: 0.5rem;
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
-    width: 100%;
+    width: 25%;
 }
 </style>
