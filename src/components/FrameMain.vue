@@ -34,7 +34,7 @@ watchEffect(() => {
     <div>
         <div>
             <input
-                class="leftnav-button"
+                class="leftnav-text"
                 v-model="chapNametoAdd"
                 v-show="ChapetrsDisplay"
                 placeholder="enter chapter name"
@@ -68,11 +68,19 @@ watchEffect(() => {
 </template>
 
 <style>
+.leftnav-text {
+    display: inline;
+    flex-direction: column;
+    padding: 0.5rem;
+    border-bottom: 5px solid rgba(0, 90, 27, 0.507);
+    width: 70%;
+}
+
 .leftnav-button {
     display: inline;
     flex-direction: column;
     padding: 0.5rem;
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
-    width: 50%;
+    width: 30%;
 }
 </style>
