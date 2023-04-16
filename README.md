@@ -22,3 +22,8 @@ Fastapi
 ### Prototype🎁
 
 ![demo](doc/demo.png)
+
+
+### TODO
+
+- [ ] Editor element resize and save
