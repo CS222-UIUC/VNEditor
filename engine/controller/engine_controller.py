@@ -1,12 +1,12 @@
 from functools import wraps
 
 from module.config_manager import ConfigLoader
-from utils.exception import ControllerException
 from utils.status import StatusCode
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
 from .project_controller import Task
 from engine.frame import FrameModel, frame_to_model
+from engine.component import FrameMeta
 
 
 def engine_controller_exception_handler(func):
@@ -22,7 +22,7 @@ def engine_controller_exception_handler(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            e_msg = f"Engine Controller Error ({type(e).__name__}): {str(e)}"
+            e_msg = f"Engine Controller ({type(e).__name__}): {str(e)}"
             print(e_msg)
             return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
 
@@ -71,7 +71,7 @@ class EngineController:
 
     @engine_controller_exception_handler
     def append_frame(
-        self, task: Task, frame_component_raw: FrameModel, force=False
+            self, task: Task, frame_component_raw: FrameModel, force=False
     ) -> ReturnList:
         """
         append frame: Frame into game content
@@ -80,11 +80,13 @@ class EngineController:
 
         """
         engine = task.project_engine
-        frame_component = frame_component_raw.to_frame().__dict__
+        frame_component = frame_component_raw.to_frame()[0].__dict__
         frame_component.pop("fid")
         frame_component.pop("action")
+
+        frame_meta = FrameMeta(frame_component_raw.chapter, frame_component_raw.name)
         frame = engine.make_frame(**frame_component)
-        fid = engine.append_frame(frame, force)
+        fid = engine.append_frame(frame, frame_meta, force)
         return ReturnList(status=StatusCode.OK, content=[fid])
 
     @engine_controller_exception_handler
@@ -100,7 +102,8 @@ class EngineController:
             return ReturnDict(status=StatusCode.FAIL, msg=f"No such frame id '{fid}'")
 
         frame_raw = engine.get_frame(fid=fid)
-        frame_model = frame_to_model(frame_raw)
+        frame_meta = engine.get_frame_meta(fid=fid)
+        frame_model = frame_to_model(frame_raw, frame_meta)
         return ReturnDict(content=frame_model.__dict__)
 
     @engine_controller_exception_handler
@@ -160,3 +163,14 @@ class EngineController:
         engine = task.project_engine
         struct = engine.render_struct(chapter=chapter)
         return ReturnDict(status=StatusCode.OK, content=struct)
+
+    @engine_controller_exception_handler
+    def get_chapters(self, task: Task):
+        """
+        get all chapters
+
+        @param task:
+        @return:
+        """
+        engine = task.project_engine
+        return ReturnList(status=StatusCode.OK, content=engine.get_all_chapter())
