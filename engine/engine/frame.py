@@ -49,7 +49,6 @@ class Frame(BasicFrame):
         music: Music,
         dialog: Dialogue,
         action: Optional[Action] = None,
-        meta: FrameMeta = None,
     ):
         """
         constructor for frame class
@@ -60,7 +59,6 @@ class Frame(BasicFrame):
         @param music: music
         @param dialog: dialogue
         @param action: action
-        @param meta: meta
 
         """
         super().__init__(fid, action)
@@ -68,7 +66,6 @@ class Frame(BasicFrame):
         self.chara: list[Character] = chara
         self.music: Music = music
         self.dialog: Dialogue = dialog
-        self.meta: FrameMeta = meta
 
 
 class FrameChecker:
@@ -177,7 +174,7 @@ class FrameModel(BaseModel):
     chapter: str
     name: str
 
-    def to_frame(self) -> Frame:
+    def to_frame(self) -> (Frame, FrameMeta):
         """
         convert the frame model to frame instance
 
@@ -200,20 +197,23 @@ class FrameModel(BaseModel):
             )
         music = Music(res_name=self.music, signal=self.music_signal)
         meta = FrameMeta(self.chapter, self.name)
-        return Frame(
-            fid=BasicFrame.VOID_FRAME_ID,
-            background=background,
-            chara=chara,
-            dialog=dialogue,
-            music=music,
-            meta=meta,
+        return (
+            Frame(
+                fid=BasicFrame.VOID_FRAME_ID,
+                background=background,
+                chara=chara,
+                dialog=dialogue,
+                music=music,
+            ),
+            meta,
         )
 
 
-def frame_to_model(frame: Frame):
+def frame_to_model(frame: Frame, frame_meta: FrameMeta):
     """
     convert frame to frame model
 
+    @param frame_meta: frame metadata
     @param frame: the frame to be convert
     @return: frame model instance
 
@@ -229,8 +229,9 @@ def frame_to_model(frame: Frame):
     music_signal = frame.music.signal
     music = frame.music.res_name
     dialog = frame.dialog.dialogue
-    chapter = frame.meta.chapter
-    name = frame.meta.name
+
+    chapter = frame_meta.chapter
+    name = frame_meta.name
 
     if frame.dialog.character is None:
         dialog_character = None

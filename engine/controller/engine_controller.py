@@ -1,7 +1,6 @@
 from functools import wraps
 
 from module.config_manager import ConfigLoader
-from utils.exception import ControllerException
 from utils.status import StatusCode
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
@@ -22,7 +21,7 @@ def engine_controller_exception_handler(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            e_msg = f"Engine Controller Error ({type(e).__name__}): {str(e)}"
+            e_msg = f"Engine Controller ({type(e).__name__}): {str(e)}"
             print(e_msg)
             return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
 
@@ -70,22 +69,36 @@ class EngineController:
         return ReturnDict(status=StatusCode.OK, content=engine.get_engine_meta())
 
     @engine_controller_exception_handler
-    def append_frame(
-        self, task: Task, frame_component_raw: FrameModel, force=False
-    ) -> ReturnList:
+    def append_empty_frame(self, task: Task, to_chapter: str):
         """
-        append frame: Frame into game content
+        append an empty frame according to chapter
 
-        @return: metadata for engine
+        @param to_chapter: append to which chapter
+        @param task:
+        @return: the added frame id
+
+        """
+        pass
+
+    @engine_controller_exception_handler
+    def modify_frame(self, task: Task, fid: int, frame_component_raw: FrameModel) -> ReturnStatus:
+        """
+        commit all changes
+
+        @param frame_component_raw: raw content of frame
+        @param fid: the frame id
+        @param task: current task
+        @return: status
 
         """
         engine = task.project_engine
-        frame_component = frame_component_raw.to_frame().__dict__
+        frame_component = frame_component_raw.to_frame()[0].__dict__
         frame_component.pop("fid")
         frame_component.pop("action")
         frame = engine.make_frame(**frame_component)
-        fid = engine.append_frame(frame, force)
-        return ReturnList(status=StatusCode.OK, content=[fid])
+        engine.change_frame(fid, frame)
+        engine.commit()
+        return ReturnStatus(status=StatusCode.OK)
 
     @engine_controller_exception_handler
     def get_frame(self, task: Task, fid: int) -> ReturnDict:
@@ -100,7 +113,8 @@ class EngineController:
             return ReturnDict(status=StatusCode.FAIL, msg=f"No such frame id '{fid}'")
 
         frame_raw = engine.get_frame(fid=fid)
-        frame_model = frame_to_model(frame_raw)
+        frame_meta = engine.get_frame_meta(fid=fid)
+        frame_model = frame_to_model(frame_raw, frame_meta)
         return ReturnDict(content=frame_model.__dict__)
 
     @engine_controller_exception_handler
@@ -120,19 +134,6 @@ class EngineController:
             msg=f"successfully remove frame with id '{fid}'",
             content=[fid],
         )
-
-    @engine_controller_exception_handler
-    def commit(self, task: Task) -> ReturnStatus:
-        """
-        commit all changes
-
-        @param task: current task
-        @return: status
-
-        """
-        engine = task.project_engine
-        engine.commit()
-        return ReturnStatus(status=StatusCode.OK)
 
     @engine_controller_exception_handler
     def get_metadata(self, task: Task) -> ReturnDict:
@@ -160,3 +161,29 @@ class EngineController:
         engine = task.project_engine
         struct = engine.render_struct(chapter=chapter)
         return ReturnDict(status=StatusCode.OK, content=struct)
+
+    @engine_controller_exception_handler
+    def get_chapters(self, task: Task) -> ReturnList:
+        """
+        get all chapters
+
+        @param task: the task instance
+        @return: chapter list
+
+        """
+        engine = task.project_engine
+        return ReturnList(status=StatusCode.OK, content=engine.get_all_chapter())
+
+    @engine_controller_exception_handler
+    def add_chapter(self, task: Task, chapter_name: str) -> ReturnStatus:
+        """
+        add a chapter according to the chapter name given
+
+        @param task: the task instance
+        @param chapter_name: the name for chapter
+        @return ok or not
+
+        """
+        engine = task.project_engine
+        engine.append_chapter(engine.make_chapter(chapter_name))
+        return ReturnStatus(status=StatusCode.OK, msg="chapter added")

@@ -10,12 +10,12 @@ from utils.exception import *
 
 class TestGameSlot(TestCase):
     CONFIG_DIR = "../service.ini"
-    GAME_DB_NAME = "test.db"
-    game_slot = GameSave(db_dir=GAME_DB_NAME, config_dir=CONFIG_DIR)
+    PROJECT_DIR = "./"
+    game_slot = GameSave(project_dir=PROJECT_DIR, config_dir=CONFIG_DIR)
 
     def test_reset(self):
         self.game_slot.reset()
-        self.assertTrue(file_utils.check_file_valid(self.GAME_DB_NAME))
+        self.assertTrue(file_utils.check_folder_valid(self.PROJECT_DIR))
 
     def test_drop(self):
         self.game_slot.drop()

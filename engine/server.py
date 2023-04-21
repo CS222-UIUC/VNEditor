@@ -133,7 +133,7 @@ async def remove_project(project_name: str) -> ReturnStatus:
 
 @app.get("/resources/{rtype}/{item_name}", tags=["resources"])
 async def get_resources(
-    task_id: str, rtype: ResourcesType, item_name: str
+        task_id: str, rtype: ResourcesType, item_name: str
 ) -> FileResponse:
     """
     get resources file
@@ -154,7 +154,7 @@ async def get_resources(
 
 @app.post("/get_res", tags=["resources"])
 async def get_resources_name(
-    task_id: str, rtype: ResourcesType, filter_by: str = ""
+        task_id: str, rtype: ResourcesType, filter_by: str = ""
 ) -> ReturnList:
     """
     get resources
@@ -172,7 +172,7 @@ async def get_resources_name(
 
 @app.post("/remove_res", tags=["resources"])
 async def remove_resource(
-    task_id: str, rtype: ResourcesType, item_name: str
+        task_id: str, rtype: ResourcesType, item_name: str
 ) -> ReturnList:
     """
     remove resources by resources name
@@ -187,7 +187,7 @@ async def remove_resource(
 
 @app.post("/rename_res", tags=["resources"])
 async def rename_project(
-    task_id: str, rtype: ResourcesType, item_name: str, new_name: str
+        task_id: str, rtype: ResourcesType, item_name: str, new_name: str
 ) -> ReturnDict:
     """
     rename resources by resources name
@@ -207,7 +207,7 @@ async def rename_project(
 
 @app.post("/upload", tags=["resources"])
 async def upload_file(
-    task_id: str, rtype: ResourcesType, file: UploadFile
+        task_id: str, rtype: ResourcesType, file: UploadFile
 ) -> ReturnDict:
     """
     update resources to rtype
@@ -222,7 +222,7 @@ async def upload_file(
 
 @app.post("/upload_files", tags=["resources"])
 async def upload_files(
-    task_id: str, rtype: ResourcesType, files: list[UploadFile]
+        task_id: str, rtype: ResourcesType, files: list[UploadFile]
 ) -> ReturnList:
     """
     update multi resources to rtype
@@ -248,45 +248,6 @@ async def get_fids(task_id: str) -> ReturnList:
     return engine_utils.get_frames_id(task)
 
 
-@app.post("/engine/engine_meta", tags=["engine"])
-async def engine_meta(task_id: str) -> ReturnDict:
-    """
-    get fids corresponding to the task id
-
-    """
-    task = project_utils.get_task(task_id)
-    if task is None:
-        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
-
-    return engine_utils.get_engine_meta(task)
-
-
-@app.post("/engine/append_frame", tags=["engine"])
-async def append_frame(
-    task_id: str, frame_component_raw: FrameModel, force: bool = False
-) -> ReturnList:
-    """
-    get fids corresponding to the task id
-
-    **music_signal define:**
-
-    --------------------
-    KEEP = 1
-    PAUSE = 2
-    NEXT = 3
-    PLAY = 4
-    --------------------
-
-    if `force` set to be true, the program will skip checking if frame is valid or not
-
-    """
-    task = project_utils.get_task(task_id)
-    if task is None:
-        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
-
-    return engine_utils.append_frame(task, frame_component_raw, force)
-
-
 @app.post("/engine/remove_frame", tags=["engine"])
 async def remove_frame(task_id: str, fid: int) -> ReturnList:
     """
@@ -300,30 +261,26 @@ async def remove_frame(task_id: str, fid: int) -> ReturnList:
     return engine_utils.remove_frame(task, fid)
 
 
-@app.post("/engine/commit", tags=["engine"])
-async def commit(task_id: str) -> ReturnStatus:
+@app.post("/engine/modify_frame", tags=["engine"])
+async def modify_frame(task_id: str, fid: int, frame_component_raw: FrameModel) -> ReturnStatus:
     """
-    commit all the change in buffer
+    get fids corresponding to the task id and save the change
+
+    **music_signal define:**
+
+    --------------------
+    KEEP = 1
+    PAUSE = 2
+    NEXT = 3
+    PLAY = 4
+    --------------------
 
     """
     task = project_utils.get_task(task_id)
     if task is None:
         return ReturnStatus(status=StatusCode.FAIL, msg="no such task id")
 
-    return engine_utils.commit(task)
-
-
-@app.post("/engine/meta", tags=["engine"])
-async def get_engine_meta(task_id: str) -> ReturnDict:
-    """
-    get the metadata for current used engine
-
-    """
-    task = project_utils.get_task(task_id)
-    if task is None:
-        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
-
-    return engine_utils.get_metadata(task)
+    return engine_utils.modify_frame(task, fid, frame_component_raw)
 
 
 @app.post("/engine/get_frame", tags=["engine"])
@@ -350,3 +307,55 @@ async def get_struct(task_id: str, chapter=None) -> ReturnDict:
         return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
 
     return engine_utils.render_struct(task=task, chapter=chapter)
+
+
+@app.post("/engine/get_chapters", tags=["engine"])
+async def get_chapters(task_id: str) -> ReturnList:
+    """
+    get all chapters
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.get_chapters(task=task)
+
+
+@app.post("/engine/add_chapter", tags=["engine"])
+async def add_chapters(task_id: str, chapter_name: str) -> ReturnStatus:
+    """
+    add a chapter with given chapter name
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.add_chapter(task=task, chapter_name=chapter_name)
+
+
+@app.post("/engine/engine_meta", tags=["meta"])
+async def engine_meta(task_id: str) -> ReturnDict:
+    """
+    get fids corresponding to the task id
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.get_engine_meta(task)
+
+
+@app.post("/engine/meta", tags=["meta"])
+async def get_engine_meta(task_id: str) -> ReturnDict:
+    """
+    get the metadata for current used engine
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.get_metadata(task)
