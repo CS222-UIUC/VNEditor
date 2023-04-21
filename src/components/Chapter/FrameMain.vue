@@ -62,7 +62,7 @@ watchEffect(() => {
             :key="item"
             :name="item"
             :item-call-back="prop.itemCallBack"
-            chapter-name="asdasds"
+            :chapNameFromLib="item"
             >{{ item }}
         </ChapterItem>
     </div>

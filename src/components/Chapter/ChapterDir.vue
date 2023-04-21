@@ -20,8 +20,15 @@ var frameNametoAdd = "";
 // function switchBranch(id: FrameID): boolean {
 //     return false;
 // }
+const prop = defineProps({
+    chapNameFromLib: {
+        type: String,
+        required: true,
+    },
+});
 const projectID = inject(projectIDKey) as Ref<string | undefined>;
 function updateChapName(event: MouseEvent) {
+    // for future change of chapter name
     const el = event.target as HTMLElement;
     const name = el.textContent;
     if (name) chapName.value = name;
@@ -30,7 +37,7 @@ function updateChapName(event: MouseEvent) {
 }
 async function appendNewFrame(chap_name: string, frame_name: string) {
     let result = await addFrame(projectID.value, chap_name, frame_name);
-    if (result != "") {
+    if (result != undefined && result != "") {
         FrameCreateDisplay.value = !FrameCreateDisplay.value;
     }
 }
@@ -38,11 +45,11 @@ watchEffect(() => {
     // call back method update the chapter to display once projectID received
     FramesDisplay.value = false;
     if (projectID.value)
-        getFrames(projectID.value, chapName.value).then((res: IFrame[]) => {
+        getFrames(projectID.value, prop.chapNameFromLib).then((res: IFrame[]) => {
             if (res) FrameList.value = res;
-            console.log("nextline is chapter name");
-            console.log(chapName.value);
-            // console.log(" ");
+            console.log("nextline is shit name");
+            // console.log(chapName.value);
+            console.log(prop.chapNameFromLib);
         });
     frameNametoAdd;
 });
@@ -86,7 +93,11 @@ watchEffect(() => {
                         Cancle
                     </button>
                 </div>
-                <FrameItem v-for="item in FrameList" :key="item.name" :name="item.name"
+                <FrameItem
+                    v-for="item in FrameList"
+                    :key="item.name"
+                    :name="item.name"
+                    :ChapterName="prop.chapNameFromLib"
                     >{{ item.name }}
                 </FrameItem>
             </div>
