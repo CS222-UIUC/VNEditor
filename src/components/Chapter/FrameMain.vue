@@ -7,6 +7,7 @@ import { projectIDKey } from "../../InjectionKeys";
 import { getChapters, addChapters } from "../../RequestAPI";
 
 var ChapetrsDisplay = ref(false); // control display the scene of the corresopnding chapter, used once current project deleted
+var AddNewChapterDisplay = ref(false);
 const ChapterList = ref<string[]>([]);
 var chapNametoAdd = "";
 
@@ -25,6 +26,7 @@ watchEffect(() => {
         getChapters(projectID.value).then((res: string[]) => {
             if (res) ChapterList.value = res;
             ChapetrsDisplay.value = true;
+            AddNewChapterDisplay.value = true;
         });
     chapNametoAdd;
 });
@@ -32,28 +34,54 @@ watchEffect(() => {
 
 <template>
     <div>
-        <div>
+        <div v-show="ChapetrsDisplay">
+            <button
+                style="
+                    display: inline;
+                    flex-direction: row;
+                    /* padding: 0.5rem; */
+                    border-bottom: 5px solid rgba(0, 90, 27, 0.507);
+                    width: 100%;
+                    height: 100%;
+                    vertical-align: top;
+                "
+                v-show="AddNewChapterDisplay"
+                @click="AddNewChapterDisplay = !AddNewChapterDisplay"
+            >
+                New Chapter
+            </button>
             <input
                 class="leftnav-text"
                 v-model="chapNametoAdd"
-                v-show="ChapetrsDisplay"
+                v-show="!AddNewChapterDisplay"
                 placeholder="enter chapter name"
             />
             <button
                 class="leftnav-text"
-                v-show="ChapetrsDisplay"
-                style="width: 30%"
+                v-show="!AddNewChapterDisplay"
+                style="width: 25%"
                 @click="
                     async () => {
                         await addChapters(projectID, chapNametoAdd);
                         getChapters(projectID).then((res: string[]) => {
-                            if (res) ChapterList = res;
-                            ChapetrsDisplay = true;
+                            if (res) {
+                                ChapterList = res;
+                                AddNewChapterDisplay = !AddNewChapterDisplay;
+                                ChapetrsDisplay = true;
+                            }
                         });
                     }
                 "
             >
-                New Chapter
+                Done
+            </button>
+            <button
+                class="leftnav-text"
+                v-show="!AddNewChapterDisplay"
+                style="width: 25%"
+                @click="AddNewChapterDisplay = true"
+            >
+                Cancel
             </button>
         </div>
         <ChapterItem
@@ -74,7 +102,7 @@ watchEffect(() => {
     flex-direction: row;
     /* padding: 0.5rem; */
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
-    width: 70%;
+    width: 50%;
     height: 100%;
     vertical-align: top;
 }

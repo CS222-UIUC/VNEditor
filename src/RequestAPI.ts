@@ -199,14 +199,29 @@ export async function renameResource(
 
 /**
  * get all the chapters of the corresponding project
- * @param name: project_name
+ * @param id: project_id
  * @returns
  */
-export async function getChapters(name: string | undefined): Promise<string[]> {
+export async function getChapters(id: string | undefined): Promise<string[]> {
     // need to update to correct function
     console.log("get chapter called"); // for debug
-    if (!name) return [];
-    return ["test chapter", "next is chapter name", name, "end of chapter"];
+    console.log(id);
+    if (!id) return [];
+    // return ["test chapter", "next is chapter name", name, "end of chapter"]; // testing
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("engine/get_chapters", {
+                task_id: id,
+            })
+        );
+        console.log(response);
+        return response.data.content;
+    } catch (err: any) {
+        console.log("failed to get chapter");
+        // return ["test chapter", "next is chapter name", id, "end of chapter"]; // testing
+        return [];
+    }
 }
 
 /**
@@ -252,13 +267,13 @@ export async function addChapters(
     chapter_name: string | undefined
 ): Promise<string> {
     console.log("add chapter called"); // used for debugg
+    console.log(id);
     console.log(chapter_name); // used for debugg
     if (!id || !chapter_name) return "invalid chapters";
-
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("add_chapter", {
+            getUrl("engine/add_chapter", {
                 task_id: id,
                 chapter_name: chapter_name,
             })
@@ -266,7 +281,7 @@ export async function addChapters(
         console.log(response);
         return chapter_name;
     } catch (err: any) {
-        console.log("failed to add cahpter");
+        console.log("failed to add chapter");
         return "";
     }
 }
