@@ -22,8 +22,8 @@ from engine.component import Background, Character, Dialogue, Music, FrameMeta
 
 # the version of the engine
 ENGINE_NAME = "YuiEngine"
-ENGINE_VERSION = "1.0.3"
-ENGINE_MINIMAL_COMPATIBLE = "1.0.3"
+ENGINE_VERSION = "1.0.4"
+ENGINE_MINIMAL_COMPATIBLE = "1.0.4"
 
 
 class Engine:
@@ -41,6 +41,9 @@ class Engine:
     __frame_meta: dict[
         str, list[tuple[int, str]]
     ] = {}  # meta data for frames {chapter_name: [(fid: frame_name)]}
+    __chapter_meta: dict[
+        str, int
+    ]  # meta for chapter list {chapter_name: chapter_id}
     __head: int = Frame.VOID_FRAME_ID  # the head of the frame list
     __tail: int = Frame.VOID_FRAME_ID  # the tail of the frame list
     __last_fid: int = Frame.VOID_FRAME_ID  # the last used fid (frame id)
@@ -119,6 +122,7 @@ class Engine:
             # load game content and frame description
             self.__game_content = game_content_raw[1]
             self.__frame_meta = game_content_raw[2]
+            self.__chapter_meta = game_content_raw[3]
 
             # load metadata
             self.__last_fid = self.__metadata_buffer["last_fid"]
@@ -207,12 +211,56 @@ class Engine:
 
         return fid
 
+    def __insert(self, frame: Chapter | Frame, after_fid: int):
+        """
+        Insert a chapter or frame into the game content after a specific frame id
+
+        @param after_fid: frame id after which the new frame should be inserted
+        @param frame: frame to be inserted
+        @return the inserted frame id
+        """
+
+        if after_fid not in self.__game_content:
+            raise EngineError(f"Frame with id {after_fid} not found in the game content")
+
+        # Generate the new frame id
+        new_fid = max(self.__all_fids) + 1
+        frame.fid = new_fid
+
+        # Find the frame after which the new frame will be inserted
+        after_frame = self.__game_content[after_fid]
+
+        # Update the next and previous frame pointers of the new frame
+        frame.action.prev_f = after_fid
+        frame.action.next_f = after_frame.action.next_f
+
+        # Update the next frame pointer of the frame after which the new frame is inserted
+        after_frame.action.next_f = new_fid
+
+        # Update the previous frame pointer of the frame that comes after the new frame, if it exists
+        if frame.action.next_f != Frame.VOID_FRAME_ID:
+            next_frame = self.__game_content[frame.action.next_f]
+            next_frame.action.prev_f = new_fid
+
+        # Update the game content
+        self.__game_content[new_fid] = frame
+
+        # Update the list of all frame ids
+        self.__all_fids.add(new_fid)
+
+        # Update the tail of the linked list, if necessary
+        if self.__tail == after_fid:
+            self.__tail = new_fid
+
+        return new_fid
+
     def append_frame(
-            self, frame: Frame, frame_meta: FrameMeta, force: bool = False
+            self, frame: Frame, frame_meta: FrameMeta, chapter_name: str, force: bool = False
     ) -> int:
         """
         add frame to the end of the frame list
 
+        @param chapter_name: append to the given chapter
         @param frame_meta: frame metadata
         @param force: force push mode, ignore checking frame valid
         @param frame: frame to be added
@@ -233,7 +281,7 @@ class Engine:
         # append to the game content
         fid = self.__append(frame)
 
-        # update frame meta
+        # update frame meta and chapter info
         self.__frame_meta[frame_meta.chapter].append((fid, frame_meta.name))
 
         return fid
@@ -250,10 +298,13 @@ class Engine:
         if chapter.chapter_name in self.__frame_meta.keys():
             raise EngineError(f"Chapter '{chapter.chapter_name}' already in use")
 
-        self.__append(chapter)
+        fid = self.__append(chapter)
 
         # update frame meta
         self.__frame_meta[chapter.chapter_name] = []
+
+        # update chapter meta
+        self.__chapter_meta[chapter.chapter_name] = fid
 
     def get_ordered_fid(self) -> list:
         """
@@ -298,7 +349,7 @@ class Engine:
         @param fid: id of frame
 
         """
-        if fid not in self.__all_fids:
+        if fid not in self.__all_fids or fid in self.__chapter_meta.values():
             raise EngineError("remove fail, frame not exist")
 
         cur_frame = self.__game_content[fid]
@@ -344,22 +395,6 @@ class Engine:
 
         self.__game_content[fid] = frame
 
-    def get_head_id(self) -> int:
-        """
-        get the head frame id
-        @return: the id for the frame on head
-
-        """
-        return self.__head
-
-    def get_tail_id(self) -> int:
-        """
-        get the tail frame id
-        @return: the id for the frame on tail
-
-        """
-        return self.__tail
-
     def check_frame_exist(self, fid: int) -> bool:
         """
         check if the frame with fid in the game content
@@ -368,7 +403,7 @@ class Engine:
         @return: exist or not
 
         """
-        return fid in self.__game_content
+        return fid in self.__game_content and fid not in self.__chapter_meta.values()
 
     def get_frame(self, fid: int) -> Frame:
         """
@@ -444,6 +479,7 @@ class Engine:
             self.__metadata_buffer,
             self.__game_content,
             self.__frame_meta,
+            self.__chapter_meta
         ]
         try:
             self.__dumper(game_content_raw, self.__game_file_dir)
