@@ -16,6 +16,7 @@ from utils.file_utils import check_file_valid, check_folder_valid, abs_dir
 from utils.status import StatusCode
 from utils.exception import EngineError
 from engine.frame import Frame, FrameChecker
+from engine.chapter import Chapter
 import engine.engine_io as eng_io
 from engine.component import Background, Character, Dialogue, Music, FrameMeta
 
@@ -39,7 +40,7 @@ class Engine:
     __game_content: dict[int, Frame] = {}
     __frame_meta: dict[
         str, list[tuple[int, str]]
-    ] = {}  # meta data for frames {chapter: [(fid: frame_name)]}
+    ] = {}  # meta data for frames {chapter_name: [(fid: frame_name)]}
     __head: int = Frame.VOID_FRAME_ID  # the head of the frame list
     __tail: int = Frame.VOID_FRAME_ID  # the tail of the frame list
     __last_fid: int = Frame.VOID_FRAME_ID  # the last used fid (frame id)
@@ -159,23 +160,24 @@ class Engine:
         frame = Frame(Frame.VOID_FRAME_ID, background, chara, music, dialog, None)
         return frame
 
-    def append_frame(
-            self, frame: Frame, frame_meta: FrameMeta, force: bool = False
-    ) -> int:
+    @staticmethod
+    def make_chapter(chapter_name: str) -> Chapter:
         """
-        add frame to the end of the frame list
+        make a chapter
+        @return: result chapter
 
-        @param frame_meta: frame metadata
-        @param force: force push mode, ignore checking frame valid
+        """
+        chapter = Chapter(Chapter.VOID_FRAME_ID, chapter_name)
+        return chapter
+
+    def __append(self, frame: Chapter | Frame):
+        """
+        append chapter ot frame into the game content
+
         @param frame: frame to be added
-        @return:  frame id
+        @return the frame id
 
         """
-        # check frame
-        if not force:
-            check_output = self.__frame_checker.check(frame)
-            if not check_output[0]:
-                raise EngineError(f"Frame invalid: {check_output[1]}")
 
         # generate the fid
         if self.__last_fid == Frame.VOID_FRAME_ID:
@@ -194,11 +196,6 @@ class Engine:
         # update activated variables
         self.__game_content[fid] = frame
 
-        if frame_meta.chapter not in self.__frame_meta:
-            self.__frame_meta[frame_meta.chapter] = [(fid, frame_meta.name)]
-        else:
-            self.__frame_meta[frame_meta.chapter].append((fid, frame_meta.name))
-
         self.__last_fid = fid
         self.__all_fids.add(fid)
 
@@ -209,6 +206,54 @@ class Engine:
         self.__tail = fid
 
         return fid
+
+    def append_frame(
+            self, frame: Frame, frame_meta: FrameMeta, force: bool = False
+    ) -> int:
+        """
+        add frame to the end of the frame list
+
+        @param frame_meta: frame metadata
+        @param force: force push mode, ignore checking frame valid
+        @param frame: frame to be added
+        @return:  frame id
+
+        """
+
+        # check if chapter exist
+        if frame_meta.chapter not in self.__frame_meta.keys():
+            raise EngineError(f"Chapter '{frame_meta.chapter}' no found")
+
+        # check frame valid or not
+        if not force:
+            check_output = self.__frame_checker.check(frame)
+            if not check_output[0]:
+                raise EngineError(f"Frame invalid: {check_output[1]}")
+
+        # append to the game content
+        fid = self.__append(frame)
+
+        # update frame meta
+        self.__frame_meta[frame_meta.chapter].append((fid, frame_meta.name))
+
+        return fid
+
+    def append_chapter(self, chapter: Chapter):
+        """
+        append a chapter into the game content
+
+        @param chapter: the instance for chapter
+
+        """
+
+        # check if chapter already in use
+        if chapter.chapter_name in self.__frame_meta.keys():
+            raise EngineError(f"Chapter '{chapter.chapter_name}' already in use")
+
+        self.__append(chapter)
+
+        # update frame meta
+        self.__frame_meta[chapter.chapter_name] = []
 
     def get_ordered_fid(self) -> list:
         """
@@ -294,6 +339,9 @@ class Engine:
         @param frame: added frame
 
         """
+        if fid not in self.__game_content or isinstance(self.__game_content[fid], Chapter):
+            raise EngineError(f"fid '{fid}' no found")
+
         self.__game_content[fid] = frame
 
     def get_head_id(self) -> int:

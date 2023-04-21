@@ -6,7 +6,6 @@ from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
 from .project_controller import Task
 from engine.frame import FrameModel, frame_to_model
-from engine.component import FrameMeta
 
 
 def engine_controller_exception_handler(func):
@@ -70,24 +69,36 @@ class EngineController:
         return ReturnDict(status=StatusCode.OK, content=engine.get_engine_meta())
 
     @engine_controller_exception_handler
-    def append_frame(
-            self, task: Task, frame_component_raw: FrameModel, force=False
-    ) -> ReturnList:
+    def append_empty_frame(self, task: Task, to_chapter: str):
         """
-        append frame: Frame into game content
+        append an empty frame according to chapter
 
-        @return: metadata for engine
+        @param to_chapter: append to which chapter
+        @param task:
+        @return: the added frame id
+
+        """
+        pass
+
+    @engine_controller_exception_handler
+    def modify_frame(self, task: Task, fid: int, frame_component_raw: FrameModel) -> ReturnStatus:
+        """
+        commit all changes
+
+        @param frame_component_raw: raw content of frame
+        @param fid: the frame id
+        @param task: current task
+        @return: status
 
         """
         engine = task.project_engine
         frame_component = frame_component_raw.to_frame()[0].__dict__
         frame_component.pop("fid")
         frame_component.pop("action")
-
-        frame_meta = FrameMeta(frame_component_raw.chapter, frame_component_raw.name)
         frame = engine.make_frame(**frame_component)
-        fid = engine.append_frame(frame, frame_meta, force)
-        return ReturnList(status=StatusCode.OK, content=[fid])
+        engine.change_frame(fid, frame)
+        engine.commit()
+        return ReturnStatus(status=StatusCode.OK)
 
     @engine_controller_exception_handler
     def get_frame(self, task: Task, fid: int) -> ReturnDict:
@@ -125,19 +136,6 @@ class EngineController:
         )
 
     @engine_controller_exception_handler
-    def commit(self, task: Task) -> ReturnStatus:
-        """
-        commit all changes
-
-        @param task: current task
-        @return: status
-
-        """
-        engine = task.project_engine
-        engine.commit()
-        return ReturnStatus(status=StatusCode.OK)
-
-    @engine_controller_exception_handler
     def get_metadata(self, task: Task) -> ReturnDict:
         """
         get game content metadata buffer
@@ -165,12 +163,27 @@ class EngineController:
         return ReturnDict(status=StatusCode.OK, content=struct)
 
     @engine_controller_exception_handler
-    def get_chapters(self, task: Task):
+    def get_chapters(self, task: Task) -> ReturnList:
         """
         get all chapters
 
-        @param task:
-        @return:
+        @param task: the task instance
+        @return: chapter list
+
         """
         engine = task.project_engine
         return ReturnList(status=StatusCode.OK, content=engine.get_all_chapter())
+
+    @engine_controller_exception_handler
+    def add_chapter(self, task: Task, chapter_name: str) -> ReturnStatus:
+        """
+        add a chapter according to the chapter name given
+
+        @param task: the task instance
+        @param chapter_name: the name for chapter
+        @return ok or not
+
+        """
+        engine = task.project_engine
+        engine.append_chapter(engine.make_chapter(chapter_name))
+        return ReturnStatus(status=StatusCode.OK, msg="chapter added")
