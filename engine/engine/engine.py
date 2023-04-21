@@ -22,8 +22,8 @@ from engine.component import Background, Character, Dialogue, Music, FrameMeta
 
 # the version of the engine
 ENGINE_NAME = "YuiEngine"
-ENGINE_VERSION = "1.0.4"
-ENGINE_MINIMAL_COMPATIBLE = "1.0.4"
+ENGINE_VERSION = "1.0.5"
+ENGINE_MINIMAL_COMPATIBLE = "1.0.5"
 
 
 class Engine:
@@ -43,10 +43,9 @@ class Engine:
     ] = {}  # meta data for frames {chapter_name: [(fid: frame_name)]}
     __chapter_meta: dict[
         str, int
-    ]  # meta for chapter list {chapter_name: chapter_id}
+    ] = {}  # meta for chapter list {chapter_name: chapter_id}
     __head: int = Frame.VOID_FRAME_ID  # the head of the frame list
     __tail: int = Frame.VOID_FRAME_ID  # the tail of the frame list
-    __last_fid: int = Frame.VOID_FRAME_ID  # the last used fid (frame id)
     __all_fids: set[int] = set()  # all fids in set
 
     def __init__(
@@ -125,7 +124,6 @@ class Engine:
             self.__chapter_meta = game_content_raw[3]
 
             # load metadata
-            self.__last_fid = self.__metadata_buffer["last_fid"]
             self.__head = self.__metadata_buffer["head"]
             self.__tail = self.__metadata_buffer["tail"]
             self.__all_fids = set(self.__game_content.keys())
@@ -140,7 +138,6 @@ class Engine:
         self.__metadata_buffer["engine_minimal_compatible"] = ENGINE_MINIMAL_COMPATIBLE
         self.__metadata_buffer["update_at"] = time.time()
         self.__metadata_buffer["total_frame_len"] = len(self.__game_content.keys())
-        self.__metadata_buffer["last_fid"] = self.__last_fid
         self.__metadata_buffer["head"] = self.__head
         self.__metadata_buffer["tail"] = self.__tail
 
@@ -184,23 +181,23 @@ class Engine:
         """
 
         # generate the fid
-        if self.__last_fid == Frame.VOID_FRAME_ID:
+        if len(self.__all_fids) == 0:
             fid = 0
         else:
-            fid = self.__last_fid + 1
+            fid = max(self.__all_fids) + 1
+
         frame.fid = fid
 
         # change the current last frame's next frame pointer
-        if self.__last_fid != Frame.VOID_FRAME_ID:
-            self.__game_content[self.__last_fid].action.next_f = fid
+        if self.__head != Frame.VOID_FRAME_ID:
+            self.__game_content[self.__tail].action.next_f = fid
 
         # update the current frame
-        frame.action.prev_f = self.__last_fid
+        frame.action.prev_f = self.__tail
 
         # update activated variables
         self.__game_content[fid] = frame
 
-        self.__last_fid = fid
         self.__all_fids.add(fid)
 
         # update head and tail
@@ -255,12 +252,11 @@ class Engine:
         return new_fid
 
     def append_frame(
-            self, frame: Frame, frame_meta: FrameMeta, chapter_name: str, force: bool = False
+            self, frame: Frame, frame_meta: FrameMeta, force: bool = False
     ) -> int:
         """
         add frame to the end of the frame list
 
-        @param chapter_name: append to the given chapter
         @param frame_meta: frame metadata
         @param force: force push mode, ignore checking frame valid
         @param frame: frame to be added
@@ -366,7 +362,6 @@ class Engine:
             ].action.prev_f = cur_frame.action.prev_f
         else:
             self.__tail = cur_frame.action.prev_f
-            self.__last_fid = self.__tail
 
         # update game content and metadata
         self.__game_content.pop(fid)
@@ -378,8 +373,6 @@ class Engine:
                     chapter_list.pop(idx)
                     break
 
-        if len(self.__game_content) == 0:
-            self.__last_fid = Frame.VOID_FRAME_ID
         self.__all_fids.remove(fid)
 
     def change_frame(self, fid: int, frame: Frame):
@@ -431,7 +424,7 @@ class Engine:
         @return: the set of all frame id
 
         """
-        return set(self.__game_content.keys())
+        return set(self.__game_content.keys()).difference(set(self.__chapter_meta.values()))
 
     def get_length(self) -> int:
         """
