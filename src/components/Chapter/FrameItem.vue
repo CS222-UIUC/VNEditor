@@ -19,7 +19,7 @@ function displayframe(event: MouseEvent) {
 </script>
 
 <template>
-    <div class="frame-item" @click="displayframe">
+    <div class="frame-item" @dblclick="displayframe">
         <slot>unknown scene</slot>
     </div>
 </template>
