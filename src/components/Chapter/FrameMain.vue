@@ -32,27 +32,29 @@ watchEffect(() => {
 
 <template>
     <div>
-        <input
-            class="leftnav-button"
-            v-model="chapNametoAdd"
-            v-show="ChapetrsDisplay"
-            placeholder="enter chapter name"
-        />
-        <button
-            class="leftnav-button"
-            v-show="ChapetrsDisplay"
-            @click="
-                async () => {
-                    await addChapters(projectID, chapNametoAdd);
-                    getChapters(projectID).then((res: string[]) => {
-                        if (res) ChapterList = res;
-                        ChapetrsDisplay = true;
-                    });
-                }
-            "
-        >
-            New Chapter
-        </button>
+        <div>
+            <input
+                class="leftnav-text"
+                v-model="chapNametoAdd"
+                v-show="ChapetrsDisplay"
+                placeholder="enter chapter name"
+            />
+            <button
+                class="leftnav-button"
+                v-show="ChapetrsDisplay"
+                @click="
+                    async () => {
+                        await addChapters(projectID, chapNametoAdd);
+                        getChapters(projectID).then((res: string[]) => {
+                            if (res) ChapterList = res;
+                            ChapetrsDisplay = true;
+                        });
+                    }
+                "
+            >
+                New Chapter
+            </button>
+        </div>
         <ChapterItem
             v-show="ChapetrsDisplay"
             v-for="item in ChapterList"
@@ -66,11 +68,19 @@ watchEffect(() => {
 </template>
 
 <style>
-.leftnav-button {
-    display: flex;
+.leftnav-text {
+    display: inline;
     flex-direction: column;
     padding: 0.5rem;
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
-    width: 100%;
+    width: 70%;
+}
+
+.leftnav-button {
+    display: inline;
+    flex-direction: column;
+    padding: 0.5rem;
+    border-bottom: 5px solid rgba(0, 90, 27, 0.507);
+    width: 30%;
 }
 </style>
