@@ -36,6 +36,7 @@ async function appendNewFrame(chap_name: string, frame_name: string) {
 }
 watchEffect(() => {
     // call back method update the chapter to display once projectID received
+    FramesDisplay.value = false;
     if (projectID.value)
         getFrames(projectID.value, chapName.value).then((res: IFrame[]) => {
             if (res) FrameList.value = res;
