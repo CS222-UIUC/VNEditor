@@ -40,8 +40,9 @@ watchEffect(() => {
                 placeholder="enter chapter name"
             />
             <button
-                class="leftnav-button"
+                class="leftnav-text"
                 v-show="ChapetrsDisplay"
+                style="width: 30%"
                 @click="
                     async () => {
                         await addChapters(projectID, chapNametoAdd);
@@ -70,8 +71,8 @@ watchEffect(() => {
 <style>
 .leftnav-text {
     display: inline;
-    flex-direction: column;
-    padding: 0.5rem;
+    flex-direction: row;
+    /* padding: 0.5rem; */
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
     width: 70%;
     height: 100%;
@@ -80,9 +81,10 @@ watchEffect(() => {
 
 .leftnav-button {
     display: inline;
-    flex-direction: column;
-    padding: 0.5rem;
+    flex-direction: row;
+    /* padding: 0.5rem; */
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
     width: 30%;
+    height: 100%;
 }
 </style>
