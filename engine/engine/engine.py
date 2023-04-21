@@ -238,7 +238,7 @@ class Engine:
         # Update the next frame pointer of the frame after which the new frame is inserted
         after_frame.action.next_f = new_fid
 
-        # Update the previous frame pointer of the frame that comes after the new frame, if it exists
+        # Update the previous frame pointer of the frame that comes after the new frame
         if frame.action.next_f != Frame.VOID_FRAME_ID:
             next_frame = self.__game_content[frame.action.next_f]
             next_frame.action.prev_f = new_fid
@@ -388,7 +388,7 @@ class Engine:
         @param frame: added frame
 
         """
-        if fid not in check_frame_exist(fid):
+        if fid not in self.check_frame_exist(fid):
             raise EngineError(f"fid '{fid}' no found")
 
         self.__game_content[fid] = frame
