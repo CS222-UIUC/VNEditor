@@ -216,6 +216,8 @@ export async function getChapters(id: string | undefined): Promise<string[]> {
             })
         );
         console.log(response);
+        console.log("returned chapters");
+        console.log(response.data.content);
         return response.data.content;
     } catch (err: any) {
         console.log("failed to get chapter");

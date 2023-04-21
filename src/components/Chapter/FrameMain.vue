@@ -22,6 +22,7 @@ const projectID = inject(projectIDKey) as Ref<string | undefined>;
 watchEffect(() => {
     // call back method update the chapter to display once projectID received
     ChapetrsDisplay.value = false;
+    ChapterList.value = [];
     if (projectID.value)
         getChapters(projectID.value).then((res: string[]) => {
             if (res) ChapterList.value = res;

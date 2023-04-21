@@ -44,10 +44,11 @@ async function appendNewFrame(chap_name: string, frame_name: string) {
 watchEffect(() => {
     // call back method update the chapter to display once projectID received
     FramesDisplay.value = false;
+    FrameList.value = [];
     if (projectID.value)
         getFrames(projectID.value, prop.chapNameFromLib).then((res: IFrame[]) => {
             if (res) FrameList.value = res;
-            console.log("nextline is shit name");
+            console.log("nextline is chapNameFromLib");
             // console.log(chapName.value);
             console.log(prop.chapNameFromLib);
         });
