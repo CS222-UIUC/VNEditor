@@ -81,7 +81,9 @@ class EngineController:
         pass
 
     @engine_controller_exception_handler
-    def modify_frame(self, task: Task, fid: int, frame_component_raw: FrameModel) -> ReturnStatus:
+    def modify_frame(
+        self, task: Task, fid: int, frame_component_raw: FrameModel
+    ) -> ReturnStatus:
         """
         commit all changes
 

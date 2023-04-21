@@ -1,10 +1,16 @@
-Generated In: 2023/04/14 周五 19:04:28.74
+Generated In: 2023/04/21 周五 18:36:47.13
 LINTER REPORT
 
 check ./engine
+************* Module engine.chapter
+engine\chapter.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+engine\chapter.py:17:4: C0116: Missing function or method docstring (missing-function-docstring)
+************* Module engine.engine
+engine\engine.py:239:0: C0301: Line too long (101/100) (line-too-long)
+engine\engine.py:389:22: E0602: Undefined variable 'check_frame_exist' (undefined-variable)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+------------------------------------------------------------------
+Your code has been rated at 9.80/10 (previous run: 9.80/10, +0.00)
 
 check ./module
 
@@ -33,61 +39,55 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1681517075.11790          12
+1682120212.69860          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1681517075.11790          12
+1682120212.69860          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1681517075.11790          12
+1682120212.69860          12
 ----------------------------------------
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.3', 'engine_minimal_compatible': '1.0.3', 'update_at': 1681509199.3557534, 'total_frame_len': 4, 'last_fid': 31, 'head': 22, 'tail': 31}
+{}
 {1: 'choice 1'}
-add frame:  32
-add frame:  33
-add frame:  34
-add frame:  35
-add frame:  36
-add frame:  37
-add frame:  38
-add frame:  39
-add frame:  40
-add frame:  41
-head id: 22
-{'default': [(0, 'default'), (1, 'default'), (2, 'default'), (3, 'default'), (4, 'default'), (5, 'default'), (6, 'default'), (7, 'default'), (8, 'default'), (9, 'default'), (10, 'default'), (11, 'default'), (12, 'default'), (13, 'default'), (14, 'default'), (15, 'default'), (16, 'default'), (17, 'default'), (18, 'default'), (19, 'default'), (18, 'default'), (19, 'default'), (20, 'default'), (21, 'default'), (22, 'default'), (23, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (28, 'default'), (29, 'default'), (30, 'default'), (31, 'default'), (32, 'default'), (33, 'default'), (23, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (28, 'default'), (29, 'default'), (30, 'default'), (31, 'default'), (32, 'default'), (32, 'default'), (33, 'default'), (34, 'default'), (35, 'default'), (36, 'default'), (37, 'default'), (38, 'default'), (39, 'default'), (40, 'default'), (41, 'default')]}
-{'default': [(0, 'default'), (1, 'default'), (2, 'default'), (3, 'default'), (4, 'default'), (5, 'default'), (6, 'default'), (7, 'default'), (8, 'default'), (9, 'default'), (10, 'default'), (11, 'default'), (12, 'default'), (13, 'default'), (14, 'default'), (15, 'default'), (16, 'default'), (17, 'default'), (18, 'default'), (19, 'default'), (18, 'default'), (19, 'default'), (20, 'default'), (21, 'default'), (22, 'default'), (23, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (28, 'default'), (29, 'default'), (30, 'default'), (31, 'default'), (32, 'default'), (33, 'default'), (23, 'default'), (24, 'default'), (25, 'default'), (26, 'default'), (27, 'default'), (28, 'default'), (29, 'default'), (30, 'default'), (31, 'default'), (32, 'default'), (32, 'default'), (33, 'default'), (34, 'default'), (35, 'default'), (36, 'default'), (37, 'default'), (38, 'default'), (39, 'default'), (40, 'default'), (41, 'default')]}
-remove id: 32
-remove id: 35
-remove id: 36
-remove id: 41
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.3', 'engine_minimal_compatible': '1.0.3', 'update_at': 1681517075.3767827, 'total_frame_len': 10, 'last_fid': 40, 'head': 22, 'tail': 40}
-33 <engine.frame.Frame object at 0x00000281F6C60850>
-34 <engine.frame.Frame object at 0x00000281F6D66990>
-37 <engine.frame.Frame object at 0x00000281F6D67150>
-38 <engine.frame.Frame object at 0x00000281F6D65E50>
-39 <engine.frame.Frame object at 0x00000281F6D668D0>
-40 <engine.frame.Frame object at 0x00000281F6D671D0>
-22 <engine.frame.Frame object at 0x00000281F6C7FB50>
-26 <engine.frame.Frame object at 0x00000281F6D64710>
-30 <engine.frame.Frame object at 0x00000281F6D64ED0>
-31 <engine.frame.Frame object at 0x00000281F6D65050>
-remove id: 34
-remove id: 37
-remove id: 38
-remove id: 39
-remove id: 40
-remove id: 22
-remove id: 26
-remove id: 30
-remove id: 31
+['a']
+add frame:  1
+add frame:  2
+add frame:  3
+add frame:  4
+add frame:  5
+add frame:  6
+add frame:  7
+add frame:  8
+add frame:  9
+add frame:  10
+{'a': [(1, 'default'), (2, 'default'), (3, 'default'), (4, 'default'), (5, 'default'), (6, 'default'), (7, 'default'), (8, 'default'), (9, 'default'), (10, 'default')]}
+{'a': [(1, 'default'), (2, 'default'), (3, 'default'), (4, 'default'), (5, 'default'), (6, 'default'), (7, 'default'), (8, 'default'), (9, 'default'), (10, 'default')]}
+remove id: 3
+remove id: 4
+remove id: 9
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.5', 'engine_minimal_compatible': '1.0.5', 'update_at': 1682120212.938784, 'total_frame_len': 8, 'head': 0, 'tail': 1}
+1 <engine.frame.Frame object at 0x0000014086A9F4D0>
+2 <engine.frame.Frame object at 0x00000140873B24D0>
+5 <engine.frame.Frame object at 0x0000014087383390>
+6 <engine.frame.Frame object at 0x000001408752E710>
+7 <engine.frame.Frame object at 0x000001408752ED50>
+8 <engine.frame.Frame object at 0x000001408752EE90>
+10 <engine.frame.Frame object at 0x000001408752EC90>
+remove id: 1
+remove id: 2
+remove id: 5
+remove id: 6
+remove id: 7
+remove id: 10
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
 C:\Users\Twisl\Desktop\VNEditor Service\engine\__init__.py                   0      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\engine\chapter.py                   17      5    71%   18, 36, 47-49
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\__init__.py         8      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\action.py           7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\background.py       3      0   100%
@@ -96,8 +96,8 @@ C:\Users\Twisl\Desktop\VNEditor Service\engine\component\character.py       15  
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\dialogue.py        11      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\meta.py             4      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\engine\component\music.py           16      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   170     34    80%   63, 86, 90-91, 98, 106, 113, 176-178, 182, 198, 207, 221, 229, 241-247, 282-283, 286, 297, 313, 323, 342, 360, 371, 382, 402-403, 420
-C:\Users\Twisl\Desktop\VNEditor Service\engine\engine_io.py                  7      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   197     48    76%   66, 89, 91-129, 187, 193, 221, 271, 275-277, 298, 316, 336-342, 360, 376-377, 389-392, 421, 441, 463, 484-485, 502
+C:\Users\Twisl\Desktop\VNEditor Service\engine\engine_io.py                  7      2    71%   17-18
 C:\Users\Twisl\Desktop\VNEditor Service\engine\frame.py                    109     29    73%   102, 123, 129, 135-158, 184-200, 239, 242, 246
 C:\Users\Twisl\Desktop\VNEditor Service\module\__init__.py                   0      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\config_manager.py            25      0   100%
@@ -113,4 +113,4 @@ test_engine.py                                                              67  
 test_file_utils.py                                                          35      0   100%
 test_game_slot.py                                                           39      0   100%
 ------------------------------------------------------------------------------------------------------
-TOTAL                                                                      798     66    92%
+TOTAL                                                                      842     87    90%

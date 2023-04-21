@@ -31,28 +31,11 @@ class Engine:
     Engine main class, used to edit frame in project
     """
 
-    # metadata for the game file, update automatically
-    # through calling update_metadata() function
-    __metadata_buffer: dict = {}
-
-    # activated variables, initialized after class construct,
-    # should be UPDATED ON TIME every time they changed
-    __game_content: dict[int, Frame] = {}
-    __frame_meta: dict[
-        str, list[tuple[int, str]]
-    ] = {}  # meta data for frames {chapter_name: [(fid: frame_name)]}
-    __chapter_meta: dict[
-        str, int
-    ] = {}  # meta for chapter list {chapter_name: chapter_id}
-    __head: int = Frame.VOID_FRAME_ID  # the head of the frame list
-    __tail: int = Frame.VOID_FRAME_ID  # the tail of the frame list
-    __all_fids: set[int] = set()  # all fids in set
-
     def __init__(
-            self,
-            project_dir: str,
-            config_dir: str,
-            game_file_name: Optional[str] = None,
+        self,
+        project_dir: str,
+        config_dir: str,
+        game_file_name: Optional[str] = None,
     ):
         """
         constructor for engine
@@ -60,8 +43,27 @@ class Engine:
         @param project_dir: project directory
         @param config_dir: config file directory
         @param game_file_name: game file name (not directory)
-        @return:
+
         """
+
+        # variable declare
+        # metadata for the game file, update automatically
+        # through calling update_metadata() function
+        self.__metadata_buffer: dict = {}
+
+        # activated variables, initialized after class construct,
+        # should be UPDATED ON TIME every time they changed
+        self.__game_content: dict[int, Frame] = {}
+        self.__frame_meta: dict[
+            str, list[tuple[int, str]]
+        ] = {}  # meta data for frames {chapter_name: [(fid: frame_name)]}
+        self.__chapter_meta: dict[
+            str, int
+        ] = {}  # meta for chapter list {chapter_name: chapter_id}
+        self.__head: int = Frame.VOID_FRAME_ID  # the head of the frame list
+        self.__tail: int = Frame.VOID_FRAME_ID  # the tail of the frame list
+        self.__all_fids: set[int] = set()  # all fids in set
+
         if not check_folder_valid(project_dir):
             raise EngineError(f"project {project_dir} not exist")
 
@@ -104,7 +106,7 @@ class Engine:
                 )
 
             if version.parse(cur_engine_version) < version.parse(
-                    ENGINE_MINIMAL_COMPATIBLE
+                ENGINE_MINIMAL_COMPATIBLE
             ):
                 raise EngineError(
                     f"detect version incompatible! "
@@ -143,10 +145,10 @@ class Engine:
 
     @staticmethod
     def make_frame(
-            background: Background,
-            chara: list[Character],
-            music: Music,
-            dialog: Dialogue,
+        background: Background,
+        chara: list[Character],
+        music: Music,
+        dialog: Dialogue,
     ) -> Frame:
         """
         make a frame
@@ -218,7 +220,9 @@ class Engine:
         """
 
         if after_fid not in self.__game_content:
-            raise EngineError(f"Frame with id {after_fid} not found in the game content")
+            raise EngineError(
+                f"Frame with id {after_fid} not found in the game content"
+            )
 
         # Generate the new frame id
         new_fid = max(self.__all_fids) + 1
@@ -252,7 +256,7 @@ class Engine:
         return new_fid
 
     def append_frame(
-            self, frame: Frame, frame_meta: FrameMeta, force: bool = False
+        self, frame: Frame, frame_meta: FrameMeta, force: bool = False
     ) -> int:
         """
         add frame to the end of the frame list
@@ -275,7 +279,8 @@ class Engine:
                 raise EngineError(f"Frame invalid: {check_output[1]}")
 
         # append to the game content
-        fid = self.__append(frame)
+        chapter_owned = self.__chapter_meta[frame_meta.chapter]
+        fid = self.__insert(frame, chapter_owned)
 
         # update frame meta and chapter info
         self.__frame_meta[frame_meta.chapter].append((fid, frame_meta.name))
@@ -345,7 +350,7 @@ class Engine:
         @param fid: id of frame
 
         """
-        if fid not in self.__all_fids or fid in self.__chapter_meta.values():
+        if not self.check_frame_exist(fid):
             raise EngineError("remove fail, frame not exist")
 
         cur_frame = self.__game_content[fid]
@@ -383,7 +388,7 @@ class Engine:
         @param frame: added frame
 
         """
-        if fid not in self.__game_content or isinstance(self.__game_content[fid], Chapter):
+        if fid not in check_frame_exist(fid):
             raise EngineError(f"fid '{fid}' no found")
 
         self.__game_content[fid] = frame
@@ -396,7 +401,7 @@ class Engine:
         @return: exist or not
 
         """
-        return fid in self.__game_content and fid not in self.__chapter_meta.values()
+        return fid in self.get_all_frame_id()
 
     def get_frame(self, fid: int) -> Frame:
         """
@@ -424,7 +429,9 @@ class Engine:
         @return: the set of all frame id
 
         """
-        return set(self.__game_content.keys()).difference(set(self.__chapter_meta.values()))
+        return set(self.__game_content.keys()).difference(
+            set(self.__chapter_meta.values())
+        )
 
     def get_length(self) -> int:
         """
@@ -472,7 +479,7 @@ class Engine:
             self.__metadata_buffer,
             self.__game_content,
             self.__frame_meta,
-            self.__chapter_meta
+            self.__chapter_meta,
         ]
         try:
             self.__dumper(game_content_raw, self.__game_file_dir)

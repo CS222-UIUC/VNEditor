@@ -35,13 +35,13 @@ class TestEngine(TestCase):
 
         branch.delete_branch(1)
         branch.delete_branch(111)
-        frame_meta = FrameMeta(chapter='a')
+        frame_meta = FrameMeta(chapter="a")
         dialogue.set_dialogue("hello world")
         self.assertEqual(dialogue.get_dialogue()[0], "hello world")
         music = Music(signal=MusicSignal.KEEP)
         music.set_music()
         music.get_music()
-        engine.append_chapter(engine.make_chapter('a'))
+        engine.append_chapter(engine.make_chapter("a"))
         print(engine.get_all_chapter())
         for i in range(100):
             frame = engine.make_frame(

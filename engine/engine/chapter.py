@@ -7,6 +7,7 @@ class Chapter(BasicFrame):
     Chapter class, use to classified frames
 
     """
+
     tail_fid: int = BasicFrame.VOID_FRAME_ID
 
     def __init__(self, fid: int, chapter_name: str):
