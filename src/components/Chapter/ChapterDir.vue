@@ -69,6 +69,7 @@ watchEffect(() => {
 .chapter-item {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     padding: 0.5rem;
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
     width: 100%;

@@ -5,19 +5,8 @@ import { Character } from "@/FrameDef";
 import type { EditorElement } from "@/FrameDef";
 import { editorElementsKey } from "@/InjectionKeys";
 let elements: Array<EditorElement> = inject(editorElementsKey) as Array<EditorElement>;
-const topCoord = ref(0);
-const leftCoord = ref(0);
-const viewWidth = ref(0);
-const viewHeight = ref(0);
 
 const editor = ref<HTMLInputElement | null>(null);
-onMounted(() => {
-    const rect = editor.value?.getBoundingClientRect();
-    topCoord.value = rect?.top as number;
-    leftCoord.value = rect?.left as number;
-    viewWidth.value = rect?.width as number;
-    viewHeight.value = rect?.height as number;
-});
 </script>
 
 <template>

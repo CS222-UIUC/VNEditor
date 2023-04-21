@@ -94,12 +94,14 @@ function addNewCharacter(event: MouseEvent) {
     background-color: cadetblue;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 #toolbar-sidebar {
     background-color: #efffdb;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 #header {
