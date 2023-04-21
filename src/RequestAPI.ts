@@ -282,15 +282,15 @@ export async function addFrame(
     id: string | undefined,
     chapter_name: string | undefined,
     frame_name: string | undefined
-): Promise<string> {
+): Promise<string | undefined> {
     console.log("add frame called"); // used for debugg
     console.log(frame_name); // used for debugg
-    if (!id || !chapter_name || !frame_name) return "";
+    if (!id || !chapter_name || !frame_name) return undefined;
 
     try {
         const response: AxiosResponse = await axios.post(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("add_frame", {
+            getUrl("append_frame", {
                 task_id: id,
                 chapter_name: chapter_name,
                 frame_name: frame_name,
@@ -300,6 +300,6 @@ export async function addFrame(
         return chapter_name;
     } catch (err: any) {
         console.log("failed to add frame");
-        return "";
+        return undefined;
     }
 }
