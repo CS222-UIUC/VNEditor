@@ -19,7 +19,7 @@
     "header header header"
     "preview-sidebar main-editor toolbar-sidebar"
     "footer footer footer";
-
+    overflow: hidden;
   z-index: 1;
 }
 #header {

@@ -7,7 +7,7 @@ import FileUploadArea from "./components/UploadArea.vue";
 import Framebar from "./components/Chapter/FrameMain.vue";
 import { editorElementsKey, hostNameKey, projectIDKey, projectNameKey } from "./InjectionKeys";
 import EditorMain from "./components/EditorMain.vue";
-import { Character } from "./FrameDef";
+import { Character, Diaglog } from "./FrameDef";
 import type { EditorElement } from "./FrameDef";
 const fileUploadAreaDisplay = ref(false);
 // tool bar display below
@@ -18,7 +18,7 @@ const editorMusic = ref("");
 // end
 const projectID = ref<string | undefined>(undefined);
 const projectName = ref<string | undefined>(undefined);
-const editorElements: EditorElement[] = reactive([]);
+const editorElements: EditorElement[] = reactive([new Diaglog()]);
 provide(hostNameKey, "http://127.0.0.1:8000/");
 provide(projectIDKey, projectID);
 provide(projectNameKey, projectName);

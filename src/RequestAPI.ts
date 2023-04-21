@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 export const baseUrl: string = "http://127.0.0.1:8000/"; // This is provided with a backslash '/' at the end
 
-import type { IFrame, EditorElement } from "@/FrameDef";
+import type { Frame, EditorElement } from "@/FrameDef";
 // interface Params {
 //     [index: string]: string;
 // }
@@ -218,7 +218,7 @@ export async function getChapters(name: string | undefined): Promise<string[]> {
 export async function getFrames(
     name: string | undefined,
     chapter_name: string | undefined
-): Promise<IFrame[]> {
+): Promise<Frame[]> {
     if (!name || !chapter_name) return [];
 
     const b: EditorElement = {
@@ -226,17 +226,17 @@ export async function getFrames(
         xCoord: 0,
         yCoord: 0,
     };
-    const a: IFrame = {
+    const a: Frame = {
         name: name, // name of the frame
-        id: 0, // index
+        id: "", // index
         backgroundName: "", // url
-        characters: [b],
+        elements: [b],
     };
-    const c: IFrame = {
+    const c: Frame = {
         name: chapter_name, // name of the frame
-        id: 0, // index
+        id: "", // index
         backgroundName: "", // url
-        characters: [b],
+        elements: [b],
     };
     return [a, c, a, a];
 }

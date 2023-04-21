@@ -3,12 +3,12 @@ import FrameItem from "./FrameItem.vue";
 import { ref, inject, watchEffect, type PropType } from "vue";
 import type { Ref } from "vue";
 import IconDownArrow from "../icons/IconDownArrow.vue";
-import type { IFrame } from "@/FrameDef";
+import type { Frame } from "@/FrameDef";
 import { projectIDKey } from "../../InjectionKeys";
 import { getFrames } from "../../RequestAPI"; // need to change to needed function
 
 var FramesDisplay = ref(false); // control display the scene of the corresopnding chapter
-const FrameList: Ref<IFrame[]> = ref([]);
+const FrameList: Ref<Frame[]> = ref([]);
 const chapName: Ref<string> = ref("");
 
 const props = defineProps({
@@ -33,7 +33,7 @@ function updateChapName(event: MouseEvent) {
 watchEffect(() => {
     // call back method update the chapter to display once projectID received
     if (projectID.value)
-        getFrames(projectID.value, chapName.value).then((res: IFrame[]) => {
+        getFrames(projectID.value, chapName.value).then((res: Frame[]) => {
             if (res) FrameList.value = res;
             console.log("nextline is chapter name");
             console.log(chapName.value);
