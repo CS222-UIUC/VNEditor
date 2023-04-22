@@ -380,7 +380,7 @@ export async function removeFrame(
         console.log(response);
         return response.data["status"] === 1;
     } catch (err: any) {
-        console.log("failed to remove chapter");
+        console.log("failed to remove frame");
         return false;
     }
 }

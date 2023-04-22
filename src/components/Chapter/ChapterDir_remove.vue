@@ -47,6 +47,8 @@ function removechapter() {
 }
 .chapter-name:hover {
     text-align: left;
+    text-decoration: line-through;
+    text-decoration-thickness: 5px;
     background: rgb(45, 102, 34);
 }
 </style>
