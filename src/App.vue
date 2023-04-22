@@ -54,16 +54,17 @@ function addNewCharacter(event: MouseEvent) {
 
 <template>
     <Navbar id="header"> </Navbar>
-    <EditorMain
-        id="main-editor"
-        class="grid-item"
-        @clcik="fileUploadAreaDisplay = true"
-        @dragenter="fileUploadAreaDisplay = true"
-        @dragexit="fileUploadAreaDisplay = false"
-        :style="{ 'background-image': 'url(' + editorBackground + ')' }"
-    >
-        <FileUploadArea :display="fileUploadAreaDisplay" />
-    </EditorMain>
+    <div id="main-editor">
+        <EditorMain
+            class="edit-area"
+            @clcik="fileUploadAreaDisplay = true"
+            @dragenter="fileUploadAreaDisplay = true"
+            @dragexit="fileUploadAreaDisplay = false"
+            :style="{ 'background-image': 'url(' + editorBackground + ')' }"
+        >
+            <FileUploadArea :display="fileUploadAreaDisplay" />
+        </EditorMain>
+    </div>
     <Framebar id="preview-sidebar" class="grid-item"> </Framebar>
     <Toolbar
         id="toolbar-sidebar"
@@ -83,6 +84,13 @@ function addNewCharacter(event: MouseEvent) {
 <style>
 .grid-item {
     text-align: center;
+}
+
+.edit-area {
+    text-align: center;
+    aspect-ratio: 16 / 9;
+    width: 150vh;
+    overflow: scroll;
 }
 
 #main-editor {
