@@ -57,6 +57,7 @@ function onDrag(event: MouseEvent): void {
 
 <style>
 .editor-element:hover {
+    z-index: 0;
     outline: 2px #000 dashed;
 }
 </style>

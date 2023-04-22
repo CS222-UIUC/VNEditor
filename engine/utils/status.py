@@ -6,7 +6,7 @@ from enum import Enum
 
 class StatusCode(Enum):
     """
-    status code for the engine class
+    status code for the kernel class
     """
 
     FAIL = 0
