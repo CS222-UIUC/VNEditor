@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { ref, provide, inject, reactive } from "vue";
+import { ref, provide, inject, reactive, onMounted } from "vue";
 import { getUrl } from "./RequestAPI";
 import Toolbar from "./components/Toolbar/ToolbarMain.vue";
 import Navbar from "./components/Navbar/NavbarMain.vue";
 import FileUploadArea from "./components/UploadArea.vue";
 import Framebar from "./components/Chapter/FrameMain.vue";
-import { editorElementsKey, hostNameKey, projectIDKey, projectNameKey } from "./InjectionKeys";
+import {
+    editorElementsKey,
+    hostNameKey,
+    projectIDKey,
+    projectNameKey,
+    editorScaleKey,
+} from "./InjectionKeys";
 import EditorMain from "./components/EditorMain.vue";
 import { Character, Diaglog, Frame } from "@/FrameDef";
 import type { EditorElement } from "@/FrameDef";
 const fileUploadAreaDisplay = ref(false);
 // tool bar display below
-const editorBackground = ref("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg");
+const editorBackground = ref("");
 const editorMusic = ref("");
 // edn
 // preview bra const below
@@ -19,6 +25,7 @@ const editorMusic = ref("");
 const projectID = ref<string | undefined>(undefined);
 const projectName = ref<string | undefined>(undefined);
 const editorElements: EditorElement[] = reactive([new Diaglog()]);
+const editorScale = ref(1);
 provide(hostNameKey, "http://127.0.0.1:8000/");
 provide(projectIDKey, projectID);
 provide(projectNameKey, projectName);
@@ -41,18 +48,33 @@ function setEditorMusic(event: MouseEvent) {
 function addNewCharacter(event: MouseEvent) {
     const el: Element = event.target as Element;
     if (projectID.value) {
-        let char: Character = new Character();
-        char.content = getUrl(`resources/character/${el.innerHTML}`, {
+        let newImage = new Image();
+        const url = getUrl(`resources/character/${el.innerHTML}`, {
             task_id: projectID.value,
         });
+        newImage.onload = () => {
+            let char: Character = new Character();
 
-        editorElements.push(char);
+            console.log("aaaaaaaaaaaaa");
+            char.content = url;
+            char.h = newImage.height;
+            char.w = newImage.width;
+            editorElements.push(char);
+        };
+        newImage.src = url;
     }
 }
-</script>
 
-<script lang="ts">
-export {};
+onMounted(() => {
+    document.getElementById("app")?.addEventListener("wheel", (event: Event) => {
+        const e: WheelEvent = event as WheelEvent;
+        if (e.ctrlKey) {
+            e.preventDefault();
+            editorScale.value += e.deltaY * -0.001;
+            console.log(editorScale.value);
+        }
+    });
+});
 </script>
 
 <template>
@@ -63,7 +85,10 @@ export {};
             @clcik="fileUploadAreaDisplay = true"
             @dragenter="fileUploadAreaDisplay = true"
             @dragexit="fileUploadAreaDisplay = false"
-            :style="{ 'background-image': 'url(' + editorBackground + ')' }"
+            :scale="editorScale"
+            :style="{
+                'background-image': 'url(' + editorBackground + ')',
+            }"
         >
             <FileUploadArea :display="fileUploadAreaDisplay" />
         </EditorMain>
@@ -89,17 +114,13 @@ export {};
     text-align: center;
 }
 
-.edit-area {
-    text-align: center;
-    aspect-ratio: 16 / 9;
-    min-height: 85vh;
-    width: 130vh;
-    overflow: scroll;
-}
-
 #main-editor {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+    overflow: auto;
 }
 
 #preview-sidebar {

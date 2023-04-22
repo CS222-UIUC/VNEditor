@@ -3,8 +3,6 @@ import { reactive, ref, defineEmits, type PropType, onMounted } from "vue";
 import { ElementType, type Character, type EditorElement } from "@/FrameDef";
 let prevX: number = 0;
 let prevY: number = 0;
-const currX = ref(0);
-const currY = ref(0);
 const htmlElement = ref<HTMLElement | null>(null);
 const editDisplay = ref(false);
 let dragStart = false;
@@ -21,6 +19,10 @@ const props = defineProps({
         type: Number,
         required: true,
     },
+    scale: {
+        type: Number,
+        required: true,
+    },
 });
 
 const emits = defineEmits<{
@@ -32,19 +34,21 @@ const dialog_input = ref<HTMLElement | null>(null);
 
 onMounted(() => {
     currElement.value = props.element;
-    currX.value = props.element.xCoord;
-    currY.value = props.element.yCoord;
 });
 function onDrag(event: MouseEvent): void {
-    if (dragStart && htmlElement.value && htmlElement.value.parentElement) {
-        currX.value =
+    if (dragStart && htmlElement.value && htmlElement.value.parentElement && currElement.value) {
+        currElement.value.xCoord =
             ((htmlElement.value.offsetLeft + (event.clientX - prevX)) /
                 htmlElement.value.parentElement.clientWidth) *
             100;
-        currY.value =
+        currElement.value.yCoord =
             ((htmlElement.value.offsetTop + (event.clientY - prevY)) /
                 htmlElement.value.parentElement.clientHeight) *
             100;
+        // currElement.value.xCoord = currElement.value.xCoord > 0 ? currElement.value.xCoord : 0;
+        // currElement.value.xCoord = currElement.value.xCoord < 100 ? currElement.value.xCoord : 100;
+        // currElement.value.yCoord = currElement.value.yCoord > 0 ? currElement.value.yCoord : 0;
+        // currElement.value.yCoord = currElement.value.yCoord < 100 ? currElement.value.yCoord : 100;
         prevY = event.clientY;
         prevX = event.clientX;
     }
@@ -56,7 +60,12 @@ function onDrag(event: MouseEvent): void {
         class="editor-element"
         ref="htmlElement"
         style="position: absolute; z-index: 0"
-        :style="{ top: currY + '%', left: currX + '%' }"
+        :style="{
+            top: currElement?.yCoord + '%',
+            left: currElement?.xCoord + '%',
+            height: (currElement?.h ? currElement?.h : 100) * scale + 'px',
+            width: (currElement?.w ? currElement?.w : 100) * scale + 'px',
+        }"
         @mousedown.prevent="
             dragStart = true;
             (prevX = $event.clientX), (prevY = $event.clientY);
@@ -72,11 +81,17 @@ function onDrag(event: MouseEvent): void {
             :src="currElement?.content"
             alt="image"
             v-if="currElement?.type == ElementType.Image"
+            style="width: 100%; height: 100%"
         />
         <div
             class="editor-element-dialog"
             v-if="currElement?.type == ElementType.Text"
             style="display: flex; align-items: center; justify-content: center"
+            :style="{
+                'font-size': 40 * props.scale + 'px',
+                'border-radius': 5 * props.scale + 'px',
+                'border-width': 5 * props.scale + 'px',
+            }"
             @dblclick="
                 editDisplay = !editDisplay;
                 $emit('updateElement', index, currElement);
@@ -100,11 +115,10 @@ function onDrag(event: MouseEvent): void {
     outline: 2px #000 dashed;
 }
 .editor-element-dialog {
-    height: 10rem;
-    width: 80rem;
-    font-size: x-large;
+    width: 100%;
+    height: 100%;
     background-color: burlywood;
     border: solid;
-    border-radius: 1rem;
+    border-radius: 5px;
 }
 </style>

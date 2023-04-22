@@ -21,7 +21,10 @@ export enum Rtype {
  * @param params the params as a key-value pairs
  * @returns return the generated url
  */
-export function getUrl(api: string, params: { [key: string]: string | number }): string {
+export function getUrl(
+    api: string,
+    params: { [key: string]: string | number | undefined }
+): string {
     if (api.length == 0) throw new Error("Expect non-empty api string but empty string is given");
     let url: string = `${baseUrl}${api}/`;
     let i: number = 0;
@@ -380,3 +383,7 @@ export async function removeFrame(
         return false;
     }
 }
+
+export const log = (s: any) => {
+    console.log(s);
+};
