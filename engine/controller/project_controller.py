@@ -4,12 +4,13 @@ import secrets
 from functools import wraps
 
 from module.project_manager import ProjectManager
+from module.gamesave_manager import GameSave
 from module.config_manager import ConfigLoader
 from utils.exception import ControllerException
 from utils.status import StatusCode
 from utils.file_utils import get_folders_in_folder, check_folder_valid
 
-from engine.engine import Engine
+from kernel.engine import Engine
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
 
@@ -20,11 +21,16 @@ class Task:
     """
 
     def __init__(
-        self, project_manager: ProjectManager, project_engine: Engine, base_dir: str
+        self,
+        project_manager: ProjectManager,
+        project_engine: Engine,
+        project_gamesave: GameSave,
+        base_dir: str,
     ):
         self.project_name: str = project_manager.get_project_name()
         self.project_manager: ProjectManager = project_manager
         self.project_engine: Engine = project_engine
+        self.gamesave: GameSave = project_gamesave
         self.time_start: float = time.time()
         self.base_dir: str = base_dir
 
@@ -42,7 +48,7 @@ def project_controller_exception_handler(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            e_msg = f"Project Controller Error ({type(e).__name__}): {str(e)}"
+            e_msg = f"Project Controller ({type(e).__name__}): {str(e)}"
             print(e_msg)
             return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
 
@@ -93,9 +99,13 @@ class ProjectController:
         project_engine = Engine(
             project_dir=project_manager.get_project_dir(), config_dir=self.__config_dir
         )
+        project_gamesave = GameSave(
+            project_dir=project_manager.get_project_dir(), config_dir=self.__config_dir
+        )
         self.__tasks[token] = Task(
             project_manager=project_manager,
             project_engine=project_engine,
+            project_gamesave=project_gamesave,
             base_dir=base_dir,
         )
         return token
@@ -157,6 +167,7 @@ class ProjectController:
         list all projects
 
         @return: list contain projects information
+
         """
         project_base = self.__project_config["projects_base"]
         if check_folder_valid(project_base):

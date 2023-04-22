@@ -12,8 +12,8 @@ class TestConfigLoader(TestCase):
     config = ConfigLoader(CONFIG_DIR)
 
     def test_game_memory(self):
-        game_memory_config = self.config.game_memory()
-        self.assertEqual(game_memory_config["default_slot_name"], "slot")
+        game_memory_config = self.config.game_save()
+        self.assertEqual(game_memory_config["slot_name"], "slot")
 
     def test_engine(self):
         game_memory_config = self.config.engine()

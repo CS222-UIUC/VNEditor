@@ -1,13 +1,13 @@
-# from engine.engine import Engine
+# from kernel.kernel import Engine
 #
 # import random
-# from engine.component.character import CharacterPosition
-# from engine.component.music import MusicSignal
-# from engine.frame import *
+# from kernel.component.character import CharacterPosition
+# from kernel.component.music import MusicSignal
+# from kernel.frame import *
 #
-# engine = Engine(project_dir="../projects/aaa", config_dir="../service.ini")
+# kernel = Engine(project_dir="../projects/aaa", config_dir="../service.ini")
 #
-# print(engine.get_metadata_buffer())
+# print(kernel.get_metadata_buffer())
 #
 # background = Background(res_name="b.jpg")
 # character1 = Character(res_name="c.jpg", position=CharacterPosition(x=12, y=11.9))
@@ -17,7 +17,7 @@
 # music = Music(signal=MusicSignal.KEEP)
 #
 # for i in range(100):
-#     frame = engine.make_frame(
+#     frame = kernel.make_frame(
 #         _type=Frame,
 #         background=background,
 #         chara=characters,
@@ -25,36 +25,36 @@
 #         dialog=dialogue,
 #     )
 #     if i % 10 == 0:
-#         nid = engine.append_frame(frame)
+#         nid = kernel.append_frame(frame)
 #         print("add frame: ", nid)
 #
-# head_id = engine.get_head_id()
+# head_id = kernel.get_head_id()
 # print(f"head id: {head_id}")
 #
-# frame_keys = engine.get_all_frame_id()
+# frame_keys = kernel.get_all_frame_id()
 #
 # for i in frame_keys:
 #     if random.getrandbits(1):
 #         print(f"remove id: {i}")
-#         engine.remove_frame(frame_id=i)
+#         kernel.remove_frame(frame_id=i)
 #
-# engine.commit()
-# ids = list(engine.get_all_frame_id())
-# print(engine.get_metadata_buffer())
+# kernel.commit()
+# ids = list(kernel.get_all_frame_id())
+# print(kernel.get_metadata_buffer())
 # for i in ids:
-#     print(i, engine.get_frame(fid=i))
+#     print(i, kernel.get_frame(fid=i))
 #
-# ids = list(engine.get_all_frame_id())
+# ids = list(kernel.get_all_frame_id())
 #
-# engine.insert_frame(ids[-1], ids[0])
+# kernel.insert_frame(ids[-1], ids[0])
 #
-# frame_keys = engine.get_all_frame_id()
+# frame_keys = kernel.get_all_frame_id()
 #
 # for i in frame_keys:
 #     if random.getrandbits(1):
 #         print(f"remove id: {i}")
-#         engine.remove_frame(frame_id=i)
+#         kernel.remove_frame(frame_id=i)
 #
-# engine.commit()
+# kernel.commit()
 #
 #
