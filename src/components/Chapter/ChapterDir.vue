@@ -99,6 +99,7 @@ watchEffect(() => {
                     :key="item.name"
                     :name="item.name"
                     :ChapterName="prop.chapNameFromLib"
+                    :FrameName="item.name"
                     >{{ item.name }}
                 </FrameItem>
             </div>

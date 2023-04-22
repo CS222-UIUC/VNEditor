@@ -7,14 +7,16 @@ const prop = defineProps({
         type: String,
         required: true,
     },
+    FrameName: {
+        type: String,
+        required: true,
+    },
 });
 
-function displayframe(event: MouseEvent) {
-    const el = event.target as HTMLElement;
-    const framename = el.textContent;
+function displayframe() {
     console.log("next two line are chapname and frame name");
     console.log(prop.ChapterName);
-    console.log(framename);
+    console.log(prop.FrameName);
 }
 </script>
 

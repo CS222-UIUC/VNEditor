@@ -311,7 +311,7 @@ export async function removeChapters(
             })
         );
         console.log(response);
-        return true;
+        return response.data["status"] === 1;
     } catch (err: any) {
         console.log("failed to remove chapter");
         return false;
@@ -348,5 +348,39 @@ export async function addFrame(
     } catch (err: any) {
         console.log("failed to add frame");
         return undefined;
+    }
+}
+
+/**
+ * get all the frames of the corresponding chapter
+ * @param id: project_id
+ * @param chapter_name: chapter_name
+ * @param frame_name: frame_name
+ * @returns
+ */
+export async function removeFrame(
+    id: string | undefined,
+    chapter_name: string | undefined,
+    frame_name: string | undefined
+): Promise<boolean> {
+    console.log("remove frame called"); // used for debugg
+    console.log(id);
+    console.log(chapter_name); // used for debugg
+    console.log(frame_name);
+    if (!id || !chapter_name || !frame_name) return false;
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("engine/remove_frame", {
+                task_id: id,
+                chapter_name: chapter_name,
+                frame_name: frame_name,
+            })
+        );
+        console.log(response);
+        return response.data["status"] === 1;
+    } catch (err: any) {
+        console.log("failed to remove chapter");
+        return false;
     }
 }
