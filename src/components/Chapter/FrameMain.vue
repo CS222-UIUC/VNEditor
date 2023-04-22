@@ -45,7 +45,7 @@ watchEffect(() => {
                     flex-direction: row;
                     /* padding: 0.5rem; */
                     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
-                    width: 5g0%;
+                    width: 50%;
                     height: 100%;
                     vertical-align: top;
                 "
