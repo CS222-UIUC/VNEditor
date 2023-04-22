@@ -7,8 +7,8 @@ import FileUploadArea from "./components/UploadArea.vue";
 import Framebar from "./components/Chapter/FrameMain.vue";
 import { editorElementsKey, hostNameKey, projectIDKey, projectNameKey } from "./InjectionKeys";
 import EditorMain from "./components/EditorMain.vue";
-import { Character, Diaglog } from "./FrameDef";
-import type { EditorElement } from "./FrameDef";
+import { Character, Diaglog, Frame } from "@/FrameDef";
+import type { EditorElement } from "@/FrameDef";
 const fileUploadAreaDisplay = ref(false);
 // tool bar display below
 const editorBackground = ref("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg");
@@ -42,14 +42,17 @@ function addNewCharacter(event: MouseEvent) {
     const el: Element = event.target as Element;
     if (projectID.value) {
         let char: Character = new Character();
-        char.imageUrl = getUrl(`resources/character/${el.innerHTML}`, {
+        char.content = getUrl(`resources/character/${el.innerHTML}`, {
             task_id: projectID.value,
         });
 
         editorElements.push(char);
-        console.log(editorElements);
     }
 }
+</script>
+
+<script lang="ts">
+export {};
 </script>
 
 <template>

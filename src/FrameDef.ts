@@ -1,20 +1,27 @@
+export enum ElementType {
+    Image,
+    Text,
+}
+
 export interface EditorElement {
-    imageUrl: string | undefined;
+    content: string;
     xCoord: number;
     yCoord: number;
+    type: ElementType;
 }
 
 export class Character implements EditorElement {
-    imageUrl: string = "https://freepngimg.com/thumb/anime/1-2-anime-picture.png";
-    xCoord: number = 0.5;
-    yCoord: number = 0.5;
+    content: string = "https://freepngimg.com/thumb/anime/1-2-anime-picture.png";
+    xCoord: number = 10;
+    yCoord: number = 10;
+    type: ElementType = ElementType.Image;
 }
 
 export class Diaglog implements EditorElement {
-    imageUrl: string | undefined = undefined;
-    xCoord: number = 0.5;
-    yCoord: number = 0.5;
-    content: string = "";
+    xCoord: number = 10;
+    yCoord: number = 10;
+    content: string = "This is a dialog";
+    type: ElementType = ElementType.Text;
 }
 
 export class Frame {

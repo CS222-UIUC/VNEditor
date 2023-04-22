@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref, PropType } from "vue";
-defineProps({
+const props = defineProps({
     displayControl: {
         type: Boolean,
         default: false,
@@ -18,7 +18,7 @@ defineProps({
 
 <template>
     <div class="dropdown-list" v-show="displayControl">
-        <div class="dropdown-item" @click="itemClick" v-for="items in itemList" :key="items">
+        <div class="dropdown-item" @click="props.itemClick" v-for="items in itemList" :key="items">
             {{ items }}
         </div>
     </div>
