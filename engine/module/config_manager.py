@@ -18,19 +18,19 @@ class ConfigLoader:
         else:
             raise ConfigLoaderError("cannot open config file")
 
-    def game_memory(self) -> dict:
+    def game_save(self) -> dict:
         """
         get game_memory config
 
         @return: game_memory config
         """
-        return dict(self.config["GameMemory"])
+        return dict(self.config["GameSave"])
 
     def engine(self) -> dict:
         """
-        get engine config
+        get kernel config
 
-        @return: engine config
+        @return: kernel config
         """
         return dict(self.config["Engine"])
 

@@ -57,16 +57,17 @@ export {};
 
 <template>
     <Navbar id="header"> </Navbar>
-    <EditorMain
-        id="main-editor"
-        class="grid-item"
-        @clcik="fileUploadAreaDisplay = true"
-        @dragenter="fileUploadAreaDisplay = true"
-        @dragexit="fileUploadAreaDisplay = false"
-        :style="{ 'background-image': 'url(' + editorBackground + ')' }"
-    >
-        <FileUploadArea :display="fileUploadAreaDisplay" />
-    </EditorMain>
+    <div id="main-editor">
+        <EditorMain
+            class="edit-area"
+            @clcik="fileUploadAreaDisplay = true"
+            @dragenter="fileUploadAreaDisplay = true"
+            @dragexit="fileUploadAreaDisplay = false"
+            :style="{ 'background-image': 'url(' + editorBackground + ')' }"
+        >
+            <FileUploadArea :display="fileUploadAreaDisplay" />
+        </EditorMain>
+    </div>
     <Framebar id="preview-sidebar" class="grid-item"> </Framebar>
     <Toolbar
         id="toolbar-sidebar"
@@ -88,6 +89,14 @@ export {};
     text-align: center;
 }
 
+.edit-area {
+    text-align: center;
+    aspect-ratio: 16 / 9;
+    min-height: 85vh;
+    width: 130vh;
+    overflow: scroll;
+}
+
 #main-editor {
     display: flex;
     flex-direction: column;
@@ -97,13 +106,15 @@ export {};
     background-color: cadetblue;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    height: 100%;
+    overflow: scroll;
 }
 
 #toolbar-sidebar {
     background-color: #efffdb;
     display: flex;
     flex-direction: column;
+    height: 100%;
     overflow: hidden;
 }
 

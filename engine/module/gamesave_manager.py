@@ -1,8 +1,8 @@
 """
 API module for game slot control
 """
+import os
 import time
-from typing import Optional
 
 from utils.db_utils import DBManager
 from .config_manager import ConfigLoader
@@ -32,24 +32,25 @@ class GameSave:
     Game slot control service
     """
 
-    def __init__(self, db_dir: str, config_dir: str, slot_name: Optional[str] = None):
+    def __init__(self, project_dir: str, config_dir: str):
         """
         constructor for game slot service
 
-        @param db_dir: database directory, create one if not exist
+        @param project_dir: project directory
         @param config_dir: config directory
-        @param slot_name: specified slot name, use default if not specified
+
         """
-        if slot_name is None:
-            config = ConfigLoader(config_dir)
-            slot_name = config.game_memory()["default_slot_name"]
+        config = ConfigLoader(config_dir)
+
+        slot_name = config.game_save()["slot_name"]
+        db_dir = os.path.join(project_dir, config.game_save()["db_name"])
 
         self.__dbman = DBManager(db_dir)
         self.__slot_name = slot_name
 
     def reset(self):
         """
-        reset the engine slot
+        reset the kernel slot
         """
         self.__dbman.drop_table(self.__slot_name)
         self.__dbman.create_table_if_not_exist(self.__slot_name)

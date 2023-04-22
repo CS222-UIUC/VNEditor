@@ -26,7 +26,7 @@ def file_controller_exception_handler(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            e_msg = f"Server Controller Error ({type(e).__name__}): {str(e)}"
+            e_msg = f"Server Controller ({type(e).__name__}): {str(e)}"
             print(e_msg)
             return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
 

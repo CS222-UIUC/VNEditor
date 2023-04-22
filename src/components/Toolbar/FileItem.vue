@@ -9,6 +9,7 @@
 <style>
 .file-item {
     text-align: left;
+    color: black;
     padding-left: 10%;
     font-size: large;
 }

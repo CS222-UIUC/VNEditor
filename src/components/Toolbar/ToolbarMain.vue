@@ -29,7 +29,7 @@ const props = defineProps({
                 <IconMusic />
             </template>
             <template #dir-name>
-                <div>Background</div>
+                <div style="color: black">Background</div>
             </template>
         </ToolbarDir>
         <ToolbarDir :file-type="Rtype.music" :item-call-back="props.musicCallBack">
@@ -37,7 +37,7 @@ const props = defineProps({
                 <IconMusic />
             </template>
             <template #dir-name>
-                <div>Music</div>
+                <div style="color: black">Music</div>
             </template>
         </ToolbarDir>
         <ToolbarDir :file-type="Rtype.character" :item-call-back="props.characterCallBack">
@@ -45,7 +45,7 @@ const props = defineProps({
                 <IconMusic />
             </template>
             <template #dir-name>
-                <div>Character</div>
+                <div style="color: black">Character</div>
             </template>
         </ToolbarDir>
     </div>
