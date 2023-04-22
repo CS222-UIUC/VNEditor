@@ -39,6 +39,7 @@ function remove_frame() {
 <style>
 .frame-item-remove {
     text-align: center;
+    color: black;
     width: 100%;
 }
 .frame-item-remove:hover {

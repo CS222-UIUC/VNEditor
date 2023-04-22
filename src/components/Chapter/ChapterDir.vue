@@ -157,6 +157,7 @@ watchEffect(() => {
 }
 .chap-icon-wrapper {
     overflow: hidden;
+    color: black;
     text-align: left;
     display: flex;
     flex-direction: row;

@@ -29,6 +29,7 @@ function displayframe() {
 <style>
 .frame-item {
     text-align: center;
+    color: black;
     width: 100%;
 }
 .frame-item:hover {

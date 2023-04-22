@@ -33,6 +33,7 @@ function removechapter() {
 <style>
 .chapter-item-remove {
     display: flex;
+    color: black;
     flex-direction: column;
     padding: 0.5rem;
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
