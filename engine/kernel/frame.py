@@ -7,16 +7,16 @@ from pydantic import BaseModel
 
 from module.config_manager import ConfigLoader
 
-from engine.component.background import Background
-from engine.component.character import (
+from kernel.component.background import Background
+from kernel.component.character import (
     Character,
     CharacterPosition,
     CharacterPositionModal,
 )
-from engine.component.dialogue import Dialogue
-from engine.component.music import Music, MusicSignal
-from engine.component.action import Action
-from engine.component.meta import FrameMeta
+from kernel.component.dialogue import Dialogue
+from kernel.component.music import Music, MusicSignal
+from kernel.component.action import Action
+from kernel.component.meta import FrameMeta
 
 from utils.file_utils import check_file_valid, abs_dir
 
@@ -36,19 +36,26 @@ class BasicFrame:
         self.action = action
 
 
+class FrameInfo:
+    def __init__(self, fid: int, meta: FrameMeta):
+        self.fid: int = fid
+        self.meta: FrameMeta = meta
+
+
 class Frame(BasicFrame):
     """
     a normal frame
     """
 
     def __init__(
-        self,
-        fid: int,
-        background: Background,
-        chara: list[Character],
-        music: Music,
-        dialog: Dialogue,
-        action: Optional[Action] = None,
+            self,
+            fid: int,
+            background: Background,
+            chara: list[Character],
+            music: Music,
+            dialog: Dialogue,
+            meta: FrameMeta,
+            action: Optional[Action] = None,
     ):
         """
         constructor for frame class
@@ -58,10 +65,12 @@ class Frame(BasicFrame):
         @param chara: character
         @param music: music
         @param dialog: dialogue
+        @param meta: frame metadata
         @param action: action
 
         """
         super().__init__(fid, action)
+        self.meta = meta
         self.background: Background = background
         self.chara: list[Character] = chara
         self.music: Music = music
@@ -148,7 +157,7 @@ class FrameChecker:
 
         if dialogue_character is not None:
             if not check_file_valid(
-                abs_dir(self.__chara_base_dir, dialogue_character.res_name)
+                    abs_dir(self.__chara_base_dir, dialogue_character.res_name)
             ):
                 return [
                     False,
@@ -171,10 +180,9 @@ class FrameModel(BaseModel):
     music_signal: MusicSignal
     dialog: str
     dialog_character: str
-    chapter: str
     name: str
 
-    def to_frame(self) -> (Frame, FrameMeta):
+    def to_frame(self) -> Frame:
         """
         convert the frame model to frame instance
 
@@ -196,24 +204,21 @@ class FrameModel(BaseModel):
                 )
             )
         music = Music(res_name=self.music, signal=self.music_signal)
-        meta = FrameMeta(self.chapter, self.name)
-        return (
-            Frame(
-                fid=BasicFrame.VOID_FRAME_ID,
-                background=background,
-                chara=chara,
-                dialog=dialogue,
-                music=music,
-            ),
-            meta,
+        meta = FrameMeta(self.name)
+        return Frame(
+            fid=BasicFrame.VOID_FRAME_ID,
+            background=background,
+            chara=chara,
+            dialog=dialogue,
+            music=music,
+            meta=meta,
         )
 
 
-def frame_to_model(frame: Frame, frame_meta: FrameMeta):
+def frame_to_model(frame: Frame):
     """
     convert frame to frame model
 
-    @param frame_meta: frame metadata
     @param frame: the frame to be convert
     @return: frame model instance
 
@@ -229,9 +234,7 @@ def frame_to_model(frame: Frame, frame_meta: FrameMeta):
     music_signal = frame.music.signal
     music = frame.music.res_name
     dialog = frame.dialog.dialogue
-
-    chapter = frame_meta.chapter
-    name = frame_meta.name
+    name = frame.meta.name
 
     if frame.dialog.character is None:
         dialog_character = None
@@ -254,6 +257,5 @@ def frame_to_model(frame: Frame, frame_meta: FrameMeta):
         music_signal=music_signal,
         dialog=dialog,
         dialog_character=dialog_character,
-        chapter=chapter,
         name=name,
     )

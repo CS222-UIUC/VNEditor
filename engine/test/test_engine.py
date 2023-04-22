@@ -3,14 +3,17 @@ import sys
 sys.path.append("..")
 
 from unittest import TestCase
-from engine.engine import Engine
+from kernel.engine import Engine
 
 import random
-from engine.component.branch import BranchTree
-from engine.frame import *
+from kernel.component.branch import BranchTree
+from kernel.frame import *
+from utils.file_utils import delete_folder
 
 
 class TestEngine(TestCase):
+    delete_folder('../projects/test/')
+    os.mkdir('../projects/test/')
     engine = Engine(project_dir="../projects/test", config_dir="../service.ini")
 
     def test_make_frame(self):
@@ -35,13 +38,12 @@ class TestEngine(TestCase):
 
         branch.delete_branch(1)
         branch.delete_branch(111)
-        frame_meta = FrameMeta(chapter="a")
         dialogue.set_dialogue("hello world")
         self.assertEqual(dialogue.get_dialogue()[0], "hello world")
         music = Music(signal=MusicSignal.KEEP)
         music.set_music()
         music.get_music()
-        engine.append_chapter(engine.make_chapter("a"))
+        engine.add_chapter('a')
         print(engine.get_all_chapter())
         for i in range(100):
             frame = engine.make_frame(
@@ -49,33 +51,36 @@ class TestEngine(TestCase):
                 chara=characters,
                 music=music,
                 dialog=dialogue,
+                meta=meta
             )
-            self.assertNotEqual(frame_to_model(frame, frame_meta), None)
+            self.assertNotEqual(frame_to_model(frame), None)
             if i % 10 == 0:
-                nid = engine.append_frame(frame, frame_meta, force=True)
+                nid = engine.append_frame(frame, 'a', force=True)
                 print("add frame: ", nid)
         frame = engine.make_frame(
             background=background,
             chara=characters,
             music=music,
             dialog=dialogue,
+            meta=meta
         )
         checker = FrameChecker("../projects/test", ConfigLoader("../service.ini"))
         self.assertFalse(checker.check(frame)[0])
 
         print(engine.render_struct())
-        meta = FrameMeta("", "test")
+        meta = FrameMeta("")
         frame = engine.make_frame(
             background=background,
             chara=characters,
             music=music,
             dialog=dialogue,
+            meta=meta
         )
         print(engine.render_struct())
 
         with self.assertRaises(Exception):
             engine.remove_frame(10000)
-        frame_keys = engine.get_all_frame_id()
+        frame_keys = engine.get_all_fid()
 
         for i in frame_keys:
             if random.getrandbits(1):
@@ -83,19 +88,21 @@ class TestEngine(TestCase):
                 engine.remove_frame(fid=i)
 
         engine.commit()
-        ids = list(engine.get_all_frame_id())
+        ids = list(engine.get_all_fid())
         print(engine.get_metadata_buffer())
         for i in ids:
             print(i, engine.get_frame(fid=i))
 
-        # engine.insert_frame(ids[-1], ids[0])
+        # kernel.insert_frame(ids[-1], ids[0])
 
-        frame_keys = engine.get_all_frame_id()
+        frame_keys = engine.get_all_fid()
         self.assertNotEqual(len(frame_keys), 0)
         for i in frame_keys:
             if random.getrandbits(1):
                 print(f"remove id: {i}")
                 engine.remove_frame(fid=i)
-        self.assertNotEqual(len(engine.get_ordered_fid()), 0)
-        self.assertEqual(engine.render_struct("not exist chapter"), {})
+        self.assertNotEqual(len(engine.get_all_fid()), 0)
+        with self.assertRaises(Exception):
+            engine.render_struct("not exist chapter")
+
         engine.commit()

@@ -50,7 +50,7 @@ class GameSave:
 
     def reset(self):
         """
-        reset the engine slot
+        reset the kernel slot
         """
         self.__dbman.drop_table(self.__slot_name)
         self.__dbman.create_table_if_not_exist(self.__slot_name)

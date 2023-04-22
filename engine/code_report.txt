@@ -1,4 +1,4 @@
-Generated In: 2023/04/21 周五 18:54:07.68
+Generated In: 2023/04/21 周五 19:03:07.51
 LINTER REPORT
 
 check ./engine
@@ -33,18 +33,18 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682121253.19556          12
+1682121793.89497          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682121253.19556          12
+1682121793.89497          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682121253.19556          12
+1682121793.89497          12
 ----------------------------------------
 {}
 {1: 'choice 1'}
@@ -61,18 +61,18 @@ add frame:  9
 add frame:  10
 {'a': [(1, 'default'), (2, 'default'), (3, 'default'), (4, 'default'), (5, 'default'), (6, 'default'), (7, 'default'), (8, 'default'), (9, 'default'), (10, 'default')]}
 {'a': [(1, 'default'), (2, 'default'), (3, 'default'), (4, 'default'), (5, 'default'), (6, 'default'), (7, 'default'), (8, 'default'), (9, 'default'), (10, 'default')]}
-remove id: 1
-remove id: 3
-remove id: 4
-remove id: 5
-remove id: 6
-remove id: 9
-remove id: 10
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.5', 'engine_minimal_compatible': '1.0.5', 'update_at': 1682121253.4376872, 'total_frame_len': 4, 'head': 0, 'tail': 2}
-8 <engine.frame.Frame object at 0x00000164BC94E650>
-2 <engine.frame.Frame object at 0x00000164BC85DA90>
-7 <engine.frame.Frame object at 0x00000164BC94E510>
 remove id: 2
+remove id: 3
+remove id: 5
+remove id: 7
+remove id: 8
+remove id: 10
+{'engine_name': 'YuiEngine', 'engine_version': '1.0.5', 'engine_minimal_compatible': '1.0.5', 'update_at': 1682121794.1849625, 'total_frame_len': 5, 'head': 0, 'tail': 1}
+1 <engine.frame.Frame object at 0x0000024254FCCCD0>
+4 <engine.frame.Frame object at 0x0000024254EDF590>
+6 <engine.frame.Frame object at 0x0000024254FCDED0>
+9 <engine.frame.Frame object at 0x0000024254FCDF90>
+remove id: 1
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
 C:\Users\Twisl\Desktop\VNEditor Service\engine\__init__.py                   0      0   100%

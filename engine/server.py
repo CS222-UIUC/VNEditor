@@ -11,8 +11,8 @@ from module.project_manager import ResourcesType
 from utils.status import StatusCode
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
-from engine.engine import ENGINE_NAME, ENGINE_VERSION
-from engine.frame import FrameModel
+from kernel.engine import ENGINE_NAME, ENGINE_VERSION
+from kernel.frame import FrameModel
 
 from controller.project_controller import ProjectController
 from controller.resource_controller import ResourceController
@@ -133,7 +133,7 @@ async def remove_project(project_name: str) -> ReturnStatus:
 
 @app.get("/resources/{rtype}/{item_name}", tags=["resources"])
 async def get_resources(
-    task_id: str, rtype: ResourcesType, item_name: str
+        task_id: str, rtype: ResourcesType, item_name: str
 ) -> FileResponse:
     """
     get resources file
@@ -154,7 +154,7 @@ async def get_resources(
 
 @app.post("/get_res", tags=["resources"])
 async def get_resources_name(
-    task_id: str, rtype: ResourcesType, filter_by: str = ""
+        task_id: str, rtype: ResourcesType, filter_by: str = ""
 ) -> ReturnList:
     """
     get resources
@@ -170,9 +170,9 @@ async def get_resources_name(
     return result
 
 
-@app.post("/remove_res", tags=["resources"])
+@app.delete("/remove_res", tags=["resources"])
 async def remove_resource(
-    task_id: str, rtype: ResourcesType, item_name: str
+        task_id: str, rtype: ResourcesType, item_name: str
 ) -> ReturnList:
     """
     remove resources by resources name
@@ -187,7 +187,7 @@ async def remove_resource(
 
 @app.post("/rename_res", tags=["resources"])
 async def rename_project(
-    task_id: str, rtype: ResourcesType, item_name: str, new_name: str
+        task_id: str, rtype: ResourcesType, item_name: str, new_name: str
 ) -> ReturnDict:
     """
     rename resources by resources name
@@ -207,7 +207,7 @@ async def rename_project(
 
 @app.post("/upload", tags=["resources"])
 async def upload_file(
-    task_id: str, rtype: ResourcesType, file: UploadFile
+        task_id: str, rtype: ResourcesType, file: UploadFile
 ) -> ReturnDict:
     """
     update resources to rtype
@@ -222,7 +222,7 @@ async def upload_file(
 
 @app.post("/upload_files", tags=["resources"])
 async def upload_files(
-    task_id: str, rtype: ResourcesType, files: list[UploadFile]
+        task_id: str, rtype: ResourcesType, files: list[UploadFile]
 ) -> ReturnList:
     """
     update multi resources to rtype
@@ -235,7 +235,7 @@ async def upload_files(
     return resources_utils.upload_files(task=task, rtype=rtype, files=files)
 
 
-@app.post("/engine/get_fids", tags=["engine"])
+@app.post("/engine/get_fids", tags=["kernel"])
 async def get_fids(task_id: str) -> ReturnList:
     """
     get fids corresponding to the task id
@@ -248,7 +248,7 @@ async def get_fids(task_id: str) -> ReturnList:
     return engine_utils.get_frames_id(task)
 
 
-@app.post("/engine/remove_frame", tags=["engine"])
+@app.delete("/engine/remove_frame", tags=["kernel"])
 async def remove_frame(task_id: str, fid: int) -> ReturnList:
     """
     remove the frame with given fid
@@ -261,9 +261,24 @@ async def remove_frame(task_id: str, fid: int) -> ReturnList:
     return engine_utils.remove_frame(task, fid)
 
 
-@app.post("/engine/modify_frame", tags=["engine"])
+@app.post("/engine/append_frame", tags=["kernel"])
+async def append_frame(task_id: str, to_chapter: str) -> ReturnList:
+    """
+    append an empty frame to the specified chapter
+    @param task_id:
+    @param to_chapter:
+    @return:
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.append_frame(task, to_chapter)
+
+
+@app.post("/engine/modify_frame", tags=["kernel"])
 async def modify_frame(
-    task_id: str, fid: int, frame_component_raw: FrameModel
+        task_id: str, fid: int, frame_component_raw: FrameModel
 ) -> ReturnStatus:
     """
     get fids corresponding to the task id and save the change
@@ -285,7 +300,7 @@ async def modify_frame(
     return engine_utils.modify_frame(task, fid, frame_component_raw)
 
 
-@app.post("/engine/get_frame", tags=["engine"])
+@app.post("/engine/get_frame", tags=["kernel"])
 async def get_frame(task_id: str, fid: int) -> ReturnDict:
     """
     get frame by frame id
@@ -298,20 +313,25 @@ async def get_frame(task_id: str, fid: int) -> ReturnDict:
     return engine_utils.get_frame(task=task, fid=fid)
 
 
-@app.post("/engine/get_struct", tags=["engine"])
+@app.post("/engine/get_struct", tags=["kernel"])
 async def get_struct(task_id: str, chapter=None) -> ReturnDict:
     """
-    get struct of current project
+    `task_id:` id of the task
+
+    `chapter:` optional,
+
+    if given, return content contains all the frame id of the current chapter,
+    if not , return 2d array of frame id of the project
 
     """
     task = project_utils.get_task(task_id)
     if task is None:
         return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
 
-    return engine_utils.render_struct(task=task, chapter=chapter)
+    return engine_utils.render_struct(task=task, chapter_name=chapter)
 
 
-@app.post("/engine/get_chapters", tags=["engine"])
+@app.post("/engine/get_chapters", tags=["kernel"])
 async def get_chapters(task_id: str) -> ReturnList:
     """
     get all chapters
@@ -324,7 +344,7 @@ async def get_chapters(task_id: str) -> ReturnList:
     return engine_utils.get_chapters(task=task)
 
 
-@app.post("/engine/add_chapter", tags=["engine"])
+@app.post("/engine/add_chapter", tags=["kernel"])
 async def add_chapters(task_id: str, chapter_name: str) -> ReturnStatus:
     """
     add a chapter with given chapter name
@@ -337,10 +357,23 @@ async def add_chapters(task_id: str, chapter_name: str) -> ReturnStatus:
     return engine_utils.add_chapter(task=task, chapter_name=chapter_name)
 
 
+@app.delete("/engine/remove_chapter", tags=["kernel"])
+async def engine_meta(task_id: str, chapter_name: str) -> ReturnStatus:
+    """
+    get the metadata for current used kernel
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.remove_chapter(task, chapter_name)
+
+
 @app.post("/engine/engine_meta", tags=["meta"])
 async def engine_meta(task_id: str) -> ReturnDict:
     """
-    get fids corresponding to the task id
+    get the metadata for current used kernel
 
     """
     task = project_utils.get_task(task_id)
@@ -348,16 +381,3 @@ async def engine_meta(task_id: str) -> ReturnDict:
         return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
 
     return engine_utils.get_engine_meta(task)
-
-
-@app.post("/engine/meta", tags=["meta"])
-async def get_engine_meta(task_id: str) -> ReturnDict:
-    """
-    get the metadata for current used engine
-
-    """
-    task = project_utils.get_task(task_id)
-    if task is None:
-        return ReturnDict(status=StatusCode.FAIL, msg="no such task id")
-
-    return engine_utils.get_metadata(task)

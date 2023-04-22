@@ -7,18 +7,18 @@ from typing import Optional
 from pydantic import BaseModel
 
 from module.config_manager import ConfigLoader
-from engine.component.background import Background
-from engine.component.character import (
+from kernel.component.background import Background
+from kernel.component.character import (
     Character,
     CharacterPosition,
     CharacterPositionModal,
 )
-from engine.component.dialogue import Dialogue
-from engine.component.music import Music, MusicSignal
-from engine.component.action import Action
-from engine.component.meta import FrameMeta
+from kernel.component.dialogue import Dialogue
+from kernel.component.music import Music, MusicSignal
+from kernel.component.action import Action
+from kernel.component.meta import FrameMeta
 
-from engine.frame import FrameChecker, Frame
+from kernel.frame import FrameChecker, Frame
 
 
 class TestFrameChecker(unittest.TestCase):

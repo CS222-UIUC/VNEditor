@@ -28,9 +28,9 @@ class ConfigLoader:
 
     def engine(self) -> dict:
         """
-        get engine config
+        get kernel config
 
-        @return: engine config
+        @return: kernel config
         """
         return dict(self.config["Engine"])
 

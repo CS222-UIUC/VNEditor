@@ -15,15 +15,15 @@ from module.config_manager import ConfigLoader
 from utils.file_utils import check_file_valid, check_folder_valid, abs_dir
 from utils.status import StatusCode
 from utils.exception import EngineError
-from engine.frame import Frame, FrameChecker
-from engine.chapter import Chapter
-import engine.engine_io as eng_io
-from engine.component import Background, Character, Dialogue, Music, FrameMeta
+from kernel.frame import Frame, FrameChecker, FrameInfo
+from kernel.chapter import Chapter
+import kernel.engine_io as eng_io
+from kernel.component import Background, Character, Dialogue, Music, FrameMeta
 
-# the version of the engine
+# the version of the kernel
 ENGINE_NAME = "YuiEngine"
-ENGINE_VERSION = "1.0.5"
-ENGINE_MINIMAL_COMPATIBLE = "1.0.5"
+ENGINE_VERSION = "1.1.0"
+ENGINE_MINIMAL_COMPATIBLE = "1.1.0"
 
 
 class Engine:
@@ -32,13 +32,13 @@ class Engine:
     """
 
     def __init__(
-        self,
-        project_dir: str,
-        config_dir: str,
-        game_file_name: Optional[str] = None,
+            self,
+            project_dir: str,
+            config_dir: str,
+            game_file_name: Optional[str] = None,
     ):
         """
-        constructor for engine
+        constructor for kernel
 
         @param project_dir: project directory
         @param config_dir: config file directory
@@ -46,20 +46,11 @@ class Engine:
 
         """
 
-        # variable declare
-        # metadata for the game file, update automatically
-        # through calling update_metadata() function
-        self.__metadata_buffer: dict = {}
+        self.__metadata_buffer: dict = {}  # metadata for the game file
 
-        # activated variables, initialized after class construct,
-        # should be UPDATED ON TIME every time they changed
-        self.__game_content: dict[int, Frame] = {}
-        self.__frame_meta: dict[
-            str, list[tuple[int, str]]
-        ] = {}  # meta data for frames {chapter_name: [(fid: frame_name)]}
-        self.__chapter_meta: dict[
-            str, int
-        ] = {}  # meta for chapter list {chapter_name: chapter_id}
+        # variables that need to update once change
+        self.__game_content: dict[int, Frame] = {}  # game content
+        self.__chapter_meta: dict[str, Chapter] = {}  # meta for chapter list {chapter name: Chapter instance}
         self.__head: int = Frame.VOID_FRAME_ID  # the head of the frame list
         self.__tail: int = Frame.VOID_FRAME_ID  # the tail of the frame list
         self.__all_fids: set[int] = set()  # all fids in set
@@ -74,6 +65,7 @@ class Engine:
         resource_config_abs = {}
         for k, v in resource_config_raw.items():
             resource_config_abs[k] = abs_dir(project_dir, v)
+
         self.__frame_checker = FrameChecker(
             project_dir=project_dir, config=self.__config
         )
@@ -89,46 +81,48 @@ class Engine:
             self.__dumper = getattr(eng_io, dumper)
         else:
             raise EngineError("initialize fail due to cannot find loader/dumper")
+
         if check_file_valid(self.__game_file_dir):
-            try:
-                game_content_raw = self.__loader(self.__game_file_dir)
-            except Exception as e:
-                raise EngineError(f"fail to load game file due to {str(e)}") from e
-            self.__metadata_buffer = game_content_raw[0]
+            # if the local game file already exist, load its information
+            self.__load_local_file()
 
-            # check game file compatibility
-            cur_engine_name = self.__metadata_buffer["engine_name"]
-            cur_engine_version = self.__metadata_buffer["engine_version"]
-            if self.__metadata_buffer["engine_name"] != ENGINE_NAME:
-                raise EngineError(
-                    f"detect engine incompatible! "
-                    f"try to load game file with '{cur_engine_name}' using engine '{ENGINE_NAME}'"
-                )
+    def __load_local_file(self):
+        try:
+            game_content_raw = self.__loader(self.__game_file_dir)
+        except Exception as e:
+            raise EngineError(f"fail to load game file due to {str(e)}") from e
 
-            if version.parse(cur_engine_version) < version.parse(
+        self.__metadata_buffer = game_content_raw[0]
+
+        # check game file compatibility
+        cur_engine_name = self.__metadata_buffer["engine_name"]
+        cur_engine_version = self.__metadata_buffer["engine_version"]
+        if self.__metadata_buffer["engine_name"] != ENGINE_NAME:
+            raise EngineError(
+                f"detect kernel incompatible! "
+                f"try to load game file with '{cur_engine_name}' using kernel '{ENGINE_NAME}'"
+            )
+
+        if version.parse(cur_engine_version) < version.parse(
                 ENGINE_MINIMAL_COMPATIBLE
-            ):
-                raise EngineError(
-                    f"detect version incompatible! "
-                    f"the current engine ({ENGINE_VERSION}) "
-                    f"do not support the game file version ({cur_engine_version})"
-                )
+        ):
+            raise EngineError(
+                f"detect version incompatible! "
+                f"the current kernel ({ENGINE_VERSION}) "
+                f"do not support the game file version ({cur_engine_version})"
+            )
 
-            if cur_engine_version != ENGINE_VERSION:
-                print(
-                    f"WARNING: detect engine version ({ENGINE_VERSION}) "
-                    f"mismatched with game file ({cur_engine_version})"
-                )
+        if cur_engine_version != ENGINE_VERSION:
+            print(
+                f"WARNING: detect kernel version ({ENGINE_VERSION}) "
+                f"mismatched with game file ({cur_engine_version})"
+            )
 
-            # load game content and frame description
-            self.__game_content = game_content_raw[1]
-            self.__frame_meta = game_content_raw[2]
-            self.__chapter_meta = game_content_raw[3]
-
-            # load metadata
-            self.__head = self.__metadata_buffer["head"]
-            self.__tail = self.__metadata_buffer["tail"]
-            self.__all_fids = set(self.__game_content.keys())
+        self.__game_content: dict[int, Frame] = game_content_raw[1]
+        self.__chapter_meta: dict[str, Chapter] = game_content_raw[2]
+        self.__head: int = self.__metadata_buffer["head"]
+        self.__tail: int = self.__metadata_buffer["tail"]
+        self.__all_fids: set[int] = set(self.__game_content.keys())
 
     def __update_metadata(self):
         """
@@ -145,10 +139,11 @@ class Engine:
 
     @staticmethod
     def make_frame(
-        background: Background,
-        chara: list[Character],
-        music: Music,
-        dialog: Dialogue,
+            background: Background,
+            chara: list[Character],
+            music: Music,
+            dialog: Dialogue,
+            meta: FrameMeta
     ) -> Frame:
         """
         make a frame
@@ -157,25 +152,27 @@ class Engine:
         @param chara: character
         @param music: music
         @param dialog: dialog
+        @param meta the metadata for the frame
         @return: result frame
 
         """
-        frame = Frame(Frame.VOID_FRAME_ID, background, chara, music, dialog, None)
+        frame = Frame(Frame.VOID_FRAME_ID, background, chara, music, dialog, meta)
         return frame
 
     @staticmethod
-    def make_chapter(chapter_name: str) -> Chapter:
+    def make_empty_frame():
         """
-        make a chapter
-        @return: result chapter
+        make an empty frame
+
+        @return: empty frame
 
         """
-        chapter = Chapter(Chapter.VOID_FRAME_ID, chapter_name)
-        return chapter
+        frame = Frame(Frame.VOID_FRAME_ID, Background(''), [], Music(), Dialogue(''), FrameMeta(name=''))
+        return frame
 
-    def __append(self, frame: Chapter | Frame):
+    def __append(self, frame: Frame):
         """
-        append chapter ot frame into the game content
+        append a frame into the game content
 
         @param frame: frame to be added
         @return the frame id
@@ -210,14 +207,17 @@ class Engine:
 
         return fid
 
-    def __insert(self, frame: Chapter | Frame, after_fid: int):
+    def __insert(self, frame: Frame, after_fid: int):
         """
-        Insert a chapter or frame into the game content after a specific frame id
+        Insert a frame into the game content after a specific frame id
 
         @param after_fid: frame id after which the new frame should be inserted
         @param frame: frame to be inserted
         @return the inserted frame id
         """
+
+        if after_fid == -1:
+            return self.__append(frame)
 
         if after_fid not in self.__game_content:
             raise EngineError(
@@ -256,21 +256,20 @@ class Engine:
         return new_fid
 
     def append_frame(
-        self, frame: Frame, frame_meta: FrameMeta, force: bool = False
+            self, frame: Frame, to_chapter: str, force: bool = False
     ) -> int:
         """
         add frame to the end of the frame list
 
-        @param frame_meta: frame metadata
+        @param to_chapter: append to this chapter
         @param force: force push mode, ignore checking frame valid
         @param frame: frame to be added
         @return:  frame id
 
         """
-
         # check if chapter exist
-        if frame_meta.chapter not in self.__frame_meta.keys():
-            raise EngineError(f"Chapter '{frame_meta.chapter}' no found")
+        if to_chapter not in self.__chapter_meta.keys():
+            raise EngineError(f"Chapter '{to_chapter}' no found")
 
         # check frame valid or not
         if not force:
@@ -279,69 +278,13 @@ class Engine:
                 raise EngineError(f"Frame invalid: {check_output[1]}")
 
         # append to the game content
-        chapter_owned = self.__chapter_meta[frame_meta.chapter]
-        fid = self.__insert(frame, chapter_owned)
+        tail_id = self.__chapter_meta[to_chapter].get_tail_fid()
+        fid = self.__insert(frame, after_fid=tail_id)
 
         # update frame meta and chapter info
-        self.__frame_meta[frame_meta.chapter].append((fid, frame_meta.name))
+        self.__chapter_meta[to_chapter].append_frame_info(FrameInfo(fid, frame.meta))
 
         return fid
-
-    def append_chapter(self, chapter: Chapter):
-        """
-        append a chapter into the game content
-
-        @param chapter: the instance for chapter
-
-        """
-
-        # check if chapter already in use
-        if chapter.chapter_name in self.__frame_meta.keys():
-            raise EngineError(f"Chapter '{chapter.chapter_name}' already in use")
-
-        fid = self.__append(chapter)
-
-        # update frame meta
-        self.__frame_meta[chapter.chapter_name] = []
-
-        # update chapter meta
-        self.__chapter_meta[chapter.chapter_name] = fid
-
-    def get_ordered_fid(self) -> list:
-        """
-        return a ordered frame id
-
-        @return: ordered fid
-
-        """
-        if self.__head == Frame.VOID_FRAME_ID:
-            return []
-
-        ordered_id = [self.__head]
-        while 1:
-            cur = ordered_id[-1]
-            next_fid = self.get_frame(cur).action.next_f
-            if next_fid == Frame.VOID_FRAME_ID:
-                break
-            ordered_id.append(next_fid)
-
-        return ordered_id
-
-    def get_frame_meta(self, fid: int) -> FrameMeta:
-        """
-        find the frame metadata by frame
-
-        @param fid: frame id
-        @return: the metadata of the frame
-
-        """
-        for chapter, chapter_list in self.__frame_meta.items():
-            for f in chapter_list:
-                if fid == f[0]:
-                    frame_meta = FrameMeta(chapter=chapter, name=f[1])
-                    return frame_meta
-
-        raise EngineError(f"cannot find fid '{fid}' in frame metadata")
 
     def remove_frame(self, fid: int):
         """
@@ -354,6 +297,7 @@ class Engine:
             raise EngineError("remove fail, frame not exist")
 
         cur_frame = self.__game_content[fid]
+
         if fid != self.__head:
             self.__game_content[
                 cur_frame.action.prev_f
@@ -372,13 +316,10 @@ class Engine:
         self.__game_content.pop(fid)
 
         # update frame metadata
-        for chapter_list in self.__frame_meta.values():
-            for idx in range(len(chapter_list)):
-                if fid == [0]:
-                    chapter_list.pop(idx)
-                    break
-
         self.__all_fids.remove(fid)
+        for chapter in self.__chapter_meta.values():
+            if chapter.remove_fid(fid) != -1:
+                break
 
     def change_frame(self, fid: int, frame: Frame):
         """
@@ -388,7 +329,7 @@ class Engine:
         @param frame: added frame
 
         """
-        if fid not in self.check_frame_exist(fid):
+        if not self.check_frame_exist(fid):
             raise EngineError(f"fid '{fid}' no found")
 
         self.__game_content[fid] = frame
@@ -401,7 +342,7 @@ class Engine:
         @return: exist or not
 
         """
-        return fid in self.get_all_frame_id()
+        return fid in self.get_all_fid()
 
     def get_frame(self, fid: int) -> Frame:
         """
@@ -411,29 +352,35 @@ class Engine:
         @return: shallow copy of frame with such fid
 
         """
+        if fid not in self.__game_content:
+            raise EngineError(f"the fid '{fid}' not exist")
+
         return self.__game_content[fid]
 
-    def get_all_frames(self) -> dict[int, Frame]:
-        """
-        get all frames
-
-        @return: format by dict[frame id, shallow copy of frame]
-
-        """
-        return self.__game_content
-
-    def get_all_frame_id(self) -> set:
+    def get_all_fid(self, ordered=False) -> list:
         """
         get all frame id
 
         @return: the set of all frame id
 
         """
-        return set(self.__game_content.keys()).difference(
-            set(self.__chapter_meta.values())
-        )
+        if not ordered:
+            return list(self.__game_content.keys())
+        else:
+            if self.__head == Frame.VOID_FRAME_ID:
+                return []
 
-    def get_length(self) -> int:
+            ordered_id = [self.__head]
+            while 1:
+                cur = ordered_id[-1]
+                next_fid = self.get_frame(cur).action.next_f
+                if next_fid == Frame.VOID_FRAME_ID:
+                    break
+                ordered_id.append(next_fid)
+
+            return ordered_id
+
+    def length(self) -> int:
         """
         get the total length of the game content
 
@@ -457,9 +404,9 @@ class Engine:
     @staticmethod
     def get_engine_meta() -> dict:
         """
-        get version of current engine
+        get version of current kernel
 
-        @return: metadata of engine
+        @return: metadata of kernel
 
         """
         return {
@@ -478,7 +425,6 @@ class Engine:
         game_content_raw = [
             self.__metadata_buffer,
             self.__game_content,
-            self.__frame_meta,
             self.__chapter_meta,
         ]
         try:
@@ -487,7 +433,19 @@ class Engine:
             raise EngineError(f"fail to dump game file due to: {str(e)}") from e
         return StatusCode.OK
 
-    def render_struct(self, chapter: Optional[str] = None):
+    def rollback(self):
+        """
+        rollback to the last modified status
+
+        """
+        try:
+            self.__load_local_file()
+        except Exception as e:
+            print(f"something wrong when rollback: {str(e)}")
+
+        print("rollback ok!")
+
+    def render_struct(self, by_chapter: Optional[str] = None) -> dict:
         """
         render the game content struct, if chapter set to be none,
         return the whole struct, or will only render the struct under
@@ -496,12 +454,18 @@ class Engine:
         @return: the struct for game content
 
         """
-        if chapter is None:
-            return self.__frame_meta
-
-        if chapter not in self.__frame_meta:
-            return {}
-        return self.__frame_meta[chapter]
+        if by_chapter is None:
+            out = {}
+            for chapter_name, chapter_info in self.__chapter_meta.items():
+                out[chapter_name] = chapter_info.get_all_fid()
+            return out
+        else:
+            if by_chapter not in self.__chapter_meta.keys():
+                raise Exception(f"chapter with name '{by_chapter}' not exist")
+            out = {}
+            chapter_info = self.__chapter_meta[by_chapter]
+            out[by_chapter] = chapter_info.get_all_fid()
+            return out
 
     def get_all_chapter(self) -> list:
         """
@@ -510,4 +474,34 @@ class Engine:
         @return: all chapters currently
 
         """
-        return list(self.__frame_meta.keys())
+        return list(self.__chapter_meta.keys())
+
+    def add_chapter(self, chapter_name):
+        """
+        add an empty chapter
+
+        @param chapter_name: name for chapter
+
+        """
+        if chapter_name in self.__chapter_meta:
+            raise EngineError(f"chapter '{chapter_name}' already exist")
+
+        self.__chapter_meta[chapter_name] = Chapter(chapter_name)
+
+    def remove_chapter(self, chapter_name):
+        """
+        remove the chapter and the frames in it
+
+        @param chapter_name: the name for chapter
+        @return:
+
+        """
+        if chapter_name not in self.__chapter_meta:
+            raise Exception(f"chapter name {chapter_name} not exist")
+
+        fids = self.__chapter_meta[chapter_name].get_all_fid()
+        print(self.get_all_fid(ordered=True))
+        for i in fids:
+            self.remove_frame(i)
+
+        self.__chapter_meta.pop(chapter_name)
