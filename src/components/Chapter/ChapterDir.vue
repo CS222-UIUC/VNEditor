@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import FrameItem from "./FrameItem.vue";
-import { ref, inject, watchEffect, type PropType } from "vue";
+import FrameItemRemove from "./FrameItem_remove.vue";
+import { ref, inject, watchEffect } from "vue";
 import type { Ref } from "vue";
 import IconDownArrow from "../icons/IconDownArrow.vue";
 import type { IFrame } from "@/FrameDef";
@@ -8,6 +9,7 @@ import { projectIDKey } from "../../InjectionKeys";
 import { getFrames, addFrame } from "../../RequestAPI"; // need to change to needed function
 var FramesDisplay = ref(false); // control display the scene of the corresopnding chapter
 var FrameCreateDisplay = ref(false);
+var FrameDeleteDisplay = ref(false);
 const FrameList: Ref<IFrame[]> = ref([]);
 const chapName: Ref<string> = ref("");
 var frameNametoAdd = "";
@@ -34,6 +36,7 @@ function updateChapName(event: MouseEvent) {
     if (name) chapName.value = name;
     FramesDisplay.value = !FramesDisplay.value;
     FrameCreateDisplay.value = false;
+    FrameDeleteDisplay.value = false;
 }
 async function appendNewFrame(chap_name: string, frame_name: string) {
     let result = await addFrame(projectID.value, chap_name, frame_name);
@@ -67,12 +70,18 @@ watchEffect(() => {
         </div>
         <Transition name="drop">
             <div class="file-content-wrapper" v-show="FramesDisplay">
-                <div v-show="!FrameCreateDisplay">
+                <div v-show="!FrameCreateDisplay && !FrameDeleteDisplay">
                     <button
                         class="chapter-button"
                         @click="FrameCreateDisplay = !FrameCreateDisplay"
                     >
                         New Frame
+                    </button>
+                    <button
+                        class="chapter-button"
+                        @click="FrameDeleteDisplay = !FrameDeleteDisplay"
+                    >
+                        Remove Frame
                     </button>
                 </div>
                 <div class="addframe-wrapper" v-show="FrameCreateDisplay">
@@ -95,12 +104,38 @@ watchEffect(() => {
                     </button>
                 </div>
                 <FrameItem
+                    v-show="!FrameDeleteDisplay"
                     v-for="item in FrameList"
                     :key="item.name"
                     :name="item.name"
                     :ChapterName="prop.chapNameFromLib"
+                    :FrameName="item.name"
                     >{{ item.name }}
                 </FrameItem>
+                <button
+                    style="
+                        display: inline;
+                        flex-direction: row;
+                        /* padding: 0.5rem; */
+                        border-bottom: 5px solid rgba(0, 90, 27, 0.507);
+                        width: 100%;
+                        height: 100%;
+                        vertical-align: top;
+                    "
+                    v-show="FrameDeleteDisplay"
+                    @click="FrameDeleteDisplay = !FrameDeleteDisplay"
+                >
+                    Done
+                </button>
+                <FrameItemRemove
+                    v-show="FrameDeleteDisplay"
+                    v-for="item in FrameList"
+                    :key="item.name"
+                    :name="item.name"
+                    :ChapterName="prop.chapNameFromLib"
+                    :FrameName="item.name"
+                    >{{ item.name }}
+                </FrameItemRemove>
             </div>
         </Transition>
     </div>
@@ -122,6 +157,7 @@ watchEffect(() => {
 }
 .chap-icon-wrapper {
     overflow: hidden;
+    color: black;
     text-align: left;
     display: flex;
     flex-direction: row;
@@ -145,10 +181,12 @@ watchEffect(() => {
 }
 .chapter-button {
     display: inline;
-    flex-direction: column;
-    padding: 0.5rem;
+    flex-direction: row;
+    padding: 0.6rem;
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
-    width: 100%;
+    width: 50%;
+    height: 100%;
+    vertical-align: bottom;
 }
 .add-frame-text {
     display: inline;
