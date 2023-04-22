@@ -89,7 +89,8 @@ function addNewCharacter(event: MouseEvent) {
 .edit-area {
     text-align: center;
     aspect-ratio: 16 / 9;
-    width: 150vh;
+    min-height: 85vh;
+    width: 130vh;
     overflow: scroll;
 }
 
