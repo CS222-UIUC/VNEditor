@@ -292,6 +292,36 @@ export async function addChapters(
  * get all the frames of the corresponding chapter
  * @param id: project_id
  * @param chapter_name: chapter_name
+ * @returns
+ */
+export async function removeChapters(
+    id: string | undefined,
+    chapter_name: string | undefined
+): Promise<boolean> {
+    console.log("remove chapter called"); // used for debugg
+    console.log(id);
+    console.log(chapter_name); // used for debugg
+    if (!id || !chapter_name) return false;
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("engine/remove_chapter", {
+                task_id: id,
+                chapter_name: chapter_name,
+            })
+        );
+        console.log(response);
+        return true;
+    } catch (err: any) {
+        console.log("failed to remove chapter");
+        return false;
+    }
+}
+
+/**
+ * get all the frames of the corresponding chapter
+ * @param id: project_id
+ * @param chapter_name: chapter_name
  * @param frame_name: frame_name
  * @returns
  */

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ChapterItem from "./ChapterDir.vue";
+import ChapterItemRemove from "./ChapterDir_remove.vue";
 import type { Ref } from "vue";
 import { ref, watchEffect, inject, type PropType } from "vue";
 import { projectIDKey } from "../../InjectionKeys";
@@ -8,6 +9,7 @@ import { getChapters, addChapters } from "../../RequestAPI";
 
 var ChapetrsDisplay = ref(false); // control display the scene of the corresopnding chapter, used once current project deleted
 var AddNewChapterDisplay = ref(false);
+var ChapterRemoveDisplay = ref(false);
 const ChapterList = ref<string[]>([]);
 var chapNametoAdd = "";
 
@@ -42,14 +44,44 @@ watchEffect(() => {
                     flex-direction: row;
                     /* padding: 0.5rem; */
                     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
+                    width: 5g0%;
+                    height: 100%;
+                    vertical-align: top;
+                "
+                v-show="AddNewChapterDisplay && !ChapterRemoveDisplay"
+                @click="AddNewChapterDisplay = !AddNewChapterDisplay"
+            >
+                New Chapter
+            </button>
+            <button
+                style="
+                    display: inline;
+                    flex-direction: row;
+                    /* padding: 0.5rem; */
+                    border-bottom: 5px solid rgba(0, 90, 27, 0.507);
+                    width: 50%;
+                    height: 100%;
+                    vertical-align: top;
+                "
+                v-show="AddNewChapterDisplay && !ChapterRemoveDisplay"
+                @click="ChapterRemoveDisplay = !ChapterRemoveDisplay"
+            >
+                Remove Chapter
+            </button>
+            <button
+                style="
+                    display: inline;
+                    flex-direction: row;
+                    /* padding: 0.5rem; */
+                    border-bottom: 5px solid rgba(0, 90, 27, 0.507);
                     width: 100%;
                     height: 100%;
                     vertical-align: top;
                 "
-                v-show="AddNewChapterDisplay"
-                @click="AddNewChapterDisplay = !AddNewChapterDisplay"
+                v-show="ChapterRemoveDisplay"
+                @click="ChapterRemoveDisplay = !ChapterRemoveDisplay"
             >
-                New Chapter
+                Done
             </button>
             <input
                 class="leftnav-text"
@@ -85,15 +117,28 @@ watchEffect(() => {
                 Cancel
             </button>
         </div>
-        <ChapterItem
-            v-show="ChapetrsDisplay"
-            v-for="item in ChapterList"
-            :key="item"
-            :name="item"
-            :item-call-back="prop.itemCallBack"
-            :chapNameFromLib="item"
-            >{{ item }}
-        </ChapterItem>
+        <div v-show="!ChapterRemoveDisplay">
+            <ChapterItem
+                v-show="ChapetrsDisplay"
+                v-for="item in ChapterList"
+                :key="item"
+                :name="item"
+                :item-call-back="prop.itemCallBack"
+                :chapNameFromLib="item"
+                >{{ item }}
+            </ChapterItem>
+        </div>
+        <div v-show="ChapterRemoveDisplay">
+            <ChapterItemRemove
+                v-show="ChapetrsDisplay"
+                v-for="item in ChapterList"
+                :key="item"
+                :name="item"
+                :item-call-back="prop.itemCallBack"
+                :chapNameFromLib="item"
+                >{{ item }}
+            </ChapterItemRemove>
+        </div>
     </div>
 </template>
 
