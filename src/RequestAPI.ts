@@ -216,8 +216,8 @@ export async function getChapters(id: string | undefined): Promise<string[]> {
             })
         );
         console.log(response);
-        console.log("returned chapters");
-        console.log(response.data.content);
+        // console.log("returned chapters");
+        // console.log(response.data.content);
         return response.data.content;
     } catch (err: any) {
         console.log("failed to get chapter");
@@ -268,9 +268,9 @@ export async function addChapters(
     id: string | undefined,
     chapter_name: string | undefined
 ): Promise<string> {
-    console.log("add chapter called"); // used for debugg
-    console.log(id);
-    console.log(chapter_name); // used for debugg
+    // console.log("add chapter called"); // used for debugg
+    // console.log(id);
+    // console.log(chapter_name); // used for debugg
     if (!id || !chapter_name) return "invalid chapters";
     try {
         const response: AxiosResponse = await axios.post(
