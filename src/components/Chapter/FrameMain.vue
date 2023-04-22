@@ -30,6 +30,7 @@ watchEffect(() => {
             if (res) ChapterList.value = res;
             ChapetrsDisplay.value = true;
             AddNewChapterDisplay.value = true;
+            ChapterRemoveDisplay.value = false;
         });
     chapNametoAdd;
 });
