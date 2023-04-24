@@ -258,12 +258,12 @@ export async function getFramesList(
         console.log(response1);
         console.log(response2);
         const out: IFrame_left[] = [];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < response2.data.content.length; i++) {
             const frame: IFrame_left = {
-                FrameName: "",
-                ChapterName: "",
-                ProjectId: "",
-                id: 114,
+                FrameName: response2.data.content[i],
+                ChapterName: chapter_name,
+                ProjectId: id,
+                id: response1.data.content[i],
             };
             console.log(i);
             out.push(frame);
@@ -325,6 +325,39 @@ export async function addChapters(
  * get all the frames of the corresponding chapter
  * @param id: project_id
  * @param chapter_name: chapter_name
+ * @param frame_name: frame_name
+ * @returns
+ */
+export async function appendFrame(
+    id: string | undefined,
+    chapter_name: string | undefined,
+    frame_name: string | undefined
+): Promise<string | undefined> {
+    console.log("add frame called"); // used for debugg
+    console.log(frame_name); // used for debugg
+    if (!id || !chapter_name || !frame_name) return undefined;
+
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("engine/append_frame", {
+                task_id: id,
+                to_chapter: chapter_name,
+                frame_name: frame_name,
+            })
+        );
+        console.log(response);
+        return chapter_name;
+    } catch (err: any) {
+        console.log("failed to add frame");
+        return undefined;
+    }
+}
+
+/**
+ * get all the frames of the corresponding chapter
+ * @param id: project_id
+ * @param chapter_name: chapter_name
  * @returns
  */
 export async function removeChapters(
@@ -348,39 +381,6 @@ export async function removeChapters(
     } catch (err: any) {
         console.log("failed to remove chapter");
         return false;
-    }
-}
-
-/**
- * get all the frames of the corresponding chapter
- * @param id: project_id
- * @param chapter_name: chapter_name
- * @param frame_name: frame_name
- * @returns
- */
-export async function addFrame(
-    id: string | undefined,
-    chapter_name: string | undefined,
-    frame_name: string | undefined
-): Promise<string | undefined> {
-    console.log("add frame called"); // used for debugg
-    console.log(frame_name); // used for debugg
-    if (!id || !chapter_name || !frame_name) return undefined;
-
-    try {
-        const response: AxiosResponse = await axios.post(
-            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("append_frame", {
-                task_id: id,
-                chapter_name: chapter_name,
-                frame_name: frame_name,
-            })
-        );
-        console.log(response);
-        return chapter_name;
-    } catch (err: any) {
-        console.log("failed to add frame");
-        return undefined;
     }
 }
 

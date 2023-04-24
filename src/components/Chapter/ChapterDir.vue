@@ -6,7 +6,7 @@ import type { Ref } from "vue";
 import IconDownArrow from "../icons/IconDownArrow.vue";
 import type { IFrame_left } from "@/FrameDef";
 import { projectIDKey } from "../../InjectionKeys";
-import { getFramesList, addFrame } from "../../RequestAPI"; // need to change to needed function
+import { getFramesList, appendFrame } from "../../RequestAPI"; // need to change to needed function
 var FramesDisplay = ref(false); // control display the scene of the corresopnding chapter
 var FrameCreateDisplay = ref(false);
 var FrameDeleteDisplay = ref(false);
@@ -39,7 +39,7 @@ function updateChapName(event: MouseEvent) {
     FrameDeleteDisplay.value = false;
 }
 async function appendNewFrame(chap_name: string, frame_name: string) {
-    let result = await addFrame(projectID.value, chap_name, frame_name);
+    let result = await appendFrame(projectID.value, chap_name, frame_name);
     if (result != undefined && result != "") {
         FrameCreateDisplay.value = !FrameCreateDisplay.value;
     }
