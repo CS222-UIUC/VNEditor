@@ -4,13 +4,13 @@ import FrameItemRemove from "./FrameItem_remove.vue";
 import { ref, inject, watchEffect } from "vue";
 import type { Ref } from "vue";
 import IconDownArrow from "../icons/IconDownArrow.vue";
-import type { IFrame } from "@/FrameDef";
+import type { IFrame_left } from "@/FrameDef";
 import { projectIDKey } from "../../InjectionKeys";
-import { getFrames, addFrame } from "../../RequestAPI"; // need to change to needed function
+import { getFramesList, addFrame } from "../../RequestAPI"; // need to change to needed function
 var FramesDisplay = ref(false); // control display the scene of the corresopnding chapter
 var FrameCreateDisplay = ref(false);
 var FrameDeleteDisplay = ref(false);
-const FrameList: Ref<IFrame[]> = ref([]);
+const FrameList: Ref<IFrame_left[]> = ref([]);
 const chapName: Ref<string> = ref("");
 var frameNametoAdd = "";
 // function addFrame(idx: Number): boolean {
@@ -49,7 +49,7 @@ watchEffect(() => {
     FramesDisplay.value = false;
     FrameList.value = [];
     if (projectID.value)
-        getFrames(projectID.value, prop.chapNameFromLib).then((res: IFrame[]) => {
+        getFramesList(projectID.value, prop.chapNameFromLib).then((res: IFrame_left[]) => {
             if (res) FrameList.value = res;
             console.log("nextline is chapNameFromLib");
             // console.log(chapName.value);
@@ -106,11 +106,12 @@ watchEffect(() => {
                 <FrameItem
                     v-show="!FrameDeleteDisplay"
                     v-for="item in FrameList"
-                    :key="item.name"
-                    :name="item.name"
+                    :key="item.FrameName"
+                    :name="item.FrameName"
                     :ChapterName="prop.chapNameFromLib"
-                    :FrameName="item.name"
-                    >{{ item.name }}
+                    :FrameName="item.FrameName"
+                    :FrameId="item.id.valueOf()"
+                    >{{ item.FrameName }}
                 </FrameItem>
                 <button
                     style="
@@ -130,11 +131,11 @@ watchEffect(() => {
                 <FrameItemRemove
                     v-show="FrameDeleteDisplay"
                     v-for="item in FrameList"
-                    :key="item.name"
-                    :name="item.name"
+                    :key="item.FrameName"
+                    :name="item.FrameName"
                     :ChapterName="prop.chapNameFromLib"
-                    :FrameName="item.name"
-                    >{{ item.name }}
+                    :FrameName="item.FrameName"
+                    >{{ item.FrameName }}
                 </FrameItemRemove>
             </div>
         </Transition>

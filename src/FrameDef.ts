@@ -19,8 +19,16 @@ export class Diaglog implements EditorElement {
 
 export interface IFrame {
     name: string; // name of the frame
-    id: Number; // index
+    id: Number; // frame id
     backgroundName: string; // url
     elements: EditorElement[];
     branch?: IFrame[];
+}
+
+export interface IFrame_left {
+    // used for display of list of chapters
+    FrameName: string; // name of the frame
+    ChapterName: string;
+    ProjectId: string;
+    id: Number; // frame id
 }

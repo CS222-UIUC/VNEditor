@@ -11,12 +11,17 @@ const prop = defineProps({
         type: String,
         required: true,
     },
+    FrameId: {
+        type: Number,
+        required: true,
+    },
 });
 
 function displayframe() {
-    console.log("next two line are chapname and frame name");
+    console.log("next three line are chapname and frame name and frame id");
     console.log(prop.ChapterName);
     console.log(prop.FrameName);
+    console.log(prop.FrameId);
 }
 </script>
 
