@@ -265,7 +265,6 @@ export async function getFramesList(
                 ProjectId: id,
                 id: response1.data.content[i],
             };
-            console.log(i);
             out.push(frame);
         }
         // console.log("returned chapters");
@@ -274,20 +273,20 @@ export async function getFramesList(
     } catch (err: any) {
         console.log("failed to get frame_left");
         // return ["test chapter", "next is chapter name", id, "end of chapter"]; // testing
-        // return [];
+        return [];
         // test code below
-        const out: IFrame_left[] = [];
-        for (let i = 0; i < 5; i++) {
-            const frame: IFrame_left = {
-                FrameName: i.toString(),
-                ChapterName: chapter_name,
-                ProjectId: id,
-                id: 114,
-            };
-            console.log(i);
-            out.push(frame);
-        }
-        return out;
+        // const out: IFrame_left[] = [];
+        // for (let i = 0; i < 5; i++) {
+        //     const frame: IFrame_left = {
+        //         FrameName: i.toString(),
+        //         ChapterName: chapter_name,
+        //         ProjectId: id,
+        //         id: 114,
+        //     };
+        //     console.log(i);
+        //     out.push(frame);
+        // }
+        // return out;
     }
 }
 
