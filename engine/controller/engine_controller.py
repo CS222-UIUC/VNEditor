@@ -44,18 +44,32 @@ class EngineController:
         self.__engine_config: dict = config_loader.engine()
 
     @engine_controller_exception_handler
-    def get_frames_id(self, task: Task) -> ReturnList:
+    def get_frames_ids(self, task: Task, chapter_name: str) -> ReturnList:
         """
-        get all frame id
+        get all frame ids
 
+        @param chapter_name:
         @param task:
         @return: list of ordered frame id
 
         """
         engine = task.project_engine
-        fids = engine.get_all_fid(ordered=True)
-
+        fids = engine.get_chapter(chapter_name).get_all_fid()
         return ReturnList(status=StatusCode.OK, content=fids)
+
+    @engine_controller_exception_handler
+    def get_frame_names(self, task: Task, chapter_name: str):
+        """
+        get all frame names
+
+        @param task: cur task
+        @return: list of ordered frame names
+
+        """
+        engine = task.project_engine
+        fids = engine.get_chapter(chapter_name).get_all_fid()
+        names = [engine.get_frame_name(i) for i in fids]
+        return ReturnList(status=StatusCode.OK, content=names)
 
     @engine_controller_exception_handler
     def get_engine_meta(self, task: Task) -> ReturnDict:

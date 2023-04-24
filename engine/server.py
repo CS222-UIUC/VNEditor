@@ -235,8 +235,8 @@ async def upload_files(
     return resources_utils.upload_files(task=task, rtype=rtype, files=files)
 
 
-@app.post("/engine/get_fids", tags=["kernel"])
-async def get_fids(task_id: str) -> ReturnList:
+@app.post("/engine/get_frame_ids", tags=["kernel"])
+async def get_fids(task_id: str, chapter_name: str) -> ReturnList:
     """
     get fids corresponding to the task id
 
@@ -245,7 +245,20 @@ async def get_fids(task_id: str) -> ReturnList:
     if task is None:
         return ReturnList(status=StatusCode.FAIL, msg="no such task id")
 
-    return engine_utils.get_frames_id(task)
+    return engine_utils.get_frames_ids(task, chapter_name)
+
+
+@app.post("/engine/get_frame_names", tags=["kernel"])
+async def engine_meta(task_id: str, chapter_name: str) -> ReturnList:
+    """
+    return the list of name of current chapter name
+
+    """
+    task = project_utils.get_task(task_id)
+    if task is None:
+        return ReturnList(status=StatusCode.FAIL, msg="no such task id")
+
+    return engine_utils.get_frame_names(task, chapter_name)
 
 
 @app.delete("/engine/remove_frame", tags=["kernel"])
