@@ -80,7 +80,7 @@ class TestEngine(TestCase):
 
         with self.assertRaises(Exception):
             engine.remove_frame(10000)
-        frame_keys = engine.get_all_fid()
+        frame_keys = engine.get_all_frame_id_and_name()[0]
 
         for i in frame_keys:
             if random.getrandbits(1):
@@ -88,20 +88,20 @@ class TestEngine(TestCase):
                 engine.remove_frame(fid=i)
 
         engine.commit()
-        ids = list(engine.get_all_fid())
+        ids = list(engine.get_all_frame_id_and_name()[0])
         print(engine.get_metadata_buffer())
         for i in ids:
             print(i, engine.get_frame(fid=i))
 
         # kernel.insert_frame(ids[-1], ids[0])
 
-        frame_keys = engine.get_all_fid()
+        frame_keys = engine.get_all_frame_id_and_name()[0]
         self.assertNotEqual(len(frame_keys), 0)
         for i in frame_keys:
             if random.getrandbits(1):
                 print(f"remove id: {i}")
                 engine.remove_frame(fid=i)
-        self.assertNotEqual(len(engine.get_all_fid()), 0)
+        self.assertNotEqual(len(engine.get_all_frame_id_and_name()[0]), 0)
         with self.assertRaises(Exception):
             engine.render_struct("not exist chapter")
 
