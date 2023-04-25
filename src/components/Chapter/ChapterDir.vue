@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import FrameItem from "./FrameItem.vue";
 import FrameItemRemove from "./FrameItem_remove.vue";
-import { ref, inject, watchEffect } from "vue";
+import { ref, inject, watchEffect, watch } from "vue";
 import type { Ref } from "vue";
 import IconDownArrow from "../icons/IconDownArrow.vue";
 import type { IFrame_left } from "@/FrameDef";
@@ -44,6 +44,25 @@ async function appendNewFrame(chap_name: string, frame_name: string) {
         FrameCreateDisplay.value = !FrameCreateDisplay.value;
     }
 }
+watch(FrameCreateDisplay, () => {
+    if (projectID.value)
+        getFramesList(projectID.value, prop.chapNameFromLib).then((res: IFrame_left[]) => {
+            if (res) FrameList.value = res;
+            console.log("nextline is chapNameFromLib");
+            // console.log(chapName.value);
+            console.log(prop.chapNameFromLib);
+        });
+});
+watch(FrameDeleteDisplay, () => {
+    if (projectID.value)
+        getFramesList(projectID.value, prop.chapNameFromLib).then((res: IFrame_left[]) => {
+            if (res) FrameList.value = res;
+            console.log("nextline is chapNameFromLib");
+            // console.log(chapName.value);
+            console.log(prop.chapNameFromLib);
+        });
+});
+
 watchEffect(() => {
     // call back method update the chapter to display once projectID received
     FramesDisplay.value = false;
@@ -135,6 +154,7 @@ watchEffect(() => {
                     :name="item.FrameName"
                     :ChapterName="prop.chapNameFromLib"
                     :FrameName="item.FrameName"
+                    :FrameId="item.id.valueOf()"
                     >{{ item.FrameName }}
                 </FrameItemRemove>
             </div>

@@ -16,6 +16,10 @@ const prop = defineProps({
         type: String,
         required: true,
     },
+    FrameId: {
+        type: Number,
+        required: true,
+    },
 });
 
 function remove_frame() {
@@ -23,7 +27,7 @@ function remove_frame() {
     // console.log(prop.ChapterName);
     // console.log(prop.FrameName);
     if (projectID.value) {
-        removeFrame(projectID.value, prop.ChapterName, prop.FrameName).then((res: boolean) => {
+        removeFrame(projectID.value, prop.FrameId).then((res: boolean) => {
             removed.value = res;
         });
     }

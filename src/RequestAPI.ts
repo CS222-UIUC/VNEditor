@@ -392,21 +392,18 @@ export async function removeChapters(
  */
 export async function removeFrame(
     id: string | undefined,
-    chapter_name: string | undefined,
-    frame_name: string | undefined
+    fid: number | undefined
 ): Promise<boolean> {
     console.log("remove frame called"); // used for debugg
     console.log(id);
-    console.log(chapter_name); // used for debugg
-    console.log(frame_name);
-    if (!id || !chapter_name || !frame_name) return false;
+    console.log(fid); // used for debugg
+    if (!id || fid == undefined) return false;
     try {
-        const response: AxiosResponse = await axios.post(
+        const response: AxiosResponse = await axios.delete(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
             getUrl("engine/remove_frame", {
                 task_id: id,
-                chapter_name: chapter_name,
-                frame_name: frame_name,
+                fid: fid,
             })
         );
         console.log(response);
