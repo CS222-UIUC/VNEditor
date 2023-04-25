@@ -3,9 +3,9 @@ import secrets
 
 from functools import wraps
 
-from module.project_manager import ProjectManager
-from module.gamesave_manager import GameSave
-from module.config_manager import ConfigLoader
+from module.project_module import ProjectManager
+from module.gamesave_module import GameSave
+from module.config_module import ConfigLoader
 from utils.exception import ControllerException
 from utils.status import StatusCode
 from utils.file_utils import get_folders_in_folder, check_folder_valid

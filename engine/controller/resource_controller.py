@@ -3,8 +3,8 @@ import os
 from functools import wraps
 from fastapi import UploadFile
 
-from module.project_manager import ResourcesType
-from module.config_manager import ConfigLoader
+from module.project_module import ResourcesType
+from module.config_module import ConfigLoader
 from utils.exception import ControllerException
 from utils.status import StatusCode
 from utils.file_utils import check_file_valid

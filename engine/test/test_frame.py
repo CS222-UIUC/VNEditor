@@ -6,7 +6,7 @@ import unittest
 from typing import Optional
 from pydantic import BaseModel
 
-from module.config_manager import ConfigLoader
+from module.config_module import ConfigLoader
 from kernel.component.background import Background
 from kernel.component.character import (
     Character,
@@ -42,6 +42,7 @@ class TestFrameChecker(unittest.TestCase):
                 dialogue="Hello!", character=Character(res_name="chara_res_name1")
             ),
             action=Action(1, 2),
+            meta=FrameMeta(),
         )
 
         result, message = self.frame_checker.check(frame)
@@ -63,6 +64,7 @@ class TestFrameChecker(unittest.TestCase):
                 dialogue="Hello!", character=Character(res_name="chara_res_name1")
             ),
             action=Action(1, 2),
+            meta=FrameMeta(),
         )
 
         result, message = self.frame_checker.check(frame)
