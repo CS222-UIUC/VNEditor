@@ -19,6 +19,8 @@ from controller.resource_controller import ResourceController
 from controller.server_controller import ServerController
 from controller.engine_controller import EngineController
 
+# from typing import Optional
+
 CONFIG_DIR = "./service.ini"
 
 # register controllers
@@ -275,9 +277,11 @@ async def remove_frame(task_id: str, fid: int) -> ReturnList:
 
 
 @app.post("/engine/append_frame", tags=["kernel"])
-async def append_frame(task_id: str, to_chapter: str) -> ReturnList:
+async def append_frame(task_id: str, to_chapter: str, frame_name: str = "default") -> ReturnList:
     """
     append an empty frame to the specified chapter
+
+    @param frame_name: the name for frame
     @param task_id:
     @param to_chapter:
     @return:
@@ -286,7 +290,7 @@ async def append_frame(task_id: str, to_chapter: str) -> ReturnList:
     if task is None:
         return ReturnList(status=StatusCode.FAIL, msg="no such task id")
 
-    return engine_utils.append_frame(task, to_chapter)
+    return engine_utils.append_frame(task, to_chapter, frame_name)
 
 
 @app.post("/engine/modify_frame", tags=["kernel"])
@@ -327,7 +331,7 @@ async def get_frame(task_id: str, fid: int) -> ReturnDict:
 
 
 @app.post("/engine/get_struct", tags=["kernel"])
-async def get_struct(task_id: str, chapter=None) -> ReturnDict:
+async def get_struct(task_id: str, chapter: str = None) -> ReturnDict:
     """
     `task_id:` id of the task
 
@@ -371,7 +375,7 @@ async def add_chapters(task_id: str, chapter_name: str) -> ReturnStatus:
 
 
 @app.delete("/engine/remove_chapter", tags=["kernel"])
-async def engine_meta(task_id: str, chapter_name: str) -> ReturnStatus:
+async def engine_meta(task_id: str, chapter_name: str = None) -> ReturnStatus:
     """
     get the metadata for current used kernel
 

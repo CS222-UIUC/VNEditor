@@ -83,17 +83,18 @@ class EngineController:
         return ReturnDict(status=StatusCode.OK, content=engine.get_engine_meta())
 
     @engine_controller_exception_handler
-    def append_frame(self, task: Task, to_chapter: str) -> ReturnList:
+    def append_frame(self, task: Task, to_chapter: str, frame_name: str) -> ReturnList:
         """
         append an empty frame according to chapter
 
+        @param frame_name: name for the chapter
         @param to_chapter: append to which chapter
         @param task:
         @return: the added frame id
 
         """
         engine = task.project_engine
-        empty_frame = engine.make_empty_frame()
+        empty_frame = engine.make_empty_frame(frame_name)
         fid = engine.append_frame(empty_frame, to_chapter, force=True)
         engine.commit()
         return ReturnList(status=StatusCode.OK, msg='successfully add frame', content=[fid])

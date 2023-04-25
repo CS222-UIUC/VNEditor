@@ -160,14 +160,14 @@ class Engine:
         return frame
 
     @staticmethod
-    def make_empty_frame():
+    def make_empty_frame(frame_name: str):
         """
         make an empty frame
 
         @return: empty frame
 
         """
-        frame = Frame(Frame.VOID_FRAME_ID, Background(''), [], Music(), Dialogue(''), FrameMeta(name=''))
+        frame = Frame(Frame.VOID_FRAME_ID, Background(''), [], Music(), Dialogue(''), FrameMeta(name=frame_name))
         return frame
 
     def __append(self, frame: Frame) -> int:
@@ -190,6 +190,8 @@ class Engine:
         # change the current last frame's next frame pointer
         if self.__head != Frame.VOID_FRAME_ID:
             self.__game_content[self.__tail].action.next_f = fid
+        else:
+            self.__head = fid
 
         # update the current frame
         frame.action.prev_f = self.__tail
@@ -198,10 +200,6 @@ class Engine:
         self.__game_content[fid] = frame
 
         self.__all_fids.add(fid)
-
-        # update head and tail
-        if self.__head == Frame.VOID_FRAME_ID:
-            self.__head = fid
 
         self.__tail = fid
 
@@ -324,8 +322,7 @@ class Engine:
 
         self.__remove(fid)
 
-        # update frame metadata
-        self.__all_fids.remove(fid)
+        # update chapter data
         for chapter in self.__chapter_meta.values():
             if chapter.remove_fid(fid) != -1:
                 break
