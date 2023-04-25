@@ -2,7 +2,7 @@
 import ChapterItem from "./ChapterDir.vue";
 import ChapterItemRemove from "./ChapterDir_remove.vue";
 import type { Ref } from "vue";
-import { ref, watchEffect, inject, type PropType } from "vue";
+import { ref, watchEffect, watch, inject, type PropType } from "vue";
 import { projectIDKey } from "../../InjectionKeys";
 
 import { getChapters, addChapters } from "../../RequestAPI";
@@ -21,6 +21,14 @@ const prop = defineProps({
 });
 
 const projectID = inject(projectIDKey) as Ref<string | undefined>;
+
+watch(ChapterRemoveDisplay, () => {
+    if (projectID.value)
+        getChapters(projectID.value).then((res: string[]) => {
+            if (res) ChapterList.value = res;
+        });
+});
+
 watchEffect(() => {
     // call back method update the chapter to display once projectID received
     ChapetrsDisplay.value = false;
@@ -33,6 +41,9 @@ watchEffect(() => {
             ChapterRemoveDisplay.value = false;
         });
     chapNametoAdd;
+    ChapetrsDisplay;
+    AddNewChapterDisplay;
+    ChapterRemoveDisplay;
 });
 </script>
 
@@ -82,6 +93,7 @@ watchEffect(() => {
                 v-show="ChapterRemoveDisplay"
                 @click="ChapterRemoveDisplay = !ChapterRemoveDisplay"
             >
+                <!--delete done-->
                 Done
             </button>
             <input

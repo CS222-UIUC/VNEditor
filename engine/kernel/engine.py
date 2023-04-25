@@ -283,7 +283,6 @@ class Engine:
 
         # update game content and metadata
         self.__game_content.pop(fid)
-        self.__all_fids.remove(fid)
 
     def append_frame(self, frame: Frame, to_chapter: str, force: bool = False) -> int:
         """
@@ -353,7 +352,7 @@ class Engine:
         @return: exist or not
 
         """
-        return fid in self.__all_fids
+        return fid in self.__game_content.keys()
 
     def get_frame(self, fid: int) -> Frame:
         """
