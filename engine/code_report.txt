@@ -1,9 +1,11 @@
-Generated In: 2023/04/25 周二 17:48:41.48
+Generated In: 2023/04/25 周二 18:08:05.36
 LINTER REPORT
 
-check ./engine
-************* Module ./engine
-./engine:1:0: F0001: No module named ./engine (fatal)
+check ./kernel
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
 check ./module
 
 --------------------------------------------------------------------
@@ -15,12 +17,9 @@ check ./utils
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 check server.py
-************* Module server
-server.py:380:0: E0102: function already defined line 254 (function-redefined)
-server.py:393:0: E0102: function already defined line 254 (function-redefined)
 
-------------------------------------------------------------------
-Your code has been rated at 9.24/10 (previous run: 9.24/10, +0.00)
+-------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 9.62/10, +0.38)
 
 COVERAGE REPORT
 
@@ -34,18 +33,18 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682462925.75188          12
+1682464090.76728          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682462925.75188          12
+1682464090.76728          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682462925.75188          12
+1682464090.76728          12
 ----------------------------------------
 {}
 {1: 'choice 1'}
@@ -62,24 +61,23 @@ add frame:  8
 add frame:  9
 {'a': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
 {'a': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
-remove id: 0
+remove id: 1
 remove id: 2
 remove id: 3
-remove id: 5
-remove id: 7
-remove id: 8
-{'engine_name': 'YuiEngine', 'engine_version': '1.1.2', 'engine_minimal_compatible': '1.1.2', 'update_at': 1682462925.9814825, 'total_frame_len': 4, 'head': 1, 'tail': 9}
-1 <kernel.frame.Frame object at 0x000001BC47EC3FD0>
-4 <kernel.frame.Frame object at 0x000001BC47FFE710>
-6 <kernel.frame.Frame object at 0x000001BC47FFE650>
-9 <kernel.frame.Frame object at 0x000001BC47FFE990>
-remove id: 1
+remove id: 4
 remove id: 6
-remove id: 9
+remove id: 8
+{'engine_name': 'YuiEngine', 'engine_version': '1.1.2', 'engine_minimal_compatible': '1.1.2', 'update_at': 1682464091.0041933, 'total_frame_len': 4, 'head': 0, 'tail': 9}
+0 <kernel.frame.Frame object at 0x000002E132D30ED0>
+5 <kernel.frame.Frame object at 0x000002E132D326D0>
+7 <kernel.frame.Frame object at 0x000002E132D327D0>
+9 <kernel.frame.Frame object at 0x000002E132D328D0>
+remove id: 0
+remove id: 5
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\__init__.py                   0      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\kernel\chapter.py                   20      1    95%   57
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\chapter.py                   21      1    95%   57
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\__init__.py         8      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\action.py           7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\background.py       3      0   100%
@@ -88,9 +86,9 @@ C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\character.py       15  
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\dialogue.py        11      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\meta.py             3      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\music.py           16      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\kernel\engine.py                   205     62    70%   59, 83, 87, 90-123, 168-176, 191, 197, 226, 246-247, 300, 304-306, 333, 343-346, 367, 378, 400, 420-421, 429-434, 453-456, 475-477, 487, 499-506, 516-517
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\engine.py                   205     63    69%   59, 83, 87, 90-123, 168-176, 191, 197, 226, 246-247, 282, 300, 304-306, 333, 343-346, 367, 378, 400, 420-421, 429-434, 453-456, 475-477, 487, 499-506, 516-517
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\engine_io.py                  7      2    71%   17-18
-C:\Users\Twisl\Desktop\VNEditor Service\kernel\frame.py                    112     29    74%   111, 132, 138, 144-167, 192-208, 242, 245, 249
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\frame.py                    112     29    74%   116, 137, 143, 149-172, 197-213, 247, 250, 254
 C:\Users\Twisl\Desktop\VNEditor Service\module\__init__.py                   0      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\config_module.py             25      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\gamesave_module.py           56      1    98%   133
@@ -106,4 +104,4 @@ test_file_utils.py                                                          35  
 test_frame.py                                                               30      1    97%   77
 test_game_slot.py                                                           39      0   100%
 ------------------------------------------------------------------------------------------------------
-TOTAL                                                                      888     98    89%
+TOTAL                                                                      889     99    89%

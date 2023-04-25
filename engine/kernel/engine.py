@@ -330,7 +330,7 @@ class Engine:
         for chapter in self.__chapter_meta.values():
             if chapter.remove_fid(fid) != -1:
                 return
-        raise Exception("damn")
+        raise EngineError("kernel error when remove frame, contact developer for help")
 
     def change_frame(self, fid: int, frame: Frame):
         """
@@ -447,13 +447,13 @@ class Engine:
             for chapter_name, chapter_info in self.__chapter_meta.items():
                 out[chapter_name] = chapter_info.get_all_fid()
             return out
-        else:
-            if by_chapter not in self.__chapter_meta.keys():
-                raise Exception(f"chapter with name '{by_chapter}' not exist")
-            out = {}
-            chapter_info = self.__chapter_meta[by_chapter]
-            out[by_chapter] = chapter_info.get_all_fid()
-            return out
+
+        if by_chapter not in self.__chapter_meta.keys():
+            raise EngineError(f"chapter with name '{by_chapter}' not exist")
+        out = {}
+        chapter_info = self.__chapter_meta[by_chapter]
+        out[by_chapter] = chapter_info.get_all_fid()
+        return out
 
     def get_all_chapter(self) -> list:
         """
@@ -497,7 +497,7 @@ class Engine:
 
         """
         if chapter_name not in self.__chapter_meta:
-            raise Exception(f"chapter name {chapter_name} not exist")
+            raise EngineError(f"chapter name {chapter_name} not exist")
 
         fids = self.__chapter_meta[chapter_name].get_all_fid()
         for i in fids:

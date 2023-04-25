@@ -6,8 +6,8 @@ echo generating linter and coverage report...
   echo Generated In: %date% %time%
   echo LINTER REPORT
   echo:
-  echo check ./engine
-  pylint ./engine --rcfile=./lint_disable.rc
+  echo check ./kernel
+  pylint ./kernel --rcfile=./lint_disable.rc
   echo check ./module
   pylint ./module --rcfile=./lint_disable.rc
   echo check ./utils

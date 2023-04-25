@@ -58,3 +58,4 @@ class Chapter:
 
         self.__frames_info.pop(fid)
         self.__fid_list.remove(fid)
+        return fid

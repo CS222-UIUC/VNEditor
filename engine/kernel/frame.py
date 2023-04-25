@@ -37,6 +37,11 @@ class BasicFrame:
 
 
 class FrameInfo:
+    """
+    contain the frame information, include fid and meta
+
+    """
+
     def __init__(self, fid: int, meta: FrameMeta):
         self.fid: int = fid
         self.meta: FrameMeta = meta

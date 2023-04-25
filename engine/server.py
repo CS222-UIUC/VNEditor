@@ -251,7 +251,7 @@ async def get_fids(task_id: str, chapter_name: str) -> ReturnList:
 
 
 @app.post("/engine/get_frame_names", tags=["kernel"])
-async def engine_meta(task_id: str, chapter_name: str) -> ReturnList:
+async def get_frame_names(task_id: str, chapter_name: str) -> ReturnList:
     """
     return the list of name of current chapter name
 
@@ -377,7 +377,7 @@ async def add_chapters(task_id: str, chapter_name: str) -> ReturnStatus:
 
 
 @app.delete("/engine/remove_chapter", tags=["kernel"])
-async def engine_meta(task_id: str, chapter_name: str = None) -> ReturnStatus:
+async def remove_chapter(task_id: str, chapter_name: str = None) -> ReturnStatus:
     """
     get the metadata for current used kernel
 
