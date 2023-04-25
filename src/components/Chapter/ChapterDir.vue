@@ -166,6 +166,7 @@ watchEffect(() => {
 .chapter-item {
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
     padding: 0.5rem;
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
     width: 100%;
@@ -222,5 +223,8 @@ watchEffect(() => {
     padding: 0.5rem;
     border-bottom: 5px solid rgba(0, 90, 27, 0.507);
     width: 25%;
+}
+.frame-list {
+    overflow-y: scroll;
 }
 </style>
