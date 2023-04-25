@@ -1,6 +1,6 @@
 from functools import wraps
 
-from module.config_manager import ConfigLoader
+from module.config_module import ConfigLoader
 from utils.status import StatusCode
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
@@ -44,7 +44,7 @@ class EngineController:
         self.__engine_config: dict = config_loader.engine()
 
     @engine_controller_exception_handler
-    def get_frames_ids(self, task: Task, chapter_name: str) -> ReturnList:
+    def get_frame_ids(self, task: Task, chapter_name: str) -> ReturnList:
         """
         get all frame ids
 
@@ -98,11 +98,13 @@ class EngineController:
         empty_frame = engine.make_empty_frame(frame_name)
         fid = engine.append_frame(empty_frame, to_chapter, force=True)
         engine.commit()
-        return ReturnList(status=StatusCode.OK, msg='successfully add frame', content=[fid])
+        return ReturnList(
+            status=StatusCode.OK, msg="successfully add frame", content=[fid]
+        )
 
     @engine_controller_exception_handler
     def modify_frame(
-            self, task: Task, fid: int, frame_component_raw: FrameModel
+        self, task: Task, fid: int, frame_component_raw: FrameModel
     ) -> ReturnStatus:
         """
         commit all changes
@@ -225,8 +227,10 @@ class EngineController:
         try:
             engine.remove_chapter(chapter_name)
             engine.commit()
-            return ReturnStatus(status=StatusCode.OK, msg=f"the chapter '{chapter_name}' has been removed")
+            return ReturnStatus(
+                status=StatusCode.OK,
+                msg=f"the chapter '{chapter_name}' has been removed",
+            )
         except Exception as e:
             engine.rollback()
             raise e
-
