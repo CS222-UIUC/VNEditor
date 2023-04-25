@@ -19,7 +19,7 @@ from controller.resource_controller import ResourceController
 from controller.server_controller import ServerController
 from controller.engine_controller import EngineController
 
-from typing import Optional
+# from typing import Optional
 
 CONFIG_DIR = "./service.ini"
 
@@ -277,7 +277,7 @@ async def remove_frame(task_id: str, fid: int) -> ReturnList:
 
 
 @app.post("/engine/append_frame", tags=["kernel"])
-async def append_frame(task_id: str, to_chapter: str, frame_name: Optional[str] = "default") -> ReturnList:
+async def append_frame(task_id: str, to_chapter: str, frame_name: str = "default") -> ReturnList:
     """
     append an empty frame to the specified chapter
 
@@ -331,7 +331,7 @@ async def get_frame(task_id: str, fid: int) -> ReturnDict:
 
 
 @app.post("/engine/get_struct", tags=["kernel"])
-async def get_struct(task_id: str, chapter=Optional[str]) -> ReturnDict:
+async def get_struct(task_id: str, chapter: str = None) -> ReturnDict:
     """
     `task_id:` id of the task
 

@@ -190,6 +190,8 @@ class Engine:
         # change the current last frame's next frame pointer
         if self.__head != Frame.VOID_FRAME_ID:
             self.__game_content[self.__tail].action.next_f = fid
+        else:
+            self.__head = fid
 
         # update the current frame
         frame.action.prev_f = self.__tail
@@ -198,10 +200,6 @@ class Engine:
         self.__game_content[fid] = frame
 
         self.__all_fids.add(fid)
-
-        # update head and tail
-        if self.__head == Frame.VOID_FRAME_ID:
-            self.__head = fid
 
         self.__tail = fid
 
@@ -280,6 +278,7 @@ class Engine:
 
         # update game content and metadata
         self.__game_content.pop(fid)
+        self.__all_fids.remove(fid)
 
     def append_frame(
             self, frame: Frame, to_chapter: str, force: bool = False
@@ -324,8 +323,7 @@ class Engine:
 
         self.__remove(fid)
 
-        # update frame metadata
-        self.__all_fids.remove(fid)
+        # update chapter data
         for chapter in self.__chapter_meta.values():
             if chapter.remove_fid(fid) != -1:
                 break
@@ -351,7 +349,7 @@ class Engine:
         @return: exist or not
 
         """
-        return fid in self.__game_content.keys()
+        return fid in self.__all_fids
 
     def get_frame(self, fid: int) -> Frame:
         """
