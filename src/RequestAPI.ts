@@ -291,7 +291,7 @@ export async function getFramesList(
 }
 
 /**
- * get all the frames of the corresponding chapter
+ * add chapter to project
  * @param id: project_id
  * @param chapter_name: chapter_name
  * @returns
@@ -321,7 +321,7 @@ export async function addChapters(
 }
 
 /**
- * get all the frames of the corresponding chapter
+ * add the frames of the corresponding chapter
  * @param id: project_id
  * @param chapter_name: chapter_name
  * @param frame_name: frame_name
@@ -354,7 +354,7 @@ export async function appendFrame(
 }
 
 /**
- * get all the frames of the corresponding chapter
+ * remove corresponding chapter
  * @param id: project_id
  * @param chapter_name: chapter_name
  * @returns
@@ -384,7 +384,7 @@ export async function removeChapters(
 }
 
 /**
- * get all the frames of the corresponding chapter
+ * remove corresponding frame
  * @param id: project_id
  * @param fid: frameId
  * @returns
