@@ -386,8 +386,7 @@ export async function removeChapters(
 /**
  * get all the frames of the corresponding chapter
  * @param id: project_id
- * @param chapter_name: chapter_name
- * @param frame_name: frame_name
+ * @param fid: frameId
  * @returns
  */
 export async function removeFrame(
