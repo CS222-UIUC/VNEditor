@@ -8,7 +8,7 @@ const projectID = inject(projectIDKey) as Ref<string | undefined>;
 var removed: Ref<boolean> = ref(false);
 
 watch(removed, () => {
-    console.log("removed changed");
+    console.log("removed" + prop.FrameName);
 });
 
 const prop = defineProps({
