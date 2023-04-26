@@ -1,4 +1,4 @@
-## VN Editor
+## VNEditor
 
 An online-driven visual novel editor 
 
