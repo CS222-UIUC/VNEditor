@@ -4,7 +4,7 @@ import Draggable from "./DraggableItem.vue";
 import { Character } from "@/FrameDef";
 import type { EditorElement } from "@/FrameDef";
 import { editorElementsKey } from "@/InjectionKeys";
-import { log } from "@/RequestAPI";
+
 let elements: Array<EditorElement> = inject(editorElementsKey) as Array<EditorElement>;
 
 const editor = ref<HTMLInputElement | null>(null);

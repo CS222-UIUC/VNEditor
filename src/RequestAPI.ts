@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 export const baseUrl: string = "http://127.0.0.1:8000/"; // This is provided with a backslash '/' at the end
 
-import type { IFrame, IFrame_left, EditorElement } from "@/FrameDef";
+import type { Frame, IFrame_left, EditorElement } from "@/FrameDef";
 // interface Params {
 //     [index: string]: string;
 // }
