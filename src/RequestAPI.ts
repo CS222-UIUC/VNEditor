@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 export const baseUrl: string = "http://127.0.0.1:8000/"; // This is provided with a backslash '/' at the end
 
-import { type Frame, type EditorElement, Character } from "@/FrameDef";
+import type { Frame, EditorElement, IFrame_left } from "@/FrameDef";
 // interface Params {
 //     [index: string]: string;
 // }
@@ -231,34 +231,19 @@ export async function getChapters(id: string | undefined): Promise<string[]> {
 
 /**
  * get all the frames of the corresponding chapter
- * @param name: project_name
+ * @param name: project_id
  * @param chapter_name: chapter_name
  * @returns
  */
-export async function getFrames(
-    name: string | undefined,
+export async function getFramesList(
+    id: string | undefined,
     chapter_name: string | undefined
-): Promise<Frame[]> {
-    if (!name || !chapter_name) return [];
-
-    const b = new Character();
-    const a: Frame = {
-        name: name, // name of the frame
-        id: "", // index
-        backgroundName: "", // url
-        elements: [b],
-    };
-    const c: Frame = {
-        name: chapter_name, // name of the frame
-        id: "", // index
-        backgroundName: "", // url
-        elements: [b],
-    };
-    return [a, c, a, a];
+): Promise<IFrame_left[]> {
+    return [];
 }
 
 /**
- * get all the frames of the corresponding chapter
+ * add chapter to project
  * @param id: project_id
  * @param chapter_name: chapter_name
  * @returns
@@ -288,7 +273,40 @@ export async function addChapters(
 }
 
 /**
- * get all the frames of the corresponding chapter
+ * add the frames of the corresponding chapter
+ * @param id: project_id
+ * @param chapter_name: chapter_name
+ * @param frame_name: frame_name
+ * @returns
+ */
+export async function appendFrame(
+    id: string | undefined,
+    chapter_name: string | undefined,
+    frame_name: string | undefined
+): Promise<string | undefined> {
+    console.log("add frame called"); // used for debugg
+    console.log(frame_name); // used for debugg
+    if (!id || !chapter_name || !frame_name) return undefined;
+
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("engine/append_frame", {
+                task_id: id,
+                to_chapter: chapter_name,
+                frame_name: frame_name,
+            })
+        );
+        console.log(response);
+        return chapter_name;
+    } catch (err: any) {
+        console.log("failed to add frame");
+        return undefined;
+    }
+}
+
+/**
+ * remove corresponding chapter
  * @param id: project_id
  * @param chapter_name: chapter_name
  * @returns
@@ -302,7 +320,7 @@ export async function removeChapters(
     console.log(chapter_name); // used for debugg
     if (!id || !chapter_name) return false;
     try {
-        const response: AxiosResponse = await axios.post(
+        const response: AxiosResponse = await axios.delete(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
             getUrl("engine/remove_chapter", {
                 task_id: id,
@@ -318,62 +336,25 @@ export async function removeChapters(
 }
 
 /**
- * get all the frames of the corresponding chapter
+ * remove corresponding frame
  * @param id: project_id
- * @param chapter_name: chapter_name
- * @param frame_name: frame_name
- * @returns
- */
-export async function addFrame(
-    id: string | undefined,
-    chapter_name: string | undefined,
-    frame_name: string | undefined
-): Promise<string | undefined> {
-    console.log("add frame called"); // used for debugg
-    console.log(frame_name); // used for debugg
-    if (!id || !chapter_name || !frame_name) return undefined;
-
-    try {
-        const response: AxiosResponse = await axios.post(
-            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("append_frame", {
-                task_id: id,
-                chapter_name: chapter_name,
-                frame_name: frame_name,
-            })
-        );
-        console.log(response);
-        return chapter_name;
-    } catch (err: any) {
-        console.log("failed to add frame");
-        return undefined;
-    }
-}
-
-/**
- * get all the frames of the corresponding chapter
- * @param id: project_id
- * @param chapter_name: chapter_name
- * @param frame_name: frame_name
+ * @param fid: frameId
  * @returns
  */
 export async function removeFrame(
     id: string | undefined,
-    chapter_name: string | undefined,
-    frame_name: string | undefined
+    fid: number | undefined
 ): Promise<boolean> {
     console.log("remove frame called"); // used for debugg
     console.log(id);
-    console.log(chapter_name); // used for debugg
-    console.log(frame_name);
-    if (!id || !chapter_name || !frame_name) return false;
+    console.log(fid); // used for debugg
+    if (!id || fid == undefined) return false;
     try {
-        const response: AxiosResponse = await axios.post(
+        const response: AxiosResponse = await axios.delete(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
             getUrl("engine/remove_frame", {
                 task_id: id,
-                chapter_name: chapter_name,
-                frame_name: frame_name,
+                fid: fid,
             })
         );
         console.log(response);

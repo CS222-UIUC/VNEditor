@@ -121,6 +121,7 @@ onMounted(() => {
     align-items: center;
     background-color: gray;
     overflow: auto;
+    scrollbar-gutter: stable both-edges;
 }
 
 #preview-sidebar {

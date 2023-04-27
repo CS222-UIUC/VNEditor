@@ -37,3 +37,11 @@ export class Frame {
     elements: EditorElement[] = [];
     branch?: Frame[];
 }
+
+export interface IFrame_left {
+    // used for display of list of chapters
+    FrameName: string; // name of the frame
+    ChapterName: string;
+    ProjectId: string;
+    id: Number; // frame id
+}
