@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 export const baseUrl: string = "http://127.0.0.1:8000/"; // This is provided with a backslash '/' at the end
 
-import type { IFrame, IFrame_left, EditorElement } from "@/FrameDef";
+import type { Frame, EditorElement, IFrame_left } from "@/FrameDef";
 // interface Params {
 //     [index: string]: string;
 // }
@@ -21,7 +21,10 @@ export enum Rtype {
  * @param params the params as a key-value pairs
  * @returns return the generated url
  */
-export function getUrl(api: string, params: { [key: string]: string | number }): string {
+export function getUrl(
+    api: string,
+    params: { [key: string]: string | number | undefined }
+): string {
     if (api.length == 0) throw new Error("Expect non-empty api string but empty string is given");
     let url: string = `${baseUrl}${api}/`;
     let i: number = 0;
@@ -236,58 +239,7 @@ export async function getFramesList(
     id: string | undefined,
     chapter_name: string | undefined
 ): Promise<IFrame_left[]> {
-    console.log("get frame called"); // for debug
-    console.log(id);
-    console.log(chapter_name);
-    if (!id || !chapter_name) return [];
-    try {
-        const response1: AxiosResponse = await axios.post(
-            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("engine/get_frame_ids", {
-                task_id: id,
-                chapter_name: chapter_name,
-            })
-        );
-        const response2: AxiosResponse = await axios.post(
-            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("engine/get_frame_names", {
-                task_id: id,
-                chapter_name: chapter_name,
-            })
-        );
-        console.log(response1);
-        console.log(response2);
-        const out: IFrame_left[] = [];
-        for (let i = 0; i < response2.data.content.length; i++) {
-            const frame: IFrame_left = {
-                FrameName: response2.data.content[i],
-                ChapterName: chapter_name,
-                ProjectId: id,
-                id: response1.data.content[i],
-            };
-            out.push(frame);
-        }
-        // console.log("returned chapters");
-        // console.log(response.data.content);
-        return out;
-    } catch (err: any) {
-        console.log("failed to get frame_left");
-        // return ["test chapter", "next is chapter name", id, "end of chapter"]; // testing
-        return [];
-        // test code below
-        // const out: IFrame_left[] = [];
-        // for (let i = 0; i < 5; i++) {
-        //     const frame: IFrame_left = {
-        //         FrameName: i.toString(),
-        //         ChapterName: chapter_name,
-        //         ProjectId: id,
-        //         id: 114,
-        //     };
-        //     console.log(i);
-        //     out.push(frame);
-        // }
-        // return out;
-    }
+    return [];
 }
 
 /**
@@ -412,3 +364,7 @@ export async function removeFrame(
         return false;
     }
 }
+
+export const log = (s: any) => {
+    console.log(s);
+};
