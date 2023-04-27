@@ -10,8 +10,8 @@ import {
     hostNameKey,
     projectIDKey,
     projectNameKey,
-    editorScaleKey,
-} from "./InjectionKeys";
+    frameIdKey,
+} from "@/InjectionKeys";
 import EditorMain from "./components/EditorMain.vue";
 import { Character, Diaglog, Frame } from "@/FrameDef";
 import type { EditorElement } from "@/FrameDef";
@@ -22,6 +22,7 @@ const editorMusic = ref("");
 // edn
 // preview bra const below
 // end
+const frameId = ref<Number>(0);
 const projectID = ref<string | undefined>(undefined);
 const projectName = ref<string | undefined>(undefined);
 const editorElements: EditorElement[] = reactive([new Diaglog()]);
@@ -30,6 +31,7 @@ provide(hostNameKey, "http://127.0.0.1:8000/");
 provide(projectIDKey, projectID);
 provide(projectNameKey, projectName);
 provide(editorElementsKey, editorElements);
+provide(frameIdKey, frameId);
 function setEditorBackground(event: MouseEvent) {
     const el: Element = event.target as Element;
     if (projectID.value)
