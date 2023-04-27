@@ -41,7 +41,7 @@ function remove_frame() {
 </script>
 
 <template>
-    <div class="frame-item-remove" v-show="!removed" @click="remove_frame">
+    <div class="frame-item-remove" v-show="!removed.valueOf()" @click="remove_frame">
         <slot>unknown scene</slot>
     </div>
 </template>
