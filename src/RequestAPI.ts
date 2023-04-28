@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 export const baseUrl: string = "http://127.0.0.1:8000/"; // This is provided with a backslash '/' at the end
 
-import type { IFrame, EditorElement } from "@/FrameDef";
+import type { IFrame, IFrame_left, EditorElement } from "@/FrameDef";
 // interface Params {
 //     [index: string]: string;
 // }
@@ -228,34 +228,66 @@ export async function getChapters(id: string | undefined): Promise<string[]> {
 
 /**
  * get all the frames of the corresponding chapter
- * @param name: project_name
+ * @param name: project_id
  * @param chapter_name: chapter_name
  * @returns
  */
-export async function getFrames(
-    name: string | undefined,
+export async function getFramesList(
+    id: string | undefined,
     chapter_name: string | undefined
-): Promise<IFrame[]> {
-    if (!name || !chapter_name) return [];
-
-    const b: EditorElement = {
-        imageUrl: "",
-        xCoord: 0,
-        yCoord: 0,
-    };
-    const a: IFrame = {
-        name: name, // name of the frame
-        id: 0, // index
-        backgroundName: "", // url
-        characters: [b],
-    };
-    const c: IFrame = {
-        name: chapter_name, // name of the frame
-        id: 0, // index
-        backgroundName: "", // url
-        characters: [b],
-    };
-    return [a, c, a, a];
+): Promise<IFrame_left[]> {
+    console.log("get frame called"); // for debug
+    console.log(id);
+    console.log(chapter_name);
+    if (!id || !chapter_name) return [];
+    try {
+        const response1: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("engine/get_frame_ids", {
+                task_id: id,
+                chapter_name: chapter_name,
+            })
+        );
+        const response2: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("engine/get_frame_names", {
+                task_id: id,
+                chapter_name: chapter_name,
+            })
+        );
+        console.log(response1);
+        console.log(response2);
+        const out: IFrame_left[] = [];
+        for (let i = 0; i < response2.data.content.length; i++) {
+            const frame: IFrame_left = {
+                FrameName: response2.data.content[i],
+                ChapterName: chapter_name,
+                ProjectId: id,
+                id: response1.data.content[i],
+            };
+            out.push(frame);
+        }
+        // console.log("returned chapters");
+        // console.log(response.data.content);
+        return out;
+    } catch (err: any) {
+        console.log("failed to get frame_left");
+        // return ["test chapter", "next is chapter name", id, "end of chapter"]; // testing
+        return [];
+        // test code below
+        // const out: IFrame_left[] = [];
+        // for (let i = 0; i < 5; i++) {
+        //     const frame: IFrame_left = {
+        //         FrameName: i.toString(),
+        //         ChapterName: chapter_name,
+        //         ProjectId: id,
+        //         id: 114,
+        //     };
+        //     console.log(i);
+        //     out.push(frame);
+        // }
+        // return out;
+    }
 }
 
 /**
@@ -292,6 +324,39 @@ export async function addChapters(
  * get all the frames of the corresponding chapter
  * @param id: project_id
  * @param chapter_name: chapter_name
+ * @param frame_name: frame_name
+ * @returns
+ */
+export async function appendFrame(
+    id: string | undefined,
+    chapter_name: string | undefined,
+    frame_name: string | undefined
+): Promise<string | undefined> {
+    console.log("add frame called"); // used for debugg
+    console.log(frame_name); // used for debugg
+    if (!id || !chapter_name || !frame_name) return undefined;
+
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            getUrl("engine/append_frame", {
+                task_id: id,
+                to_chapter: chapter_name,
+                frame_name: frame_name,
+            })
+        );
+        console.log(response);
+        return chapter_name;
+    } catch (err: any) {
+        console.log("failed to add frame");
+        return undefined;
+    }
+}
+
+/**
+ * get all the frames of the corresponding chapter
+ * @param id: project_id
+ * @param chapter_name: chapter_name
  * @returns
  */
 export async function removeChapters(
@@ -303,7 +368,7 @@ export async function removeChapters(
     console.log(chapter_name); // used for debugg
     if (!id || !chapter_name) return false;
     try {
-        const response: AxiosResponse = await axios.post(
+        const response: AxiosResponse = await axios.delete(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
             getUrl("engine/remove_chapter", {
                 task_id: id,
@@ -325,56 +390,20 @@ export async function removeChapters(
  * @param frame_name: frame_name
  * @returns
  */
-export async function addFrame(
-    id: string | undefined,
-    chapter_name: string | undefined,
-    frame_name: string | undefined
-): Promise<string | undefined> {
-    console.log("add frame called"); // used for debugg
-    console.log(frame_name); // used for debugg
-    if (!id || !chapter_name || !frame_name) return undefined;
-
-    try {
-        const response: AxiosResponse = await axios.post(
-            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
-            getUrl("append_frame", {
-                task_id: id,
-                chapter_name: chapter_name,
-                frame_name: frame_name,
-            })
-        );
-        console.log(response);
-        return chapter_name;
-    } catch (err: any) {
-        console.log("failed to add frame");
-        return undefined;
-    }
-}
-
-/**
- * get all the frames of the corresponding chapter
- * @param id: project_id
- * @param chapter_name: chapter_name
- * @param frame_name: frame_name
- * @returns
- */
 export async function removeFrame(
     id: string | undefined,
-    chapter_name: string | undefined,
-    frame_name: string | undefined
+    fid: number | undefined
 ): Promise<boolean> {
     console.log("remove frame called"); // used for debugg
     console.log(id);
-    console.log(chapter_name); // used for debugg
-    console.log(frame_name);
-    if (!id || !chapter_name || !frame_name) return false;
+    console.log(fid); // used for debugg
+    if (!id || fid == undefined) return false;
     try {
-        const response: AxiosResponse = await axios.post(
+        const response: AxiosResponse = await axios.delete(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
             getUrl("engine/remove_frame", {
                 task_id: id,
-                chapter_name: chapter_name,
-                frame_name: frame_name,
+                fid: fid,
             })
         );
         console.log(response);
