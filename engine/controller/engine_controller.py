@@ -63,7 +63,6 @@ class EngineController:
         """
         get all frame names
 
-        @param chapter_name:
         @param task: cur task
         @return: list of ordered frame names
 
