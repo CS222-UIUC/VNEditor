@@ -5,7 +5,7 @@ from utils.status import StatusCode
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
 
 from .project_controller import Task
-from kernel.frame import FrameModel, frame_to_model
+from kernel.frame import FrameModel, frame_to_model, make_frame, make_empty_frame
 
 
 def engine_controller_exception_handler(func):
@@ -21,6 +21,7 @@ def engine_controller_exception_handler(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
+            raise e
             e_msg = f"Engine Controller ({type(e).__name__}): {str(e)}"
             print(e_msg)
             return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
@@ -95,7 +96,7 @@ class EngineController:
 
         """
         engine = task.project_engine
-        empty_frame = engine.make_empty_frame(frame_name)
+        empty_frame = make_empty_frame(frame_name)
         fid = engine.append_frame(empty_frame, to_chapter, force=True)
         engine.commit()
         return ReturnList(
@@ -117,9 +118,7 @@ class EngineController:
         """
         engine = task.project_engine
         frame_component = frame_component_raw.to_frame().__dict__
-        frame_component.pop("fid")
-        frame_component.pop("action")
-        frame = engine.make_frame(**frame_component)
+        frame = make_frame(**frame_component)
         engine.change_frame(fid, frame)
         engine.commit()
         return ReturnStatus(status=StatusCode.OK)

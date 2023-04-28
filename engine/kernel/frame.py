@@ -8,15 +8,12 @@ from pydantic import BaseModel
 from module.config_module import ConfigLoader
 
 from kernel.component.background import Background
-from kernel.component.character import (
-    Character,
-    CharacterPosition,
-    CharacterPositionModal,
-)
+from kernel.component.character import Character
 from kernel.component.dialogue import Dialogue
 from kernel.component.music import Music, MusicSignal
 from kernel.component.action import Action
 from kernel.component.meta import FrameMeta
+from kernel.component.image import ImageModel
 
 from utils.file_utils import check_file_valid, abs_dir
 
@@ -56,7 +53,7 @@ class Frame(BasicFrame):
         self,
         fid: int,
         background: Background,
-        chara: list[Character],
+        character: list[Character],
         music: Music,
         dialog: Dialogue,
         meta: FrameMeta,
@@ -67,7 +64,7 @@ class Frame(BasicFrame):
 
         @param fid: frame id, should be unique
         @param background: background
-        @param chara: character
+        @param character: character
         @param music: music
         @param dialog: dialogue
         @param meta: frame metadata
@@ -77,7 +74,7 @@ class Frame(BasicFrame):
         super().__init__(fid, action)
         self.meta = meta
         self.background: Background = background
-        self.chara: list[Character] = chara
+        self.character: list[Character] = character
         self.music: Music = music
         self.dialog: Dialogue = dialog
 
@@ -128,17 +125,6 @@ class FrameChecker:
         music_status = frame.music.signal
         dialogue_character = frame.dialog.character
 
-        # check if contain conflict in input
-        for character in frame.chara:
-            chara_position = character.position
-            chara_res = character.res_name
-
-            if chara_position is not None and chara_res is None:
-                return [
-                    False,
-                    "character position cannot be defined is not given character",
-                ]
-
         if music_res is None and music_status == MusicSignal.PLAY:
             return [False, "music resources have to specified when status set to play"]
 
@@ -146,7 +132,7 @@ class FrameChecker:
         if not check_file_valid(abs_dir(self.__bg_base_dir, bg_res)):
             return [False, f"Background resource '{bg_res}' cannot find"]
 
-        for character in frame.chara:
+        for character in frame.character:
             chara_res = character.res_name
             if chara_res is not None:
                 if not check_file_valid(abs_dir(self.__chara_base_dir, chara_res)):
@@ -179,12 +165,12 @@ class FrameModel(BaseModel):
     """
 
     background: str
-    chara: list
-    chara_pos: list[CharacterPositionModal]
-    music: str
+    background_attr: ImageModel
+    character: dict[str, ImageModel]
+    music: Optional[str]
     music_signal: MusicSignal
     dialog: str
-    dialog_character: str
+    dialog_character: Optional[str]
     name: str
 
     def to_frame(self) -> Frame:
@@ -194,26 +180,19 @@ class FrameModel(BaseModel):
         @return: frame instance
 
         """
-        background = Background(res_name=self.background)
+        background = Background(res_name=self.background, **self.background_attr.dict())
         chara = []
         dialogue = Dialogue(
             dialogue=self.dialog, character=Character(self.dialog_character)
         )
-        for idx, cur in enumerate(self.chara):
-            chara.append(
-                Character(
-                    res_name=cur,
-                    position=CharacterPosition(
-                        self.chara_pos[idx].x, self.chara_pos[idx].y
-                    ),
-                )
-            )
+        for chara_res, chara_attr in self.character.items():
+            chara.append(Character(res_name=chara_res, **chara_attr.dict()))
         music = Music(res_name=self.music, signal=self.music_signal)
         meta = FrameMeta(self.name)
         return Frame(
             fid=BasicFrame.VOID_FRAME_ID,
             background=background,
-            chara=chara,
+            character=chara,
             dialog=dialogue,
             music=music,
             meta=meta,
@@ -229,13 +208,13 @@ def frame_to_model(frame: Frame):
 
     """
     background = frame.background.res_name
-    chara = [i.res_name for i in frame.chara]
-    chara_pos = []
-    for cur_chara in frame.chara:
-        cur_chara_position_modal = CharacterPositionModal()
-        cur_chara_position_modal.x = cur_chara.position.x
-        cur_chara_position_modal.y = cur_chara.position.y
-        chara_pos.append(cur_chara_position_modal)
+    background_attr = ImageModel(**frame.background.__dict__)
+
+    chara = {}
+    for cur_chara in frame.character:
+        cur_chara_attr = ImageModel(**frame.background.__dict__)
+        chara[cur_chara.res_name] = cur_chara_attr
+
     music_signal = frame.music.signal
     music = frame.music.res_name
     dialog = frame.dialog.dialogue
@@ -246,21 +225,61 @@ def frame_to_model(frame: Frame):
     else:
         dialog_character = frame.dialog.character.res_name
 
-    if background is None:
-        background = ""
-    if music is None:
-        music = ""
-    if dialog is None:
-        dialog = ""
-    if dialog_character is None:
-        dialog_character = ""
     return FrameModel(
         background=background,
-        chara=chara,
-        chara_pos=chara_pos,
+        background_attr=background_attr,
+        character=chara,
         music=music,
         music_signal=music_signal,
         dialog=dialog,
         dialog_character=dialog_character,
         name=name,
     )
+
+
+def make_empty_frame(frame_name: str):
+    """
+    make an empty frame
+
+    @return: empty frame
+
+    """
+    frame = Frame(
+        Frame.VOID_FRAME_ID,
+        Background(""),
+        [],
+        Music(),
+        Dialogue(""),
+        FrameMeta(name=frame_name),
+    )
+    return frame
+
+
+def make_frame(
+    background: Background,
+    character: list[Character],
+    music: Music,
+    dialog: Dialogue,
+    meta: FrameMeta,
+    **kwargs,
+) -> Frame:
+    """
+    make a frame
+
+    @param background: background
+    @param character: character
+    @param music: music
+    @param dialog: dialog
+    @param meta the metadata for the frame
+    @return: result frame
+
+    """
+    frame = Frame(
+        fid=BasicFrame.VOID_FRAME_ID,
+        background=background,
+        character=character,
+        music=music,
+        dialog=dialog,
+        meta=meta,
+    )
+    return frame

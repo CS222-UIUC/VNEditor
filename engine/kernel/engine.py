@@ -18,12 +18,11 @@ from utils.exception import EngineError
 from kernel.frame import Frame, FrameChecker, FrameInfo
 from kernel.chapter import Chapter
 import kernel.engine_io as eng_io
-from kernel.component import Background, Character, Dialogue, Music, FrameMeta
 
 # the version of the kernel
 ENGINE_NAME = "YuiEngine"
-ENGINE_VERSION = "1.1.2"
-ENGINE_MINIMAL_COMPATIBLE = "1.1.2"
+ENGINE_VERSION = "1.1.3"
+ENGINE_MINIMAL_COMPATIBLE = "1.1.3"
 
 
 class Engine:
@@ -134,46 +133,6 @@ class Engine:
         self.__metadata_buffer["total_frame_len"] = len(self.__game_content.keys())
         self.__metadata_buffer["head"] = self.__head
         self.__metadata_buffer["tail"] = self.__tail
-
-    @staticmethod
-    def make_frame(
-        background: Background,
-        chara: list[Character],
-        music: Music,
-        dialog: Dialogue,
-        meta: FrameMeta,
-    ) -> Frame:
-        """
-        make a frame
-
-        @param background: background
-        @param chara: character
-        @param music: music
-        @param dialog: dialog
-        @param meta the metadata for the frame
-        @return: result frame
-
-        """
-        frame = Frame(Frame.VOID_FRAME_ID, background, chara, music, dialog, meta)
-        return frame
-
-    @staticmethod
-    def make_empty_frame(frame_name: str):
-        """
-        make an empty frame
-
-        @return: empty frame
-
-        """
-        frame = Frame(
-            Frame.VOID_FRAME_ID,
-            Background(""),
-            [],
-            Music(),
-            Dialogue(""),
-            FrameMeta(name=frame_name),
-        )
-        return frame
 
     def __append(self, frame: Frame) -> int:
         """

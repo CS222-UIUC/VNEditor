@@ -22,7 +22,7 @@ echo generating linter and coverage report...
   coverage run -m -a unittest test_file_utils.py
   coverage run -m -a unittest test_game_slot.py
   coverage run -m -a unittest test_engine.py
-  coverage run -m -a unittest test_frame.py
+  coverage run -m -a unittest test_engine_io.py
   coverage report -m
 )
 echo clean directory...
