@@ -1,18 +1,31 @@
 <script setup lang="ts">
-import { inject, onMounted, provide, reactive, ref } from "vue";
+import {
+    inject,
+    onMounted,
+    provide,
+    reactive,
+    ref,
+    watchEffect,
+    type Ref,
+    getCurrentInstance,
+} from "vue";
 import Draggable from "./DraggableItem.vue";
-import { Character } from "@/FrameDef";
+import { Character, type FrameBack, Frame } from "@/FrameDef";
 import type { EditorElement } from "@/FrameDef";
-import { editorElementsKey } from "@/InjectionKeys";
+import { editorElementsKey, frameIDKey, projectIDKey, editorBackgroundKey } from "@/InjectionKeys";
+import { getFrame } from "@/RequestAPI";
+import { Diaglog } from "@/FrameDef";
 
-let elements: Array<EditorElement> = inject(editorElementsKey) as Array<EditorElement>;
-
+const frameID = inject(frameIDKey) as Ref<number | undefined>;
+const projectID = inject(projectIDKey) as Ref<string | undefined>;
+let editorElements: Array<EditorElement> = inject(editorElementsKey) as Array<EditorElement>;
+const editorBackground = inject(editorBackgroundKey) as Ref<string | undefined>;
 const editor = ref<HTMLInputElement | null>(null);
-
+let frame: Frame = new Frame();
 function updateFrame(index: number, el: EditorElement) {
-    console.log(elements);
-    elements[index] = el;
-    console.log(elements[index].content);
+    console.log(editorElements);
+    editorElements[index] = el;
+    console.log(editorElements[index].content);
 }
 
 const props = defineProps({
@@ -20,6 +33,30 @@ const props = defineProps({
         type: Number,
         required: true,
     },
+});
+
+const instance = getCurrentInstance();
+watchEffect(async () => {
+    console.log(frameID.value !== undefined);
+    console.log("aaaaaaaaaaaaaaaaaaaa?");
+    if (frameID.value !== undefined && projectID.value !== undefined) {
+        console.log("updating frame...");
+        const fb = await getFrame(frameID.value, projectID.value);
+        editorBackground.value = fb.background;
+        for (let i = 0; i < editorElements.length; ++i) editorElements.pop();
+        for (let i = 0; i < fb.chara.length; ++i) {
+            const c = new Character();
+            c.content = fb.chara[i];
+            c.xCoord = fb.chara_pos[i].x;
+            c.yCoord = fb.chara_pos[i].y;
+            editorElements.push(c);
+        }
+        const d = new Diaglog();
+        d.content = fb.dialog;
+        editorElements.push(d);
+        console.log(editorElements);
+        instance?.proxy?.$forceUpdate();
+    }
 });
 </script>
 
@@ -31,11 +68,11 @@ const props = defineProps({
     >
         <Draggable
             @update-element="updateFrame"
-            v-for="(char, index) in elements"
-            :key="index"
+            v-for="(char, index) in editorElements"
+            :key="char.content"
             :element="char"
             :update-call-back="(newElement: EditorElement, idx: number): void=> {
-                elements[idx] = newElement;
+                editorElements[idx] = newElement;
             }"
             :scale="props.scale"
             :index="index"

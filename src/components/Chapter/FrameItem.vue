@@ -1,7 +1,8 @@
 <script setup lang="ts">
 /** __vue_virtual_code_placeholder */
 // const ChapterName = "";
-import { frameIdKey } from "@/InjectionKeys";
+import { frameIDKey, frameNameKey } from "@/InjectionKeys";
+import { inject, type Ref } from "vue";
 const prop = defineProps({
     ChapterName: {
         type: String,
@@ -17,11 +18,18 @@ const prop = defineProps({
     },
 });
 
-function displayframe() {}
+const frameID = inject(frameIDKey) as Ref<number>;
+const frameName = inject(frameNameKey) as Ref<string | undefined>;
 </script>
 
 <template>
-    <div class="frame-item" @dblclick="$emit('displayFrame')">
+    <div
+        class="frame-item"
+        @dblclick="
+            frameID = prop.FrameId;
+            frameName = prop.FrameName;
+        "
+    >
         <slot>unknown scene</slot>
     </div>
 </template>

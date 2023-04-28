@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 export const baseUrl: string = "http://127.0.0.1:8000/"; // This is provided with a backslash '/' at the end
 
-import type { Frame, IFrame_left, EditorElement } from "@/FrameDef";
+import { Frame, type IFrame_left, FrameBack, type EditorElement } from "@/FrameDef";
 // interface Params {
 //     [index: string]: string;
 // }
@@ -287,6 +287,55 @@ export async function getFramesList(
         //     out.push(frame);
         // }
         // return out;
+    }
+}
+
+export async function getFrame(
+    fid: number | undefined,
+    projectId: string | undefined
+): Promise<FrameBack> {
+    if (fid === undefined || projectId == undefined) return new FrameBack();
+    const url = getUrl("engine/get_frame", {
+        task_id: projectId,
+        fid: fid,
+    });
+    try {
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            url
+        );
+
+        const f: FrameBack = response.data.content;
+        console.log(f);
+        return f;
+    } catch (err: any) {
+        console.log("failed to add chapter");
+        return new FrameBack();
+    }
+}
+
+export async function modifyFrame(
+    fid: number | undefined,
+    projectId: string | undefined,
+    frame: FrameBack | undefined
+): Promise<boolean> {
+    if (fid === undefined || projectId == undefined || frame == undefined) return false;
+    const url = getUrl("engine/modify_frame", {
+        task_id: projectId,
+        fid: fid,
+    });
+    try {
+        const json = JSON.stringify(frame);
+        console.log(json);
+        const response: AxiosResponse = await axios.post(
+            // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
+            url,
+            frame
+        );
+
+        return response.data.status === 1;
+    } catch (err: any) {
+        return false;
     }
 }
 

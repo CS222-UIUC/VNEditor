@@ -32,10 +32,21 @@ export class Diaglog implements EditorElement {
 
 export class Frame {
     name: string = ""; // name of the frame
-    id: string = ""; // index
+    id: Number | undefined = undefined; // index
     backgroundName: string = ""; // url
     elements: EditorElement[] = [];
     branch?: Frame[];
+}
+
+export class FrameBack {
+    background: string = "";
+    chara: string[] = [];
+    chara_pos: { x: number; y: number }[] = [];
+    music: string = "";
+    music_signal: number = 1;
+    dialog: string = "";
+    dialog_character: string = "";
+    name: string = "";
 }
 
 export interface IFrame_left {

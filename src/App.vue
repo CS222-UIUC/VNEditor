@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, provide, inject, reactive, onMounted } from "vue";
-import { getUrl } from "./RequestAPI";
+import { ref, provide, inject, reactive, onMounted, watchEffect } from "vue";
+import { getFrame, getUrl } from "./RequestAPI";
 import Toolbar from "./components/Toolbar/ToolbarMain.vue";
 import Navbar from "./components/Navbar/NavbarMain.vue";
 import FileUploadArea from "./components/UploadArea.vue";
@@ -10,7 +10,9 @@ import {
     hostNameKey,
     projectIDKey,
     projectNameKey,
-    frameIdKey,
+    frameIDKey,
+    editorBackgroundKey,
+    frameNameKey,
 } from "@/InjectionKeys";
 import EditorMain from "./components/EditorMain.vue";
 import { Character, Diaglog, Frame } from "@/FrameDef";
@@ -22,16 +24,19 @@ const editorMusic = ref("");
 // edn
 // preview bra const below
 // end
-const frameId = ref<Number>(0);
+const frameID = ref<number | undefined>(undefined);
+const frameName = ref<string | undefined>(undefined);
 const projectID = ref<string | undefined>(undefined);
 const projectName = ref<string | undefined>(undefined);
-const editorElements: EditorElement[] = reactive([new Diaglog()]);
+let editorElements: EditorElement[] = reactive([]);
 const editorScale = ref(1);
 provide(hostNameKey, "http://127.0.0.1:8000/");
 provide(projectIDKey, projectID);
 provide(projectNameKey, projectName);
 provide(editorElementsKey, editorElements);
-provide(frameIdKey, frameId);
+provide(frameIDKey, frameID);
+provide(frameNameKey, frameName);
+provide(editorBackgroundKey, editorBackground);
 function setEditorBackground(event: MouseEvent) {
     const el: Element = event.target as Element;
     if (projectID.value)
@@ -56,8 +61,6 @@ function addNewCharacter(event: MouseEvent) {
         });
         newImage.onload = () => {
             let char: Character = new Character();
-
-            console.log("aaaaaaaaaaaaa");
             char.content = url;
             char.h = newImage.height;
             char.w = newImage.width;
@@ -66,6 +69,10 @@ function addNewCharacter(event: MouseEvent) {
         newImage.src = url;
     }
 }
+
+// function test(event) {
+//     console.log("aaaa");
+// }
 
 onMounted(() => {
     document.getElementById("app")?.addEventListener("wheel", (event: Event) => {
@@ -77,6 +84,8 @@ onMounted(() => {
         }
     });
 });
+
+let forceUpdate = 1;
 </script>
 
 <template>
@@ -91,6 +100,7 @@ onMounted(() => {
             :style="{
                 'background-image': 'url(' + editorBackground + ')',
             }"
+            :key="forceUpdate"
         >
             <FileUploadArea :display="fileUploadAreaDisplay" />
         </EditorMain>

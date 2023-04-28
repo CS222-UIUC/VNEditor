@@ -5,6 +5,7 @@ let prevX: number = 0;
 let prevY: number = 0;
 const htmlElement = ref<HTMLElement | null>(null);
 const editDisplay = ref(false);
+const temp = ref("");
 let dragStart = false;
 const props = defineProps({
     element: {
@@ -34,6 +35,7 @@ const dialog_input = ref<HTMLElement | null>(null);
 
 onMounted(() => {
     currElement.value = props.element;
+    temp.value = currElement.value.content;
 });
 function onDrag(event: MouseEvent): void {
     if (dragStart && htmlElement.value && htmlElement.value.parentElement && currElement.value) {
@@ -92,8 +94,10 @@ function onDrag(event: MouseEvent): void {
                 'border-radius': 5 * props.scale + 'px',
                 'border-width': 5 * props.scale + 'px',
             }"
-            @dblclick="
-                editDisplay = !editDisplay;
+            @dblclick="editDisplay = true"
+            v-on:keydown.enter="
+                editDisplay = false;
+                currElement.content = temp;
                 $emit('updateElement', index, currElement);
             "
         >
@@ -102,7 +106,7 @@ function onDrag(event: MouseEvent): void {
                 ref="dialog_input"
                 v-show="editDisplay"
                 type="text"
-                v-model="currElement.content"
+                v-model="temp"
                 style="width: 100%; height: 100%"
             />
         </div>
