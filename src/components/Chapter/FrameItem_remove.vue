@@ -30,11 +30,11 @@ function remove_frame() {
     // console.log("next two line are chapname and frame name");
     // console.log(prop.ChapterName);
     // console.log(prop.FrameName);
+    removed.value = true;
     if (projectID.value) {
         removeFrame(projectID.value, prop.FrameId).then((res: boolean) => {
             console.log("removed result");
             console.log(res);
-            removed.value = true;
         });
     }
 }
