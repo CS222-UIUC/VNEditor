@@ -1,4 +1,4 @@
-## VN Editor
+## VNEditor
 
 An online-driven visual novel editor 
 
@@ -22,8 +22,3 @@ Fastapi
 ### Prototype🎁
 
 ![demo](doc/demo.png)
-
-
-### TODO
-
-- [ ] Editor element resize and save

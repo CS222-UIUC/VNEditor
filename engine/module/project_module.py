@@ -6,7 +6,7 @@ import os.path
 from enum import Enum
 from utils.exception import ProjectManagerError
 from utils import file_utils
-from .config_manager import ConfigLoader
+from .config_module import ConfigLoader
 
 
 class ResourcesType(str, Enum):

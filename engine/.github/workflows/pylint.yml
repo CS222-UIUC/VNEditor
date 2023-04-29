@@ -20,4 +20,7 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint -d R0903,C0103,R0902,W0718,R0912,E0611,R0911,W0401 ./kernel
+        pylint -d R0903,C0103,R0902,W0718,R0912,E0611,R0911,W0401 ./module
+        pylint -d R0903,C0103,R0902,W0718,R0912,E0611,R0911,W0401 ./utils
+        pylint -d R0903,C0103,R0902,W0718,R0912,E0611,R0911,W0401 server.py

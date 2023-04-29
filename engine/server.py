@@ -6,7 +6,7 @@ from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from module.project_manager import ResourcesType
+from module.project_module import ResourcesType
 
 from utils.status import StatusCode
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
@@ -135,7 +135,7 @@ async def remove_project(project_name: str) -> ReturnStatus:
 
 @app.get("/resources/{rtype}/{item_name}", tags=["resources"])
 async def get_resources(
-        task_id: str, rtype: ResourcesType, item_name: str
+    task_id: str, rtype: ResourcesType, item_name: str
 ) -> FileResponse:
     """
     get resources file
@@ -156,7 +156,7 @@ async def get_resources(
 
 @app.post("/get_res", tags=["resources"])
 async def get_resources_name(
-        task_id: str, rtype: ResourcesType, filter_by: str = ""
+    task_id: str, rtype: ResourcesType, filter_by: str = ""
 ) -> ReturnList:
     """
     get resources
@@ -174,7 +174,7 @@ async def get_resources_name(
 
 @app.delete("/remove_res", tags=["resources"])
 async def remove_resource(
-        task_id: str, rtype: ResourcesType, item_name: str
+    task_id: str, rtype: ResourcesType, item_name: str
 ) -> ReturnList:
     """
     remove resources by resources name
@@ -189,7 +189,7 @@ async def remove_resource(
 
 @app.post("/rename_res", tags=["resources"])
 async def rename_project(
-        task_id: str, rtype: ResourcesType, item_name: str, new_name: str
+    task_id: str, rtype: ResourcesType, item_name: str, new_name: str
 ) -> ReturnDict:
     """
     rename resources by resources name
@@ -209,7 +209,7 @@ async def rename_project(
 
 @app.post("/upload", tags=["resources"])
 async def upload_file(
-        task_id: str, rtype: ResourcesType, file: UploadFile
+    task_id: str, rtype: ResourcesType, file: UploadFile
 ) -> ReturnDict:
     """
     update resources to rtype
@@ -224,7 +224,7 @@ async def upload_file(
 
 @app.post("/upload_files", tags=["resources"])
 async def upload_files(
-        task_id: str, rtype: ResourcesType, files: list[UploadFile]
+    task_id: str, rtype: ResourcesType, files: list[UploadFile]
 ) -> ReturnList:
     """
     update multi resources to rtype
@@ -247,11 +247,11 @@ async def get_fids(task_id: str, chapter_name: str) -> ReturnList:
     if task is None:
         return ReturnList(status=StatusCode.FAIL, msg="no such task id")
 
-    return engine_utils.get_frames_ids(task, chapter_name)
+    return engine_utils.get_frame_ids(task, chapter_name)
 
 
 @app.post("/engine/get_frame_names", tags=["kernel"])
-async def engine_meta(task_id: str, chapter_name: str) -> ReturnList:
+async def get_frame_names(task_id: str, chapter_name: str) -> ReturnList:
     """
     return the list of name of current chapter name
 
@@ -277,7 +277,9 @@ async def remove_frame(task_id: str, fid: int) -> ReturnList:
 
 
 @app.post("/engine/append_frame", tags=["kernel"])
-async def append_frame(task_id: str, to_chapter: str, frame_name: str = "default") -> ReturnList:
+async def append_frame(
+    task_id: str, to_chapter: str, frame_name: str = "default"
+) -> ReturnList:
     """
     append an empty frame to the specified chapter
 
@@ -295,7 +297,7 @@ async def append_frame(task_id: str, to_chapter: str, frame_name: str = "default
 
 @app.post("/engine/modify_frame", tags=["kernel"])
 async def modify_frame(
-        task_id: str, fid: int, frame_component_raw: FrameModel
+    task_id: str, fid: int, frame_component_raw: FrameModel
 ) -> ReturnStatus:
     """
     get fids corresponding to the task id and save the change
@@ -375,7 +377,7 @@ async def add_chapters(task_id: str, chapter_name: str) -> ReturnStatus:
 
 
 @app.delete("/engine/remove_chapter", tags=["kernel"])
-async def engine_meta(task_id: str, chapter_name: str = None) -> ReturnStatus:
+async def remove_chapter(task_id: str, chapter_name: str = None) -> ReturnStatus:
     """
     get the metadata for current used kernel
 

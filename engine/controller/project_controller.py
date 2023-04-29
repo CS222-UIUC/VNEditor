@@ -1,17 +1,20 @@
 import time
 import secrets
 
-from functools import wraps
+from functools import partial
 
-from module.project_manager import ProjectManager
-from module.gamesave_manager import GameSave
-from module.config_manager import ConfigLoader
+from module.project_module import ProjectManager
+from module.gamesave_module import GameSave
+from module.config_module import ConfigLoader
 from utils.exception import ControllerException
+from utils.exception_handler import exception_handler
 from utils.status import StatusCode
 from utils.file_utils import get_folders_in_folder, check_folder_valid
 
 from kernel.engine import Engine
-from utils.return_type import ReturnList, ReturnDict, ReturnStatus
+from utils.return_type import ReturnList, ReturnDict
+
+project_controller_exception_handler = partial(exception_handler, module_name="Project Controller", debug=False)
 
 
 class Task:
@@ -21,39 +24,18 @@ class Task:
     """
 
     def __init__(
-        self,
-        project_manager: ProjectManager,
-        project_engine: Engine,
-        project_gamesave: GameSave,
-        base_dir: str,
+            self,
+            project_manager: ProjectManager,
+            project_engine: Engine,
+            project_gamesave: GameSave,
+            base_dir: str,
     ):
         self.project_name: str = project_manager.get_project_name()
         self.project_manager: ProjectManager = project_manager
         self.project_engine: Engine = project_engine
-        self.gamesave: GameSave = project_gamesave
+        self.project_gamesave: GameSave = project_gamesave
         self.time_start: float = time.time()
         self.base_dir: str = base_dir
-
-
-def project_controller_exception_handler(func):
-    """
-    exception decorator for router
-
-    @param func: function to be decorated
-
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            e_msg = f"Project Controller ({type(e).__name__}): {str(e)}"
-            print(e_msg)
-            return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
-
-    wrapper: func
-    return wrapper
 
 
 class ProjectController:
@@ -154,6 +136,10 @@ class ProjectController:
         if task_id not in self.__tasks:
             raise ControllerException(f"cannot find task id '{task_id}'")
 
+        # close gamesave service
+        self.__tasks[task_id].project_gamesave.close()
+
+        # remove task
         task_last_time = time.time() - self.__tasks[task_id].time_start
         self.__tasks.pop(task_id)
         return ReturnDict(
@@ -178,7 +164,6 @@ class ProjectController:
             f"project folder {project_base} not valid, check the ini file"
         )
 
-    @project_controller_exception_handler
     def remove_project_dir(self, task_id: str) -> ReturnDict:
         """
         remove the project, include the whole directory
@@ -190,6 +175,10 @@ class ProjectController:
         if task_id not in self.__tasks:
             raise ControllerException(f"cannot find task id '{task_id}'")
 
+        # close gamesave service
+        self.__tasks[task_id].project_gamesave.close()
+
+        # remove project
         project_manager = self.__tasks[task_id].project_manager
         status = project_manager.delete_project()
 

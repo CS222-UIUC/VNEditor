@@ -1,32 +1,12 @@
-from functools import wraps
-
-from module.config_manager import ConfigLoader
+from functools import partial
+from module.config_module import ConfigLoader
 from utils.status import StatusCode
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
-
+from utils.exception_handler import exception_handler
 from .project_controller import Task
-from kernel.frame import FrameModel, frame_to_model
+from kernel.frame import FrameModel, frame_to_model, make_frame, make_empty_frame
 
-
-def engine_controller_exception_handler(func):
-    """
-    exception decorator for router
-
-    @param func: function to be decorated
-
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            e_msg = f"Engine Controller ({type(e).__name__}): {str(e)}"
-            print(e_msg)
-            return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
-
-    wrapper: func
-    return wrapper
+engine_controller_exception_handler = partial(exception_handler, module_name="Engine Controller", debug=False)
 
 
 class EngineController:
@@ -44,7 +24,7 @@ class EngineController:
         self.__engine_config: dict = config_loader.engine()
 
     @engine_controller_exception_handler
-    def get_frames_ids(self, task: Task, chapter_name: str) -> ReturnList:
+    def get_frame_ids(self, task: Task, chapter_name: str) -> ReturnList:
         """
         get all frame ids
 
@@ -62,6 +42,7 @@ class EngineController:
         """
         get all frame names
 
+        @param chapter_name:
         @param task: cur task
         @return: list of ordered frame names
 
@@ -94,10 +75,12 @@ class EngineController:
 
         """
         engine = task.project_engine
-        empty_frame = engine.make_empty_frame(frame_name)
+        empty_frame = make_empty_frame(frame_name)
         fid = engine.append_frame(empty_frame, to_chapter, force=True)
         engine.commit()
-        return ReturnList(status=StatusCode.OK, msg='successfully add frame', content=[fid])
+        return ReturnList(
+            status=StatusCode.OK, msg="successfully add frame", content=[fid]
+        )
 
     @engine_controller_exception_handler
     def modify_frame(
@@ -114,9 +97,7 @@ class EngineController:
         """
         engine = task.project_engine
         frame_component = frame_component_raw.to_frame().__dict__
-        frame_component.pop("fid")
-        frame_component.pop("action")
-        frame = engine.make_frame(**frame_component)
+        frame = make_frame(**frame_component)
         engine.change_frame(fid, frame)
         engine.commit()
         return ReturnStatus(status=StatusCode.OK)
@@ -224,8 +205,10 @@ class EngineController:
         try:
             engine.remove_chapter(chapter_name)
             engine.commit()
-            return ReturnStatus(status=StatusCode.OK, msg=f"the chapter '{chapter_name}' has been removed")
+            return ReturnStatus(
+                status=StatusCode.OK,
+                msg=f"the chapter '{chapter_name}' has been removed",
+            )
         except Exception as e:
             engine.rollback()
             raise e
-

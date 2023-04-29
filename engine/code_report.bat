@@ -6,8 +6,8 @@ echo generating linter and coverage report...
   echo Generated In: %date% %time%
   echo LINTER REPORT
   echo:
-  echo check ./engine
-  pylint ./engine --rcfile=./lint_disable.rc
+  echo check ./kernel
+  pylint ./kernel --rcfile=./lint_disable.rc
   echo check ./module
   pylint ./module --rcfile=./lint_disable.rc
   echo check ./utils
@@ -22,7 +22,7 @@ echo generating linter and coverage report...
   coverage run -m -a unittest test_file_utils.py
   coverage run -m -a unittest test_game_slot.py
   coverage run -m -a unittest test_engine.py
-  coverage run -m -a unittest test_frame.py
+  coverage run -m -a unittest test_engine_io.py
   coverage report -m
 )
 echo clean directory...

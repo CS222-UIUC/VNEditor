@@ -12,9 +12,9 @@ class Chapter:
     """
 
     def __init__(self, chapter_name: str):
-        self.__tail_fid: int = -1
         self.chapter_name: str = chapter_name
-        self.__frames_info: list[FrameInfo] = []
+        self.__frames_info: dict[int, FrameInfo] = {}
+        self.__fid_list: list[int] = []  # aim to maintain the order of the frames
 
     def append_frame_info(self, frame_info: FrameInfo):
         """
@@ -23,17 +23,8 @@ class Chapter:
         @param frame_info: the frame info to be appended
 
         """
-        self.__frames_info.append(frame_info)
-        self.__tail_fid = frame_info.fid
-
-    def get_all_frame_info(self) -> list[FrameInfo]:
-        """
-        get all the frame info
-
-        @return: list of frame info
-
-        """
-        return self.__frames_info
+        self.__frames_info[frame_info.fid] = frame_info
+        self.__fid_list.append(frame_info.fid)
 
     def get_all_fid(self) -> list[int]:
         """
@@ -42,7 +33,7 @@ class Chapter:
         @return: list of frame id
 
         """
-        return [i.fid for i in self.__frames_info]
+        return self.__fid_list
 
     def get_tail_fid(self) -> int:
         """
@@ -51,7 +42,9 @@ class Chapter:
         @return: the frame info in the end of chapter
 
         """
-        return self.__tail_fid
+        if len(self.__fid_list) == 0:
+            return -1
+        return self.__fid_list[-1]
 
     def remove_fid(self, fid: int) -> int:
         """
@@ -60,9 +53,9 @@ class Chapter:
         @return: the removed fid, or -1 if failed
 
         """
-        for idx, frame_info in enumerate(self.__frames_info):
-            if frame_info.fid == fid:
-                self.__frames_info.pop(idx)
-                return fid
+        if len(self.__frames_info) == 0 or fid not in self.__fid_list:
+            return -1
 
-        return -1
+        self.__frames_info.pop(fid)
+        self.__fid_list.remove(fid)
+        return fid

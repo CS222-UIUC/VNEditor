@@ -5,7 +5,7 @@ import os
 import time
 
 from utils.db_utils import DBManager
-from .config_manager import ConfigLoader
+from .config_module import ConfigLoader
 
 
 def get_cur_time():

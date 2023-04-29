@@ -4,34 +4,15 @@ controller for directly control server files and folders
 """
 import os
 
-from functools import wraps
+from functools import partial
 
-from module.config_manager import ConfigLoader
-from utils.status import StatusCode
+from module.config_module import ConfigLoader
 from utils.file_utils import check_folder_valid, delete_folder
+from utils.exception_handler import exception_handler
 
 from utils.return_type import ReturnStatus
 
-
-def file_controller_exception_handler(func):
-    """
-    exception decorator for router
-
-    @param func: function to be decorated
-
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            e_msg = f"Server Controller ({type(e).__name__}): {str(e)}"
-            print(e_msg)
-            return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
-
-    wrapper: func
-    return wrapper
+file_controller_exception_handler = partial(exception_handler, module_name="Server Controller", debug=False)
 
 
 class ServerController:

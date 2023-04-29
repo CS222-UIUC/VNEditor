@@ -1,38 +1,20 @@
 import os
 
-from functools import wraps
+from functools import partial
 from fastapi import UploadFile
 
-from module.project_manager import ResourcesType
-from module.config_manager import ConfigLoader
+from module.project_module import ResourcesType
+from module.config_module import ConfigLoader
 from utils.exception import ControllerException
+from utils.exception_handler import exception_handler
 from utils.status import StatusCode
 from utils.file_utils import check_file_valid
 
-from utils.return_type import ReturnList, ReturnDict, ReturnStatus
+from utils.return_type import ReturnList, ReturnDict
 
 from .project_controller import Task
 
-
-def resource_controller_exception_handler(func):
-    """
-    exception decorator for router
-
-    @param func: function to be decorated
-
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            e_msg = f"Resources Controller ({type(e).__name__}): {str(e)}"
-            print(e_msg)
-            return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
-
-    wrapper: func
-    return wrapper
+resource_controller_exception_handler = partial(exception_handler, module_name="Resources Controller", debug=False)
 
 
 class ResourceController:
@@ -51,10 +33,10 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def get_resource_name(
-        self,
-        task: Task,
-        rtype: ResourcesType,
-        filter_str: str = "",
+            self,
+            task: Task,
+            rtype: ResourcesType,
+            filter_str: str = "",
     ) -> ReturnList:
         """
         get resources name
@@ -73,7 +55,7 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def upload_file(
-        self, task: Task, rtype: ResourcesType, file: UploadFile
+            self, task: Task, rtype: ResourcesType, file: UploadFile
     ) -> ReturnDict:
         """
         upload a single file into the rtype directory
@@ -119,10 +101,10 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def upload_files(
-        self,
-        task: Task,
-        rtype: ResourcesType,
-        files: list[UploadFile],
+            self,
+            task: Task,
+            rtype: ResourcesType,
+            files: list[UploadFile],
     ) -> ReturnList:
         """
         upload a lot of files
@@ -153,7 +135,7 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def get_resources(
-        self, task: Task, rtype: ResourcesType, item_name: str
+            self, task: Task, rtype: ResourcesType, item_name: str
     ) -> ReturnList:
         """
         get the resources absolute address
@@ -178,7 +160,7 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def remove_resource(
-        self, task: Task, rtype: ResourcesType, item_name: str
+            self, task: Task, rtype: ResourcesType, item_name: str
     ) -> ReturnList:
         """
         remove resources
@@ -202,11 +184,11 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def rename_resource(
-        self,
-        task: Task,
-        rtype: ResourcesType,
-        item_name: str,
-        new_name: str,
+            self,
+            task: Task,
+            rtype: ResourcesType,
+            item_name: str,
+            new_name: str,
     ) -> ReturnDict:
         """
         rename the resource

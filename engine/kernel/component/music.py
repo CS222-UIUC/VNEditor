@@ -25,7 +25,7 @@ class Music:
     def __init__(
         self,
         res_name: Optional[str] = None,
-        signal: Optional[MusicSignal] = MusicSignal.KEEP,
+        signal: MusicSignal = MusicSignal.KEEP,
     ):
         """
         constructor for Music, for PLAY signal, it must specify a resources to be played

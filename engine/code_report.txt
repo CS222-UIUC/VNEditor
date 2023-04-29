@@ -1,10 +1,17 @@
-Generated In: 2023/04/21 周五 19:03:07.51
+Generated In: 2023/04/28 周五 17:48:47.28
 LINTER REPORT
 
-check ./engine
+check ./kernel
+************* Module kernel.frame
+kernel\frame.py:259:0: W0613: Unused argument 'kwargs' (unused-argument)
+************* Module kernel.component.background
+kernel\component\background.py:14:0: W0613: Unused argument 'kwargs' (unused-argument)
+************* Module kernel.component.character
+kernel\component\character.py:15:0: W0613: Unused argument 'kwargs' (unused-argument)
+kernel\component\character.py:5:0: C0411: standard import "from typing import Optional" should be placed before "from .image import Image" (wrong-import-order)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+------------------------------------------------------------------
+Your code has been rated at 9.90/10 (previous run: 9.90/10, +0.00)
 
 check ./module
 
@@ -33,22 +40,23 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682121793.89497          12
+1682722133.01938          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682121793.89497          12
+1682722133.01938          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682121793.89497          12
+1682722133.01938          12
 ----------------------------------------
 {}
 {1: 'choice 1'}
 ['a']
+add frame:  0
 add frame:  1
 add frame:  2
 add frame:  3
@@ -58,39 +66,38 @@ add frame:  6
 add frame:  7
 add frame:  8
 add frame:  9
-add frame:  10
-{'a': [(1, 'default'), (2, 'default'), (3, 'default'), (4, 'default'), (5, 'default'), (6, 'default'), (7, 'default'), (8, 'default'), (9, 'default'), (10, 'default')]}
-{'a': [(1, 'default'), (2, 'default'), (3, 'default'), (4, 'default'), (5, 'default'), (6, 'default'), (7, 'default'), (8, 'default'), (9, 'default'), (10, 'default')]}
+{'a': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
+{'a': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
+remove id: 0
+remove id: 1
 remove id: 2
 remove id: 3
-remove id: 5
+remove id: 4
 remove id: 7
 remove id: 8
-remove id: 10
-{'engine_name': 'YuiEngine', 'engine_version': '1.0.5', 'engine_minimal_compatible': '1.0.5', 'update_at': 1682121794.1849625, 'total_frame_len': 5, 'head': 0, 'tail': 1}
-1 <engine.frame.Frame object at 0x0000024254FCCCD0>
-4 <engine.frame.Frame object at 0x0000024254EDF590>
-6 <engine.frame.Frame object at 0x0000024254FCDED0>
-9 <engine.frame.Frame object at 0x0000024254FCDF90>
-remove id: 1
+{'engine_name': 'YuiEngine', 'engine_version': '1.1.3', 'engine_minimal_compatible': '1.1.3', 'update_at': 1682722133.2508454, 'total_frame_len': 3, 'head': 5, 'tail': 9}
+5 <kernel.frame.Frame object at 0x00000240FC10ED90>
+6 <kernel.frame.Frame object at 0x00000240FC114650>
+9 <kernel.frame.Frame object at 0x00000240FC1142D0>
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
-C:\Users\Twisl\Desktop\VNEditor Service\engine\__init__.py                   0      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\chapter.py                   17      5    71%   27, 45, 56-58
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\__init__.py         8      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\action.py           7      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\background.py       3      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\branch.py          15      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\character.py       15      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\dialogue.py        11      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\meta.py             4      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\component\music.py           16      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\engine\engine.py                   197     48    76%   68, 91, 93-131, 189, 195, 223, 273, 277-279, 300, 318, 338-344, 362, 378-379, 391-394, 423, 443, 465, 486-487, 504
-C:\Users\Twisl\Desktop\VNEditor Service\engine\engine_io.py                  7      2    71%   17-18
-C:\Users\Twisl\Desktop\VNEditor Service\engine\frame.py                    109     29    73%   102, 123, 129, 135-158, 184-200, 239, 242, 246
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\__init__.py                   0      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\chapter.py                   21      1    95%   57
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\__init__.py         9      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\action.py           7      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\background.py       5      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\branch.py          15      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\character.py        6      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\dialogue.py        11      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\image.py           10      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\meta.py             3      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\music.py           16      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\engine.py                   196     61    69%   58, 82, 86, 89-122, 150, 156, 185, 205-206, 241, 259, 263-265, 292, 302-305, 326, 337, 359, 379-380, 388-393, 412-415, 434-436, 446, 458-465, 475-476
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\engine_io.py                  7      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\frame.py                    104     20    81%   113, 129, 135-158, 226, 247-255
 C:\Users\Twisl\Desktop\VNEditor Service\module\__init__.py                   0      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\module\config_manager.py            25      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\module\gamesave_manager.py          56      1    98%   133
+C:\Users\Twisl\Desktop\VNEditor Service\module\config_module.py             25      0   100%
+C:\Users\Twisl\Desktop\VNEditor Service\module\gamesave_module.py           56      1    98%   133
 C:\Users\Twisl\Desktop\VNEditor Service\utils\__init__.py                    0      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\utils\db_utils.py                   57      2    96%   147-148
 C:\Users\Twisl\Desktop\VNEditor Service\utils\exception.py                   7      0   100%
@@ -98,9 +105,9 @@ C:\Users\Twisl\Desktop\VNEditor Service\utils\file_utils.py                 45  
 C:\Users\Twisl\Desktop\VNEditor Service\utils\status.py                      4      0   100%
 test_config_manager.py                                                      35      0   100%
 test_db_manager.py                                                          63      0   100%
-test_engine.py                                                              67      0   100%
+test_engine.py                                                              72      2    97%   103-104
+test_engine_io.py                                                           23      1    96%   36
 test_file_utils.py                                                          35      0   100%
-test_frame.py                                                               30      1    97%   75
 test_game_slot.py                                                           39      0   100%
 ------------------------------------------------------------------------------------------------------
-TOTAL                                                                      872     88    90%
+TOTAL                                                                      871     88    90%
