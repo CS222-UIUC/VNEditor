@@ -11,7 +11,7 @@ import time
 from typing import Optional
 from packaging import version
 
-from module.config_manager import ConfigLoader
+from module.config_module import ConfigLoader
 from utils.file_utils import check_file_valid, check_folder_valid, abs_dir
 from utils.status import StatusCode
 from utils.exception import EngineError
@@ -22,8 +22,8 @@ from kernel.component import Background, Character, Dialogue, Music, FrameMeta
 
 # the version of the kernel
 ENGINE_NAME = "YuiEngine"
-ENGINE_VERSION = "1.1.1"
-ENGINE_MINIMAL_COMPATIBLE = "1.1.0"
+ENGINE_VERSION = "1.1.2"
+ENGINE_MINIMAL_COMPATIBLE = "1.1.2"
 
 
 class Engine:
@@ -32,10 +32,10 @@ class Engine:
     """
 
     def __init__(
-            self,
-            project_dir: str,
-            config_dir: str,
-            game_file_name: Optional[str] = None,
+        self,
+        project_dir: str,
+        config_dir: str,
+        game_file_name: Optional[str] = None,
     ):
         """
         constructor for kernel
@@ -50,7 +50,7 @@ class Engine:
 
         # variables that need to update once change
         self.__game_content: dict[int, Frame] = {}  # game content
-        self.__chapter_meta: dict[str, Chapter] = {}  # meta for chapter list {chapter name: Chapter instance}
+        self.__chapter_meta: dict[str, Chapter] = {}  # {chapter name: Chapter instance}
         self.__head: int = Frame.VOID_FRAME_ID  # the head of the frame list
         self.__tail: int = Frame.VOID_FRAME_ID  # the tail of the frame list
         self.__all_fids: set[int] = set()  # all fids in set
@@ -103,9 +103,7 @@ class Engine:
                 f"try to load game file with '{cur_engine_name}' using kernel '{ENGINE_NAME}'"
             )
 
-        if version.parse(cur_engine_version) < version.parse(
-                ENGINE_MINIMAL_COMPATIBLE
-        ):
+        if version.parse(cur_engine_version) < version.parse(ENGINE_MINIMAL_COMPATIBLE):
             raise EngineError(
                 f"detect version incompatible! "
                 f"the current kernel ({ENGINE_VERSION}) "
@@ -139,11 +137,11 @@ class Engine:
 
     @staticmethod
     def make_frame(
-            background: Background,
-            chara: list[Character],
-            music: Music,
-            dialog: Dialogue,
-            meta: FrameMeta
+        background: Background,
+        chara: list[Character],
+        music: Music,
+        dialog: Dialogue,
+        meta: FrameMeta,
     ) -> Frame:
         """
         make a frame
@@ -167,7 +165,14 @@ class Engine:
         @return: empty frame
 
         """
-        frame = Frame(Frame.VOID_FRAME_ID, Background(''), [], Music(), Dialogue(''), FrameMeta(name=frame_name))
+        frame = Frame(
+            Frame.VOID_FRAME_ID,
+            Background(""),
+            [],
+            Music(),
+            Dialogue(""),
+            FrameMeta(name=frame_name),
+        )
         return frame
 
     def __append(self, frame: Frame) -> int:
@@ -279,9 +284,7 @@ class Engine:
         # update game content and metadata
         self.__game_content.pop(fid)
 
-    def append_frame(
-            self, frame: Frame, to_chapter: str, force: bool = False
-    ) -> int:
+    def append_frame(self, frame: Frame, to_chapter: str, force: bool = False) -> int:
         """
         add frame to the end of the frame list
 
@@ -325,7 +328,8 @@ class Engine:
         # update chapter data
         for chapter in self.__chapter_meta.values():
             if chapter.remove_fid(fid) != -1:
-                break
+                return
+        raise Exception("damn")
 
     def change_frame(self, fid: int, frame: Frame):
         """
@@ -510,3 +514,12 @@ class Engine:
         """
         frame = self.get_frame(fid)
         return frame.meta.name
+
+    def get_frame_ids(self) -> set:
+        """
+        get all fids
+
+        @return: all fids
+
+        """
+        return self.__all_fids

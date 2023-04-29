@@ -6,7 +6,7 @@ import os
 
 from functools import wraps
 
-from module.config_manager import ConfigLoader
+from module.config_module import ConfigLoader
 from utils.status import StatusCode
 from utils.file_utils import check_folder_valid, delete_folder
 

@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 
 from unittest import TestCase
-from module.gamesave_manager import GameSave, get_cur_time, parse_data
+from module.gamesave_module import GameSave, get_cur_time, parse_data
 from utils import file_utils
 from utils.exception import *
 

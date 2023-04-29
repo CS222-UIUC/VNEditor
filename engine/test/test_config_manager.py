@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 
 from unittest import TestCase
-from module.config_manager import ConfigLoader
+from module.config_module import ConfigLoader
 from utils.exception import ConfigLoaderError
 
 
