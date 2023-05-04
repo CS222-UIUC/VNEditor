@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide, inject, reactive, onMounted, watchEffect } from "vue";
+import { ref, provide, inject, reactive, onMounted, watchEffect, watch } from "vue";
 import { getFrame, getUrl } from "./RequestAPI";
 import Toolbar from "./components/Toolbar/ToolbarMain.vue";
 import Navbar from "./components/Navbar/NavbarMain.vue";
@@ -54,6 +54,7 @@ function setEditorMusic(event: MouseEvent) {
 }
 function addNewCharacter(event: MouseEvent) {
     const el: Element = event.target as Element;
+    console.log(el);
     if (projectID.value) {
         let newImage = new Image();
         const url = getUrl(`resources/character/${el.innerHTML}`, {
@@ -65,10 +66,24 @@ function addNewCharacter(event: MouseEvent) {
             char.h = newImage.height;
             char.w = newImage.width;
             editorElements.push(char);
+            console.log(editorElements.length);
+            console.log(editorElements);
         };
         newImage.src = url;
     }
 }
+
+watch(projectID, () => {
+    while (editorElements.length != 0) {
+        editorElements.pop();
+    }
+});
+// watchEffect(() => {
+//     if (projectID.value)
+//         while (editorElements.length != 0) {
+//             editorElements.pop();
+//         }
+// });
 
 // function test(event) {
 //     console.log("aaaa");

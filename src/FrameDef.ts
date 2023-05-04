@@ -38,10 +38,17 @@ export class Frame {
     branch?: Frame[];
 }
 
+type elementInfo = {
+    x: number;
+    y: number;
+    size: number;
+};
+
 export class FrameBack {
     background: string = "";
-    chara: string[] = [];
-    chara_pos: { x: number; y: number }[] = [];
+
+    background_attr: elementInfo = { x: 0, y: 0, size: 0 };
+    character: { [name: string]: elementInfo } = {};
     music: string = "";
     music_signal: number = 1;
     dialog: string = "";

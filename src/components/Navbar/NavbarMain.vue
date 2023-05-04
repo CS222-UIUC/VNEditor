@@ -12,7 +12,7 @@ import {
 } from "@/InjectionKeys";
 import { inject, ref, watch, watchEffect } from "vue";
 import type { Ref } from "vue";
-import { FrameBack, type EditorElement, ElementType } from "@/FrameDef";
+import { FrameBack, type EditorElement, ElementType, Diaglog } from "@/FrameDef";
 
 const frameID = inject(frameIDKey) as Ref<number | undefined>;
 const frameName = inject(frameNameKey) as Ref<string | undefined>;
@@ -54,8 +54,11 @@ function saveFrame() {
         if (el.type == ElementType.Text) {
             frame.dialog = el.content;
         } else {
-            frame.chara.push(el.content);
-            frame.chara_pos.push({ x: el.xCoord, y: el.yCoord });
+            frame.character[el.content] = {
+                x: el.xCoord,
+                y: el.yCoord,
+                size: 0,
+            };
         }
     }
     modifyFrame(frameID.value, projectID.value, frame).then((res: boolean) => {
@@ -113,7 +116,7 @@ watch(projectID, () => {
                                 projectsCreateDisplay = !projectsCreateDisplay;
                                 initProject((event.target as HTMLInputElement).value as string).then((res: string | undefined)=> {
                                     if (res)
-                                    projectID = res;
+                                        updateProject(res, (event.target as HTMLInputElement).value as string)
                      
                                 });
                             }
@@ -176,10 +179,19 @@ watch(projectID, () => {
                     </div>
                 </template>
             </item>
-            <item>
+            <item v-if="frameID">
                 <template #el>
                     <div style="dispay: flex">
                         <button class="navbar-button" @click="saveFrame">Save Frame</button>
+                    </div>
+                </template>
+            </item>
+            <item v-if="frameID">
+                <template #el>
+                    <div style="dispay: flex">
+                        <button class="navbar-button" @click="editorElements.push(new Diaglog())">
+                            Add Textbox
+                        </button>
                     </div>
                 </template>
             </item>

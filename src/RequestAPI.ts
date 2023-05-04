@@ -304,7 +304,6 @@ export async function getFrame(
             // baseUrl + `get_res/?task_id=${id}&rtype=${rtype}`
             url
         );
-
         const f: FrameBack = response.data.content;
         console.log(f);
         return f;

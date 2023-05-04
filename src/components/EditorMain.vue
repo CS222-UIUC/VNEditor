@@ -37,24 +37,30 @@ const props = defineProps({
 
 const instance = getCurrentInstance();
 watchEffect(async () => {
-    console.log(frameID.value !== undefined);
-    console.log("aaaaaaaaaaaaaaaaaaaa?");
     if (frameID.value !== undefined && projectID.value !== undefined) {
         console.log("updating frame...");
         const fb = await getFrame(frameID.value, projectID.value);
         editorBackground.value = fb.background;
-        for (let i = 0; i < editorElements.length; ++i) editorElements.pop();
-        for (let i = 0; i < fb.chara.length; ++i) {
-            const c = new Character();
-            c.content = fb.chara[i];
-            c.xCoord = fb.chara_pos[i].x;
-            c.yCoord = fb.chara_pos[i].y;
-            editorElements.push(c);
+        while (editorElements.length != 0) editorElements.pop();
+        console.log("clear frame: ", editorElements);
+        for (const name in fb.character) {
+            let newImage = new Image();
+            newImage.onload = () => {
+                let char: Character = new Character();
+                char.content = name;
+                char.h = newImage.height;
+                char.w = newImage.width;
+                char.xCoord = fb.character[name].x;
+                char.yCoord = fb.character[name].y;
+                editorElements.push(char);
+            };
+            newImage.src = name;
         }
-        const d = new Diaglog();
-        d.content = fb.dialog;
-        editorElements.push(d);
-        console.log(editorElements);
+
+        // const d = new Diaglog();
+        // d.content = fb.dialog;
+        // editorElements.push(d);
+        // console.log(editorElements);
         instance?.proxy?.$forceUpdate();
     }
 });
@@ -68,6 +74,7 @@ watchEffect(async () => {
     >
         <Draggable
             @update-element="updateFrame"
+            @contextmenu.prevent="editorElements.splice(index, 1)"
             v-for="(char, index) in editorElements"
             :key="char.content"
             :element="char"

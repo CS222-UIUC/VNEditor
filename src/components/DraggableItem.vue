@@ -114,8 +114,13 @@ function onDrag(event: MouseEvent): void {
 </template>
 
 <style>
-.editor-element:hover {
+.editor-element {
     z-index: 0;
+}
+.editor-element:focus {
+    outline: 2px #000 dashed;
+}
+.editor-element:hover {
     outline: 2px #000 dashed;
 }
 .editor-element-dialog {
