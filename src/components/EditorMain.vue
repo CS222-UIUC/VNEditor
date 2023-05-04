@@ -21,6 +21,7 @@ const projectID = inject(projectIDKey) as Ref<string | undefined>;
 let editorElements: Array<EditorElement> = inject(editorElementsKey) as Array<EditorElement>;
 const editorBackground = inject(editorBackgroundKey) as Ref<string | undefined>;
 const editor = ref<HTMLInputElement | null>(null);
+const selected = ref(-1);
 let frame: Frame = new Frame();
 function updateFrame(index: number, el: EditorElement) {
     console.log(editorElements);
@@ -35,6 +36,11 @@ const props = defineProps({
     },
 });
 
+const test = () => {
+    console.log(selected.value);
+    selected.value = -1;
+};
+
 const instance = getCurrentInstance();
 watchEffect(async () => {
     if (frameID.value !== undefined && projectID.value !== undefined) {
@@ -48,19 +54,23 @@ watchEffect(async () => {
             newImage.onload = () => {
                 let char: Character = new Character();
                 char.content = name;
-                char.h = newImage.height;
-                char.w = newImage.width;
+                char.h = fb.character[name].height;
+                char.w = fb.character[name].width;
                 char.xCoord = fb.character[name].x;
                 char.yCoord = fb.character[name].y;
                 editorElements.push(char);
             };
             newImage.src = name;
         }
-
-        // const d = new Diaglog();
-        // d.content = fb.dialog;
-        // editorElements.push(d);
-        // console.log(editorElements);
+        if (fb.dialog === "") return;
+        const d = new Diaglog();
+        d.content = fb.dialog;
+        d.h = fb.background_attr.height;
+        d.w = fb.background_attr.width;
+        d.xCoord = fb.background_attr.x;
+        d.yCoord = fb.background_attr.y;
+        editorElements.push(d);
+        console.log(editorElements);
         instance?.proxy?.$forceUpdate();
     }
 });
@@ -71,10 +81,12 @@ watchEffect(async () => {
         id="editor-view"
         ref="editor"
         :style="{ width: props.scale * 1920 + 'px', height: props.scale * 1080 + 'px' }"
+        @click="test"
     >
         <Draggable
             @update-element="updateFrame"
             @contextmenu.prevent="editorElements.splice(index, 1)"
+            @dblclick.stop="selected = index"
             v-for="(char, index) in editorElements"
             :key="char.content"
             :element="char"
@@ -82,6 +94,7 @@ watchEffect(async () => {
                 editorElements[idx] = newElement;
             }"
             :scale="props.scale"
+            :selected="selected == index"
             :index="index"
         ></Draggable>
     </div>

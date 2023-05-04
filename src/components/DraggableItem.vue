@@ -24,11 +24,19 @@ const props = defineProps({
         type: Number,
         required: true,
     },
+    selected: {
+        type: Boolean,
+        required: true,
+    },
 });
 
 const emits = defineEmits<{
     (e: "updateElement", index: number, el: EditorElement): void;
 }>();
+
+const test = () => {
+    console.log(props.selected);
+};
 
 const currElement = ref<EditorElement>();
 const dialog_input = ref<HTMLElement | null>(null);
@@ -68,17 +76,45 @@ function onDrag(event: MouseEvent): void {
             height: (currElement?.h ? currElement?.h : 100) * scale + 'px',
             width: (currElement?.w ? currElement?.w : 100) * scale + 'px',
         }"
-        @mousedown.prevent="
+        @mousedown.prevent.stop="
             dragStart = true;
             (prevX = $event.clientX), (prevY = $event.clientY);
         "
-        @mousemove.prevent="
+        @mousemove.prevent.stop="
             onDrag($event);
             dialog_input?.focus();
         "
-        @mouseup.prevent="dragStart = false"
-        @mouseleave.prevent="dragStart = false"
+        @mouseup.prevent.stop="dragStart = false"
+        @mouseleave.prevent.stop="dragStart = false"
     >
+        <div
+            v-if="selected"
+            style="position: absolute; z-index: 1"
+            :style="{ width: 50 * props.scale + 'px', height: 50 * props.scale + 'px' }"
+        >
+            <button
+                style="display: block; width: 100%; height: 50%"
+                @click="
+                    if (currElement) {
+                        currElement.w *= 1.1;
+                        currElement.h *= 1.1;
+                    }
+                "
+            >
+                +
+            </button>
+            <button
+                style="display: block; width: 100%; height: 50%"
+                @click="
+                    if (currElement) {
+                        currElement.w /= 1.1;
+                        currElement.h /= 1.1;
+                    }
+                "
+            >
+                -
+            </button>
+        </div>
         <img
             :src="currElement?.content"
             alt="image"
@@ -117,12 +153,10 @@ function onDrag(event: MouseEvent): void {
 .editor-element {
     z-index: 0;
 }
-.editor-element:focus {
-    outline: 2px #000 dashed;
-}
 .editor-element:hover {
     outline: 2px #000 dashed;
 }
+
 .editor-element-dialog {
     width: 100%;
     height: 100%;

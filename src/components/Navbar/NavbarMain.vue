@@ -52,12 +52,18 @@ function saveFrame() {
         const el: EditorElement = editorElements[i];
         console.log(el);
         if (el.type == ElementType.Text) {
+            if (el.content === "") continue;
             frame.dialog = el.content;
+            frame.background_attr.height = el.h;
+            frame.background_attr.width = el.w;
+            frame.background_attr.x = el.xCoord;
+            frame.background_attr.y = el.yCoord;
         } else {
             frame.character[el.content] = {
                 x: el.xCoord,
                 y: el.yCoord,
-                size: 0,
+                width: el.w,
+                height: el.h,
             };
         }
     }

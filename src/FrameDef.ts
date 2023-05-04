@@ -41,13 +41,14 @@ export class Frame {
 type elementInfo = {
     x: number;
     y: number;
-    size: number;
+    width: number;
+    height: number;
 };
 
 export class FrameBack {
     background: string = "";
 
-    background_attr: elementInfo = { x: 0, y: 0, size: 0 };
+    background_attr: elementInfo = { x: 0, y: 0, width: 0, height: 0 };
     character: { [name: string]: elementInfo } = {};
     music: string = "";
     music_signal: number = 1;
