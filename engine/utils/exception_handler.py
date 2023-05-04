@@ -12,6 +12,7 @@ def exception_handler(func, module_name: str = "default", debug=False):
     @param debug: if debug set to be true, error will directly throw instead of caught
 
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:

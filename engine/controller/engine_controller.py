@@ -6,7 +6,9 @@ from utils.exception_handler import exception_handler
 from .project_controller import Task
 from kernel.frame import FrameModel, frame_to_model, make_frame, make_empty_frame
 
-engine_controller_exception_handler = partial(exception_handler, module_name="Engine Controller", debug=False)
+engine_controller_exception_handler = partial(
+    exception_handler, module_name="Engine Controller", debug=True
+)
 
 
 class EngineController:
@@ -84,7 +86,7 @@ class EngineController:
 
     @engine_controller_exception_handler
     def modify_frame(
-            self, task: Task, fid: int, frame_component_raw: FrameModel
+        self, task: Task, fid: int, frame_component_raw: FrameModel
     ) -> ReturnStatus:
         """
         commit all changes

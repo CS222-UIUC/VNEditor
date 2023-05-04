@@ -212,7 +212,7 @@ def frame_to_model(frame: Frame):
 
     chara = {}
     for cur_chara in frame.character:
-        cur_chara_attr = ImageModel(**frame.background.__dict__)
+        cur_chara_attr = ImageModel(**cur_chara.__dict__)
         chara[cur_chara.res_name] = cur_chara_attr
 
     music_signal = frame.music.signal

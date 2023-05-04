@@ -11,7 +11,7 @@ class Background(Image):
     """
 
     def __init__(
-        self, res_name: str, x: float = 0, y: float = 0, size: float = 0, **kwargs
+        self, res_name: str, x: float = 0, y: float = 0, width: float = 0, height: float = 0, **kwargs
     ):
         """
         constructor for background
@@ -19,8 +19,9 @@ class Background(Image):
         @param res_name: the direction of background file, relative address
         @param x: coordinate x
         @param y: coordinate y
-        @param size: size of the background
+        @param width: the width of the background
+        @param height: the height of the background
 
         """
-        super().__init__(x=x, y=y, size=size)
+        super().__init__(x=x, y=y, width=width, height=height)
         self.res_name = res_name

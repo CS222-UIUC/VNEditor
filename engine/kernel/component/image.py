@@ -11,10 +11,11 @@ class Image:
 
     """
 
-    def __init__(self, x: float = 0, y: float = 0, size: float = 0):
+    def __init__(self, x: float = 0, y: float = 0, width: float = 0, height: float = 0):
         self.x: float = x
         self.y: float = y
-        self.size: float = size
+        self.width: float = width
+        self.height: float = height
 
 
 class ImageModel(BaseModel):
@@ -25,4 +26,5 @@ class ImageModel(BaseModel):
 
     x: float
     y: float
-    size: float
+    width: float
+    height: float
