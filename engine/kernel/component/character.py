@@ -16,7 +16,8 @@ class Character(Image):
         res_name: Optional[str],
         x: float = 0,
         y: float = 0,
-        size: float = 0,
+        width: float = 0,
+        height: float = 0,
         **kwargs
     ):
         """
@@ -25,8 +26,9 @@ class Character(Image):
         @param res_name: character file name, if leave none, default is voice over
         @param x: coordinate x
         @param y: coordinate y
-        @param size: size of the background
+        @param width: the width of the Character
+        @param height: the height of the Character
 
         """
-        super().__init__(x=x, y=y, size=size)
+        super().__init__(x=x, y=y, width=width, height=height)
         self.res_name: str = res_name

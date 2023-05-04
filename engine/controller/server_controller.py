@@ -12,7 +12,9 @@ from utils.exception_handler import exception_handler
 
 from utils.return_type import ReturnStatus
 
-file_controller_exception_handler = partial(exception_handler, module_name="Server Controller", debug=False)
+file_controller_exception_handler = partial(
+    exception_handler, module_name="Server Controller", debug=False
+)
 
 
 class ServerController:

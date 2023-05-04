@@ -14,7 +14,9 @@ from utils.file_utils import get_folders_in_folder, check_folder_valid
 from kernel.engine import Engine
 from utils.return_type import ReturnList, ReturnDict
 
-project_controller_exception_handler = partial(exception_handler, module_name="Project Controller", debug=False)
+project_controller_exception_handler = partial(
+    exception_handler, module_name="Project Controller", debug=False
+)
 
 
 class Task:
@@ -24,11 +26,11 @@ class Task:
     """
 
     def __init__(
-            self,
-            project_manager: ProjectManager,
-            project_engine: Engine,
-            project_gamesave: GameSave,
-            base_dir: str,
+        self,
+        project_manager: ProjectManager,
+        project_engine: Engine,
+        project_gamesave: GameSave,
+        base_dir: str,
     ):
         self.project_name: str = project_manager.get_project_name()
         self.project_manager: ProjectManager = project_manager

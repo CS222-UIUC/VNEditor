@@ -14,7 +14,9 @@ from utils.return_type import ReturnList, ReturnDict
 
 from .project_controller import Task
 
-resource_controller_exception_handler = partial(exception_handler, module_name="Resources Controller", debug=False)
+resource_controller_exception_handler = partial(
+    exception_handler, module_name="Resources Controller", debug=False
+)
 
 
 class ResourceController:
@@ -33,10 +35,10 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def get_resource_name(
-            self,
-            task: Task,
-            rtype: ResourcesType,
-            filter_str: str = "",
+        self,
+        task: Task,
+        rtype: ResourcesType,
+        filter_str: str = "",
     ) -> ReturnList:
         """
         get resources name
@@ -55,7 +57,7 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def upload_file(
-            self, task: Task, rtype: ResourcesType, file: UploadFile
+        self, task: Task, rtype: ResourcesType, file: UploadFile
     ) -> ReturnDict:
         """
         upload a single file into the rtype directory
@@ -101,10 +103,10 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def upload_files(
-            self,
-            task: Task,
-            rtype: ResourcesType,
-            files: list[UploadFile],
+        self,
+        task: Task,
+        rtype: ResourcesType,
+        files: list[UploadFile],
     ) -> ReturnList:
         """
         upload a lot of files
@@ -135,7 +137,7 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def get_resources(
-            self, task: Task, rtype: ResourcesType, item_name: str
+        self, task: Task, rtype: ResourcesType, item_name: str
     ) -> ReturnList:
         """
         get the resources absolute address
@@ -160,7 +162,7 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def remove_resource(
-            self, task: Task, rtype: ResourcesType, item_name: str
+        self, task: Task, rtype: ResourcesType, item_name: str
     ) -> ReturnList:
         """
         remove resources
@@ -184,11 +186,11 @@ class ResourceController:
 
     @resource_controller_exception_handler
     def rename_resource(
-            self,
-            task: Task,
-            rtype: ResourcesType,
-            item_name: str,
-            new_name: str,
+        self,
+        task: Task,
+        rtype: ResourcesType,
+        item_name: str,
+        new_name: str,
     ) -> ReturnDict:
         """
         rename the resource
