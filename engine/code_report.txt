@@ -1,4 +1,4 @@
-Generated In: 2023/04/28 周五 17:48:47.28
+Generated In: 2023/04/28 周五 19:11:13.25
 LINTER REPORT
 
 check ./kernel
@@ -19,9 +19,11 @@ check ./module
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 check ./utils
+************* Module utils.exception_handler
+utils\exception_handler.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+-------------------------------------------------------------------
+Your code has been rated at 9.93/10 (previous run: 10.00/10, -0.07)
 
 check server.py
 
@@ -30,7 +32,7 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 COVERAGE REPORT
 
-create new db: test.db in: 
+connect to db: test.db
 connect to db: ./gamesave.db
 ----------------------------------------
        time              progress
@@ -40,18 +42,18 @@ empty
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682722133.01938          12
+1682727079.27608          12
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682722133.01938          12
+1682727079.27608          12
 ...
 ----------------------------------------
 ----------------------------------------
        time              progress
 ----------------------------------------
-1682722133.01938          12
+1682727079.27608          12
 ----------------------------------------
 {}
 {1: 'choice 1'}
@@ -73,12 +75,14 @@ remove id: 1
 remove id: 2
 remove id: 3
 remove id: 4
+remove id: 5
+remove id: 9
+{'engine_name': 'YuiEngine', 'engine_version': '1.1.3', 'engine_minimal_compatible': '1.1.3', 'update_at': 1682727079.5392892, 'total_frame_len': 3, 'head': 6, 'tail': 8}
+6 <kernel.frame.Frame object at 0x000002616CED3B50>
+7 <kernel.frame.Frame object at 0x000002616CED3D10>
+8 <kernel.frame.Frame object at 0x000002616CED3E10>
+remove id: 6
 remove id: 7
-remove id: 8
-{'engine_name': 'YuiEngine', 'engine_version': '1.1.3', 'engine_minimal_compatible': '1.1.3', 'update_at': 1682722133.2508454, 'total_frame_len': 3, 'head': 5, 'tail': 9}
-5 <kernel.frame.Frame object at 0x00000240FC10ED90>
-6 <kernel.frame.Frame object at 0x00000240FC114650>
-9 <kernel.frame.Frame object at 0x00000240FC1142D0>
 Name                                                                     Stmts   Miss  Cover   Missing
 ------------------------------------------------------------------------------------------------------
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\__init__.py                   0      0   100%
@@ -92,22 +96,22 @@ C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\dialogue.py        11  
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\image.py           10      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\meta.py             3      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\component\music.py           16      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\kernel\engine.py                   196     61    69%   58, 82, 86, 89-122, 150, 156, 185, 205-206, 241, 259, 263-265, 292, 302-305, 326, 337, 359, 379-380, 388-393, 412-415, 434-436, 446, 458-465, 475-476
+C:\Users\Twisl\Desktop\VNEditor Service\kernel\engine.py                   196     60    69%   58, 82, 86, 89-122, 150, 156, 185, 205-206, 259, 263-265, 292, 302-305, 326, 337, 359, 379-380, 388-393, 412-415, 434-436, 446, 458-465, 475-476
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\engine_io.py                  7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\kernel\frame.py                    104     20    81%   113, 129, 135-158, 226, 247-255
 C:\Users\Twisl\Desktop\VNEditor Service\module\__init__.py                   0      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\config_module.py             25      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\module\gamesave_module.py           56      1    98%   133
 C:\Users\Twisl\Desktop\VNEditor Service\utils\__init__.py                    0      0   100%
-C:\Users\Twisl\Desktop\VNEditor Service\utils\db_utils.py                   57      2    96%   147-148
+C:\Users\Twisl\Desktop\VNEditor Service\utils\db_utils.py                   57      3    95%   147-148, 158
 C:\Users\Twisl\Desktop\VNEditor Service\utils\exception.py                   7      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\utils\file_utils.py                 45      0   100%
 C:\Users\Twisl\Desktop\VNEditor Service\utils\status.py                      4      0   100%
 test_config_manager.py                                                      35      0   100%
 test_db_manager.py                                                          63      0   100%
-test_engine.py                                                              72      2    97%   103-104
-test_engine_io.py                                                           23      1    96%   36
+test_engine.py                                                              72      0   100%
+test_engine_io.py                                                           23      1    96%   52
 test_file_utils.py                                                          35      0   100%
 test_game_slot.py                                                           39      0   100%
 ------------------------------------------------------------------------------------------------------
-TOTAL                                                                      871     88    90%
+TOTAL                                                                      871     86    90%
