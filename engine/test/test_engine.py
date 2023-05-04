@@ -13,19 +13,26 @@ from kernel.frame import make_frame
 
 
 class TestEngine(TestCase):
+    """
+    A test case class for testing the Engine class.
+    """
+
     delete_folder("../projects/test/")
     os.mkdir("../projects/test/")
     engine = Engine(project_dir="../projects/test", config_dir="../service.ini")
 
     def test_make_frame(self):
+        """
+        Test case for the make_frame method of the Engine class.
+        It tests various operations and functionalities of the Engine class.
+        """
         engine = self.engine
         print(engine.get_metadata_buffer())
 
+        # Create frame components for testing
         background = Background(res_name="b.jpg")
         character1 = Character(res_name="c.jpg")
-        character2 = Character(
-            res_name="c.jpg",
-        )
+        character2 = Character(res_name="c.jpg")
         characters = [character1, character2]
         dialogue = Dialogue(dialogue="hello world", character=character1)
         branch = BranchTree()
@@ -44,6 +51,8 @@ class TestEngine(TestCase):
         music.get_music()
         engine.add_chapter("a")
         print(engine.get_all_chapter())
+
+        # Generate frames and models
         for i in range(100):
             frame = make_frame(
                 background=background,
@@ -58,6 +67,7 @@ class TestEngine(TestCase):
             if i % 10 == 0:
                 nid = engine.append_frame(frame, "a", force=True)
                 print("add frame: ", nid)
+
         frame = make_frame(
             background=background,
             character=characters,
@@ -83,6 +93,7 @@ class TestEngine(TestCase):
             engine.remove_frame(10000)
         frame_keys = list(engine.get_frame_ids())
 
+        # Remove frames randomly
         for i in frame_keys:
             if random.getrandbits(1):
                 print(f"remove id: {i}")
@@ -94,10 +105,9 @@ class TestEngine(TestCase):
         for i in ids:
             print(i, engine.get_frame(fid=i))
 
-        # kernel.insert_frame(ids[-1], ids[0])
-
         frame_keys = engine.get_frame_ids()
         self.assertNotEqual(len(frame_keys), 0)
+        # Remove frames randomly again
         for i in list(frame_keys):
             if random.getrandbits(1):
                 print(f"remove id: {i}")

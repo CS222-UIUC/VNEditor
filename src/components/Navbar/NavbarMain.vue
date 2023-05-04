@@ -1,16 +1,28 @@
 <script setup lang="ts">
 import item from "./NavbarItem.vue";
 import drop from "../DropDownList.vue";
-import { getProjects, removeProject, initProject } from "../../RequestAPI";
-import { projectIDKey, projectNameKey } from "../../InjectionKeys";
+import { getProjects, removeProject, initProject, modifyFrame } from "@/RequestAPI";
+import {
+    projectIDKey,
+    projectNameKey,
+    editorBackgroundKey,
+    editorElementsKey,
+    frameIDKey,
+    frameNameKey,
+} from "@/InjectionKeys";
 import { inject, ref, watch, watchEffect } from "vue";
 import type { Ref } from "vue";
+import { FrameBack, type EditorElement, ElementType, Diaglog } from "@/FrameDef";
 
+const frameID = inject(frameIDKey) as Ref<number | undefined>;
+const frameName = inject(frameNameKey) as Ref<string | undefined>;
 const projectID = inject(projectIDKey) as Ref<string | undefined>;
 const projectName = inject(projectNameKey) as Ref<string | undefined>;
-let projectsOpenDisplay = ref(false);
-let projectsRemoveDisplay = ref(false);
-let projectsCreateDisplay = ref(false);
+let editorElements: EditorElement[] = inject(editorElementsKey) as EditorElement[];
+const editorBackground = inject(editorBackgroundKey) as Ref<string | undefined>;
+const projectsOpenDisplay = ref(false);
+const projectsRemoveDisplay = ref(false);
+const projectsCreateDisplay = ref(false);
 const projectNames: Ref<string[]> = ref([]);
 
 function handleRemove(event: MouseEvent) {
@@ -31,6 +43,30 @@ function updateProject(newID: string | undefined, newName: string | undefined): 
     projectName.value = newName;
 }
 
+function saveFrame() {
+    console.log("modifying frame...");
+    console.log(editorElements.length);
+    let frame = new FrameBack();
+    frame.background = editorBackground.value as string;
+    for (let i = 0; i < editorElements.length; ++i) {
+        const el: EditorElement = editorElements[i];
+        console.log(el);
+        if (el.type == ElementType.Text) {
+            frame.dialog = el.content;
+        } else {
+            frame.character[el.content] = {
+                x: el.xCoord,
+                y: el.yCoord,
+                size: 0,
+            };
+        }
+    }
+    modifyFrame(frameID.value, projectID.value, frame).then((res: boolean) => {
+        if (res) console.log("save successful");
+        else console.log("save failed");
+    });
+}
+
 watch(projectID, () => {
     console.log("change");
     getProjects().then((res: string[]) => {
@@ -45,9 +81,19 @@ watch(projectID, () => {
             <item>
                 <template #el>
                     <div id="project-title">
-                        {{ projectName ? projectName : "No project has been opened" }}
+                        {{
+                            projectName
+                                ? "Current Project: " + projectName
+                                : "No project has been opened"
+                        }}
                     </div>
-                    <div v-show="false">{{ projectID }}</div>
+                </template>
+            </item>
+            <item>
+                <template #el>
+                    <div>
+                        {{ frameName ? frameName : "No Frame has been opened" }}
+                    </div>
                 </template>
             </item>
         </div>
@@ -70,7 +116,7 @@ watch(projectID, () => {
                                 projectsCreateDisplay = !projectsCreateDisplay;
                                 initProject((event.target as HTMLInputElement).value as string).then((res: string | undefined)=> {
                                     if (res)
-                                    projectID = res;
+                                        updateProject(res, (event.target as HTMLInputElement).value as string)
                      
                                 });
                             }
@@ -130,6 +176,22 @@ watch(projectID, () => {
                                 
                             }"
                         ></drop>
+                    </div>
+                </template>
+            </item>
+            <item v-if="frameID">
+                <template #el>
+                    <div style="dispay: flex">
+                        <button class="navbar-button" @click="saveFrame">Save Frame</button>
+                    </div>
+                </template>
+            </item>
+            <item v-if="frameID">
+                <template #el>
+                    <div style="dispay: flex">
+                        <button class="navbar-button" @click="editorElements.push(new Diaglog())">
+                            Add Textbox
+                        </button>
                     </div>
                 </template>
             </item>

@@ -8,8 +8,8 @@
   /* Let the grid system fill the entire screen */
   flex-grow: 10; 
 
-  grid-template-columns: 1fr 6fr 1fr;
-  grid-template-rows: 0.5fr 6fr 0.5fr;
+  grid-template-columns: 10% 80% auto;
+  grid-template-rows: auto auto auto;
 
   font-weight: normal;
 
@@ -19,9 +19,8 @@
     "header header header"
     "preview-sidebar main-editor toolbar-sidebar"
     "footer footer footer";
-
+    overflow: hidden;
   z-index: 1;
-  overflow: hidden
 }
 #header {
   grid-area: 1 / 1 / 2 / 4;
@@ -46,6 +45,8 @@
 #main-editor {
   grid-area: 2 / 2 / 3 / 3;
   z-index: 1;
+  aspect-ratio: 16 / 9;
+  /* overflow: scroll; */
 }
 
 

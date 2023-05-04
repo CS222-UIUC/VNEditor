@@ -1,33 +1,12 @@
-from functools import wraps
-
+from functools import partial
 from module.config_module import ConfigLoader
 from utils.status import StatusCode
 from utils.return_type import ReturnList, ReturnDict, ReturnStatus
-
+from utils.exception_handler import exception_handler
 from .project_controller import Task
 from kernel.frame import FrameModel, frame_to_model, make_frame, make_empty_frame
 
-
-def engine_controller_exception_handler(func):
-    """
-    exception decorator for router
-
-    @param func: function to be decorated
-
-    """
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            raise e
-            e_msg = f"Engine Controller ({type(e).__name__}): {str(e)}"
-            print(e_msg)
-            return ReturnStatus(status=StatusCode.FAIL, msg=e_msg)
-
-    wrapper: func
-    return wrapper
+engine_controller_exception_handler = partial(exception_handler, module_name="Engine Controller", debug=False)
 
 
 class EngineController:
@@ -63,6 +42,7 @@ class EngineController:
         """
         get all frame names
 
+        @param chapter_name:
         @param task: cur task
         @return: list of ordered frame names
 
@@ -104,7 +84,7 @@ class EngineController:
 
     @engine_controller_exception_handler
     def modify_frame(
-        self, task: Task, fid: int, frame_component_raw: FrameModel
+            self, task: Task, fid: int, frame_component_raw: FrameModel
     ) -> ReturnStatus:
         """
         commit all changes

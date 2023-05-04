@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { removeFrame } from "../../RequestAPI";
 import { projectIDKey } from "../../InjectionKeys";
-import type { Ref } from "vue";
+import { watch, type Ref } from "vue";
 import { inject, ref } from "vue";
 
 const projectID = inject(projectIDKey) as Ref<string | undefined>;
-const removed: Ref<boolean> = ref(false);
+var removed: Ref<boolean> = ref(false);
+
+watch(removed, () => {
+    console.log("removed" + prop.FrameName);
+});
 
 const prop = defineProps({
     ChapterName: {
@@ -28,14 +32,16 @@ function remove_frame() {
     // console.log(prop.FrameName);
     if (projectID.value) {
         removeFrame(projectID.value, prop.FrameId).then((res: boolean) => {
-            removed.value = res;
+            console.log("removed result");
+            console.log(res);
+            removed.value = true;
         });
     }
 }
 </script>
 
 <template>
-    <div class="frame-item-remove" v-show="!removed" @click="remove_frame">
+    <div class="frame-item-remove" v-show="!removed.valueOf()" @click="remove_frame">
         <slot>unknown scene</slot>
     </div>
 </template>
